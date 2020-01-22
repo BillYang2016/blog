@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.png">
+  <link rel="mask-icon" href="/images/logo.png" color="#222">
+  <meta name="baidu-site-verification" content="PcyS4kW5Yu">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-bounce.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://blog.bill.moe').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":true,"transition":{"post_block":"swoopIn","post_header":"shrinkIn","post_body":"shrinkIn","coll_header":"expandIn","sidebar":"bounceIn"}}
+  };
+</script>
+
+  <meta name="description" content="再次补打。由于Bonus的解答没有测试方法，因此可能有一定问题。若有发现，欢迎在下方评论区提出。 比赛地址官方题解">
+<meta name="keywords" content="比赛酱油记,Codeforces">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Codeforces Round 469 div2 题解（+bonuses!）">
+<meta property="og:url" content="https://blog.bill.moe/Codeforces-round469-div2/index.html">
+<meta property="og:site_name" content="Bill Yang&#39;s Blog">
+<meta property="og:description" content="再次补打。由于Bonus的解答没有测试方法，因此可能有一定问题。若有发现，欢迎在下方评论区提出。 比赛地址官方题解">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://codeforces.com/predownloaded/1e/83/1e838f4fb99d933b7259fbfe5b8722990c08d718.png">
+<meta property="og:updated_time" content="2019-06-10T01:10:56.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Codeforces Round 469 div2 题解（+bonuses!）">
+<meta name="twitter:description" content="再次补打。由于Bonus的解答没有测试方法，因此可能有一定问题。若有发现，欢迎在下方评论区提出。 比赛地址官方题解">
+<meta name="twitter:image" content="http://codeforces.com/predownloaded/1e/83/1e838f4fb99d933b7259fbfe5b8722990c08d718.png">
+
+<link rel="canonical" href="https://blog.bill.moe/Codeforces-round469-div2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+<!-- jquery -->
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+<!-- 打字礼花及震动特效 -->
+
+<div id="append_parent"></div><div id="ajaxwaitid"></div>
+<script type="text/javascript" src="/lib/activate-power-mode/activate-power-mode.js"></script>
+<script>
+	POWERMODE.colorful = true;
+	POWERMODE.shake = false;
+	document.body.addEventListener('input',POWERMODE);
+</script>
+
+<!-- live2d -->
+
+<div class="waifu">
+	<div class="waifu-tips"></div>
+	<canvas id="live2d" width="240" height="350" class="live2d"></canvas>
+	<div class="hide-button">隐藏</div>
+</div>
+<script async src="/lib/poster-girl/waifu-tips.js"></script>
+<script src="/lib/poster-girl/live2d.js"></script>
+<script type="text/javascript">
+	loadlive2d("live2d", "/live2d/assets/kanna.model.json");
+</script>
+  <title>Codeforces Round 469 div2 题解（+bonuses!） | Bill Yang's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Bill Yang's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">路终会有尽头，但视野总能看到更远的地方。</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">10</span></a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-friends">
+
+    <a href="/friends" rel="section"><i class="fa fa-fw fa-users"></i>友链</a>
+
+  </li>
+        <li class="menu-item menu-item-board">
+
+    <a href="/board/" rel="section"><i class="fa fa-fw fa-sticky-note-o"></i>留言板</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">667</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">232</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.bill.moe/Codeforces-round469-div2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Bill Yang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bill Yang's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          Codeforces Round 469 div2 题解（+bonuses!）
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-03-17 10:06:14" itemprop="dateCreated datePublished" datetime="2018-03-17T10:06:14+08:00">2018-03-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-06-10 09:10:56" itemprop="dateModified" datetime="2019-06-10T09:10:56+08:00">2019-06-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OI/" itemprop="url" rel="index">
+                    <span itemprop="name">OI</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/Codeforces-round469-div2/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/Codeforces-round469-div2/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>再次补打。<br>由于Bonus的解答没有测试方法，因此可能有一定问题。若有发现，欢迎在下方评论区提出。</p>
+<p><a href="http://codeforces.com/contest/950" target="_blank" rel="noopener">比赛地址</a><br><a href="http://codeforces.com/blog/entry/58291" target="_blank" rel="noopener">官方题解</a>  </p>
+<a id="more"></a>
+<h2 id="Problem-A-Left-handers-Right-handers-and-Ambidexters"><a href="#Problem-A-Left-handers-Right-handers-and-Ambidexters" class="headerlink" title="Problem A. Left-handers, Right-handers and Ambidexters"></a>Problem A. Left-handers, Right-handers and Ambidexters</h2><h3 id="题目大意"><a href="#题目大意" class="headerlink" title="题目大意"></a>题目大意</h3><blockquote>
+<p>&ensp;&ensp;&ensp;&ensp;有$l$个左撇子，用$r$个右撇子，有$a$个左右手都能熟练使用的人，将他们分配到一个组，使得能熟练使用左手和熟练使用右手的人数相同，求最大人数。  </p>
+</blockquote>
+<h3 id="题目分析"><a href="#题目分析" class="headerlink" title="题目分析"></a>题目分析</h3><p>3秒钟水题。  </p>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">int</span> <span class="title">Get_Int</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> num=<span class="number">0</span>,bj=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">char</span> x=getchar();</span><br><span class="line">	<span class="keyword">while</span>(!<span class="built_in">isdigit</span>(x)) &#123;<span class="keyword">if</span>(x==<span class="string">'-'</span>)bj=<span class="number">-1</span>;x=getchar();&#125;</span><br><span class="line">	<span class="keyword">while</span>(<span class="built_in">isdigit</span>(x)) &#123;num=num*<span class="number">10</span>+x-<span class="string">'0'</span>;x=getchar();&#125;</span><br><span class="line">	<span class="keyword">return</span> num*bj;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> l,r,a;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	l=Get_Int();</span><br><span class="line">	r=Get_Int();</span><br><span class="line">	a=Get_Int();</span><br><span class="line">	<span class="keyword">int</span> Min=min(l,r),Max=max(l,r);</span><br><span class="line">	<span class="keyword">if</span>(Max-Min&gt;a)<span class="built_in">printf</span>(<span class="string">"%d\n"</span>,<span class="number">2</span>*(Min+a));</span><br><span class="line">	<span class="keyword">else</span> <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,<span class="number">2</span>*Max+(a-(Max-Min))/<span class="number">2</span>*<span class="number">2</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Bonus"><a href="#Bonus" class="headerlink" title="Bonus!"></a>Bonus!</h3><h4 id="BONUS-easy-在-O-1-时间内解决该问题"><a href="#BONUS-easy-在-O-1-时间内解决该问题" class="headerlink" title="BONUS (easy): 在$O(1)$时间内解决该问题"></a>BONUS (easy): 在$O(1)$时间内解决该问题</h4><p>That’s what I’ve actually done.</p>
+<h4 id="BONUS-easy-读不懂"><a href="#BONUS-easy-读不懂" class="headerlink" title="BONUS (easy): 读不懂"></a>BONUS (easy): 读不懂</h4><p>跳掉吧</p>
+<h2 id="Problem-B-Intercepted-Message"><a href="#Problem-B-Intercepted-Message" class="headerlink" title="Problem B. Intercepted Message"></a>Problem B. Intercepted Message</h2><h3 id="题目大意-1"><a href="#题目大意-1" class="headerlink" title="题目大意"></a>题目大意</h3><blockquote>
+<p>&ensp;&ensp;&ensp;&ensp;给出两个和相同的序列$A,B$，按照序列先后顺序将$A,B$分别分成若干子序列，使得$A,B$的子序列和对应相等，试最大化分出的子序列数量。  </p>
+</blockquote>
+<h3 id="题目分析-1"><a href="#题目分析-1" class="headerlink" title="题目分析"></a>题目分析</h3><p>从左往右双指针扫一遍，遇到相等就剖分。  </p>
+<h3 id="代码-1"><a href="#代码-1" class="headerlink" title="代码"></a>代码</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">int</span> <span class="title">Get_Int</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> num=<span class="number">0</span>,bj=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">char</span> x=getchar();</span><br><span class="line">	<span class="keyword">while</span>(!<span class="built_in">isdigit</span>(x)) &#123;<span class="keyword">if</span>(x==<span class="string">'-'</span>)bj=<span class="number">-1</span>;x=getchar();&#125;</span><br><span class="line">	<span class="keyword">while</span>(<span class="built_in">isdigit</span>(x)) &#123;num=num*<span class="number">10</span>+x-<span class="string">'0'</span>;x=getchar();&#125;</span><br><span class="line">	<span class="keyword">return</span> num*bj;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxn=<span class="number">100005</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> n,m,a[maxn],b[maxn],ans=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	n=Get_Int();</span><br><span class="line">	m=Get_Int();</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=n; i++)a[i]=a[i<span class="number">-1</span>]+Get_Int();</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=m; i++)b[i]=b[i<span class="number">-1</span>]+Get_Int();</span><br><span class="line">	<span class="keyword">int</span> i=<span class="number">1</span>,j=<span class="number">1</span>,lasti=<span class="number">0</span>,lastj=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">while</span>(i&lt;=n&amp;&amp;j&lt;=m) &#123;</span><br><span class="line">		<span class="keyword">if</span>(a[i]-a[lasti]==b[j]-b[lastj]) &#123;</span><br><span class="line">			ans++;</span><br><span class="line">			lasti=i,lastj=j;</span><br><span class="line">			i++,j++;</span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span>(a[i]-a[lasti]&lt;b[j]-b[lastj])i++;</span><br><span class="line">		<span class="keyword">else</span> j++;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"%d\n"</span>,ans);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Bonus-1"><a href="#Bonus-1" class="headerlink" title="Bonus!"></a>Bonus!</h3><h4 id="BONUS-easy-若第二个序列丢失了一块，你可以在任意位置插入该块，询问不变"><a href="#BONUS-easy-若第二个序列丢失了一块，你可以在任意位置插入该块，询问不变" class="headerlink" title="BONUS (easy): 若第二个序列丢失了一块，你可以在任意位置插入该块，询问不变"></a>BONUS (easy): 若第二个序列丢失了一块，你可以在任意位置插入该块，询问不变</h4><p>维护三个指针，第三个指针指向最靠左的差量大于等于该块和的位置。<br>若第一、二个指针相等了，将第三个指针移动到第二个指针。<br>若第一个指针与第三个指针刚好相差该块和了，在此处插入块，移除第三个指针。<br>由于两个序列加入块后和相等，因此块一定能找到地方插入。  </p>
+<h2 id="Problem-C-Zebras"><a href="#Problem-C-Zebras" class="headerlink" title="Problem C. Zebras"></a>Problem C. Zebras</h2><h3 id="题目大意-2"><a href="#题目大意-2" class="headerlink" title="题目大意"></a>题目大意</h3><blockquote>
+<p>&ensp;&ensp;&ensp;&ensp;定义$0,1$交替且开始结束均为$0$的串是斑马串，如$0,010,01010$是斑马串，而$1,0110,0101$均不是。<br>&ensp;&ensp;&ensp;&ensp;将给定的串分为若干个<strong>序列（可以不连续）</strong>，使得每个序列都是一个斑马串。<br>&ensp;&ensp;&ensp;&ensp;若有多解，输出任意一个。若无解，输出$-1$。</p>
+</blockquote>
+<h3 id="题目分析-2"><a href="#题目分析-2" class="headerlink" title="题目分析"></a>题目分析</h3><p>存储末尾为$0$与末尾为$1$的斑马串。<br>若当前位置是$0$，在末尾为$1$的斑马串中找一个接上去，或新开一个斑马串。<br>若当前位置是$1$，此时若没有末尾为$0$的斑马串就无解，否则选出一个末尾为$0$的斑马串接上去。  </p>
+<h3 id="代码-2"><a href="#代码-2" class="headerlink" title="代码"></a>代码</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">int</span> <span class="title">Get_Int</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> num=<span class="number">0</span>,bj=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">char</span> x=getchar();</span><br><span class="line">	<span class="keyword">while</span>(!<span class="built_in">isdigit</span>(x)) &#123;<span class="keyword">if</span>(x==<span class="string">'-'</span>)bj=<span class="number">-1</span>;x=getchar();&#125;</span><br><span class="line">	<span class="keyword">while</span>(<span class="built_in">isdigit</span>(x)) &#123;num=num*<span class="number">10</span>+x-<span class="string">'0'</span>;x=getchar();&#125;</span><br><span class="line">	<span class="keyword">return</span> num*bj;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxn=<span class="number">200005</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">string</span> s;</span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; zero,one,L[maxn];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	ios::sync_with_stdio(<span class="literal">false</span>);</span><br><span class="line">	<span class="built_in">cin</span>&gt;&gt;s;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;s.length(); i++)</span><br><span class="line">		<span class="keyword">if</span>(s[i]==<span class="string">'0'</span>) &#123;</span><br><span class="line">			<span class="keyword">if</span>(one.empty()) &#123;</span><br><span class="line">				zero.push_back(i+<span class="number">1</span>);</span><br><span class="line">				L[i+<span class="number">1</span>].push_back(i+<span class="number">1</span>);</span><br><span class="line">			&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">				<span class="keyword">int</span> x=one.back();one.pop_back();</span><br><span class="line">				L[x].push_back(i+<span class="number">1</span>);</span><br><span class="line">				zero.push_back(x);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">if</span>(zero.empty()) &#123;<span class="built_in">puts</span>(<span class="string">"-1"</span>);<span class="keyword">return</span> <span class="number">0</span>;&#125;</span><br><span class="line">			<span class="keyword">int</span> x=zero.back();zero.pop_back();</span><br><span class="line">			L[x].push_back(i+<span class="number">1</span>);</span><br><span class="line">			one.push_back(x);</span><br><span class="line">		&#125;</span><br><span class="line">	<span class="keyword">if</span>(!one.empty()) &#123;<span class="built_in">puts</span>(<span class="string">"-1"</span>);<span class="keyword">return</span> <span class="number">0</span>;&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"%d\n"</span>,zero.size());</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> x:zero) &#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"%d "</span>,L[x].size());</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> y:L[x])<span class="built_in">printf</span>(<span class="string">"%d "</span>,y);</span><br><span class="line">		<span class="built_in">putchar</span>(<span class="string">'\n'</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Bonus-2"><a href="#Bonus-2" class="headerlink" title="Bonus!"></a>Bonus!</h3><h4 id="BONUS-easy-使输出方案最长的斑马串最短"><a href="#BONUS-easy-使输出方案最长的斑马串最短" class="headerlink" title="BONUS (easy): 使输出方案最长的斑马串最短"></a>BONUS (easy): 使输出方案最长的斑马串最短</h4><p>每次在挑选串的时候选一个最短的斑马串即可，可以用堆什么的维护。  </p>
+<h4 id="BONUS-hard-使输出方案斑马串个数最少"><a href="#BONUS-hard-使输出方案斑马串个数最少" class="headerlink" title="BONUS (hard): 使输出方案斑马串个数最少"></a>BONUS (hard): 使输出方案斑马串个数最少</h4><p>这在搞笑，因为所有方案的斑马串个数均相同，等于$0$的个数$-1$的个数。  </p>
+<h2 id="Problem-D-A-Leapfrog-in-the-Array"><a href="#Problem-D-A-Leapfrog-in-the-Array" class="headerlink" title="Problem D. A Leapfrog in the Array"></a>Problem D. A Leapfrog in the Array</h2><h3 id="题目大意-3"><a href="#题目大意-3" class="headerlink" title="题目大意"></a>题目大意</h3><blockquote>
+<p>&ensp;&ensp;&ensp;&ensp;有$n$个数，每两个数间隔一个放在长度为$2n-1$的格子中。<br>&ensp;&ensp;&ensp;&ensp;每次移动最后一个数到其前面最靠近它的空位，最后铺满前$n$个格子。<br><img src="http://codeforces.com/predownloaded/1e/83/1e838f4fb99d933b7259fbfe5b8722990c08d718.png" alt><br>&ensp;&ensp;&ensp;&ensp;给出$n$，询问$q$次结束序列第$x$位的数。  </p>
+</blockquote>
+<h3 id="题目分析-3"><a href="#题目分析-3" class="headerlink" title="题目分析"></a>题目分析</h3><p>先敲个暴力压压惊。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">int</span> <span class="title">Get_Int</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> num=<span class="number">0</span>,bj=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">char</span> x=getchar();</span><br><span class="line">	<span class="keyword">while</span>(!<span class="built_in">isdigit</span>(x)) &#123;<span class="keyword">if</span>(x==<span class="string">'-'</span>)bj=<span class="number">-1</span>;x=getchar();&#125;</span><br><span class="line">	<span class="keyword">while</span>(<span class="built_in">isdigit</span>(x)) &#123;num=num*<span class="number">10</span>+x-<span class="string">'0'</span>;x=getchar();&#125;</span><br><span class="line">	<span class="keyword">return</span> num*bj;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> a[<span class="number">105</span>];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> n=Get_Int();</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=n; i++)a[<span class="number">2</span>*i<span class="number">-1</span>]=i;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">2</span>*n<span class="number">-1</span>; i&gt;n; i--)</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j=i<span class="number">-1</span>; j&gt;=<span class="number">1</span>; j--)</span><br><span class="line">			<span class="keyword">if</span>(!a[j]) &#123;a[j]=a[i];<span class="keyword">break</span>;&#125;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=n; i++)<span class="built_in">cout</span>&lt;&lt;a[i]&lt;&lt;<span class="string">" "</span>;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后找找规律。  </p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">$n=1$</th>
+<th style="text-align:center"></th>
+<th style="text-align:center"></th>
+<th style="text-align:center"></th>
+<th style="text-align:center"></th>
+<th style="text-align:center"></th>
+<th style="text-align:center"></th>
+<th style="text-align:center">$\color{red}1$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">$n=2$</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">$\color{red}1$</td>
+<td style="text-align:center">$2$</td>
+</tr>
+<tr>
+<td style="text-align:center">$n=3$</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">$\color{red}1$</td>
+<td style="text-align:center">$3$</td>
+<td style="text-align:center">$\color{red}2$</td>
+</tr>
+<tr>
+<td style="text-align:center">$n=4$</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">$\color{red}1$</td>
+<td style="text-align:center">$3$</td>
+<td style="text-align:center">$\color{red}2$</td>
+<td style="text-align:center">$4$</td>
+</tr>
+<tr>
+<td style="text-align:center">$n=5$</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">$\color{red}1$</td>
+<td style="text-align:center">$5$</td>
+<td style="text-align:center">$\color{red}2$</td>
+<td style="text-align:center">$4$</td>
+<td style="text-align:center">$\color{red}3$</td>
+</tr>
+<tr>
+<td style="text-align:center">$n=6$</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">$\color{red}1$</td>
+<td style="text-align:center">$4$</td>
+<td style="text-align:center">$\color{red}2$</td>
+<td style="text-align:center">$6$</td>
+<td style="text-align:center">$\color{red}3$</td>
+<td style="text-align:center">$5$</td>
+</tr>
+<tr>
+<td style="text-align:center">$n=7$</td>
+<td style="text-align:center">$\color{red}1$</td>
+<td style="text-align:center">$6$</td>
+<td style="text-align:center">$\color{red}2$</td>
+<td style="text-align:center">$5$</td>
+<td style="text-align:center">$\color{red}3$</td>
+<td style="text-align:center">$7$</td>
+<td style="text-align:center">$4$</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>注意红色的项，也就是奇数项，始终不变，等于$\frac {x+1}2$。<br>现在考虑偶数项。  </p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">$n=1$</th>
+<th style="text-align:center"></th>
+<th style="text-align:center"></th>
+<th style="text-align:center"></th>
+<th style="text-align:center"></th>
+<th style="text-align:center"></th>
+<th style="text-align:center"></th>
+<th style="text-align:center">$1$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">$n=2$</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">$\color{red}1$</td>
+<td style="text-align:center">$\color{red}2$</td>
+</tr>
+<tr>
+<td style="text-align:center">$n=3$</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">$\color{yellow}1$</td>
+<td style="text-align:center">$\color{yellow}3$</td>
+<td style="text-align:center">$\color{yellow}2$</td>
+</tr>
+<tr>
+<td style="text-align:center">$n=4$</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$\color{red}3$</td>
+<td style="text-align:center">$2$</td>
+<td style="text-align:center">$\color{red}4$</td>
+</tr>
+<tr>
+<td style="text-align:center">$n=5$</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$5$</td>
+<td style="text-align:center">$2$</td>
+<td style="text-align:center">$4$</td>
+<td style="text-align:center">$3$</td>
+</tr>
+<tr>
+<td style="text-align:center">$n=6$</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$\color{yellow}4$</td>
+<td style="text-align:center">$2$</td>
+<td style="text-align:center">$\color{yellow}6$</td>
+<td style="text-align:center">$3$</td>
+<td style="text-align:center">$\color{yellow}5$</td>
+</tr>
+<tr>
+<td style="text-align:center">$n=7$</td>
+<td style="text-align:center">$e1$</td>
+<td style="text-align:center">$6$</td>
+<td style="text-align:center">$2$</td>
+<td style="text-align:center">$5$</td>
+<td style="text-align:center">$3$</td>
+<td style="text-align:center">$7$</td>
+<td style="text-align:center">$4$</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>$n$是偶数时，偶数项具有规律：如图，相同颜色的数对应大小关系相同。<br>即与$n=\frac n2$的对应项大小关系相同。  </p>
+<p>现在考虑$n$是奇数的情况：  </p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">$n=1$</th>
+<th style="text-align:center"></th>
+<th style="text-align:center"></th>
+<th style="text-align:center"></th>
+<th style="text-align:center"></th>
+<th style="text-align:center"></th>
+<th style="text-align:center"></th>
+<th style="text-align:center">$1$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">$n=2$</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$2$</td>
+</tr>
+<tr>
+<td style="text-align:center">$n=3$</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$\color{red}3$</td>
+<td style="text-align:center">$\color{red}2$</td>
+</tr>
+<tr>
+<td style="text-align:center">$n=4$</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$\color{yellow}3$</td>
+<td style="text-align:center">$\color{yellow}2$</td>
+<td style="text-align:center">$\color{yellow}4$</td>
+</tr>
+<tr>
+<td style="text-align:center">$n=5$</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$\color{red}5$</td>
+<td style="text-align:center">$2$</td>
+<td style="text-align:center">$\color{red}4$</td>
+<td style="text-align:center">$3$</td>
+</tr>
+<tr>
+<td style="text-align:center">$n=6$</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$4$</td>
+<td style="text-align:center">$2$</td>
+<td style="text-align:center">$6$</td>
+<td style="text-align:center">$3$</td>
+<td style="text-align:center">$5$</td>
+</tr>
+<tr>
+<td style="text-align:center">$n=7$</td>
+<td style="text-align:center">$e1$</td>
+<td style="text-align:center">$\color{yellow}6$</td>
+<td style="text-align:center">$2$</td>
+<td style="text-align:center">$\color{yellow}5$</td>
+<td style="text-align:center">$3$</td>
+<td style="text-align:center">$\color{yellow}7$</td>
+<td style="text-align:center">$4$</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>$n$是奇数时，偶数项具有规律：如图，相同颜色的数对应大小关系相同。<br>即与$n=\frac {n+1}2$的靠右对齐对应项大小关系相同。  </p>
+<p>至此，就可以敲代码了。  </p>
+<h3 id="代码-3"><a href="#代码-3" class="headerlink" title="代码"></a>代码</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> LL;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> LL <span class="title">Get_Int</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	LL num=<span class="number">0</span>,bj=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">char</span> x=getchar();</span><br><span class="line">	<span class="keyword">while</span>(!<span class="built_in">isdigit</span>(x)) &#123;<span class="keyword">if</span>(x==<span class="string">'-'</span>)bj=<span class="number">-1</span>;x=getchar();&#125;</span><br><span class="line">	<span class="keyword">while</span>(<span class="built_in">isdigit</span>(x)) &#123;num=num*<span class="number">10</span>+x-<span class="string">'0'</span>;x=getchar();&#125;</span><br><span class="line">	<span class="keyword">return</span> num*bj;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">LL n,q; </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	n=Get_Int();</span><br><span class="line">	q=Get_Int();</span><br><span class="line">	<span class="keyword">while</span>(q--) &#123;</span><br><span class="line">		LL x=Get_Int();</span><br><span class="line">		<span class="keyword">if</span>(x&amp;<span class="number">1</span>)<span class="built_in">printf</span>(<span class="string">"%I64d\n"</span>,(x+<span class="number">1</span>)&gt;&gt;<span class="number">1</span>);</span><br><span class="line">		<span class="keyword">else</span> &#123;</span><br><span class="line">			LL pos=n-x+<span class="number">1</span>,len=n;</span><br><span class="line">			<span class="keyword">while</span>((len-pos+<span class="number">1</span>)%<span class="number">2</span>==<span class="number">0</span>) &#123;</span><br><span class="line">				pos=(pos+<span class="number">1</span>)/<span class="number">2</span>;</span><br><span class="line">				len=(len+<span class="number">1</span>)/<span class="number">2</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			pos=len-pos+<span class="number">1</span>;</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">"%I64d\n"</span>,((pos+<span class="number">1</span>)&gt;&gt;<span class="number">1</span>)+n-len);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Problem-E-Data-Center-Maintenance"><a href="#Problem-E-Data-Center-Maintenance" class="headerlink" title="Problem E. Data Center Maintenance"></a>Problem E. Data Center Maintenance</h2><h3 id="题目大意-4"><a href="#题目大意-4" class="headerlink" title="题目大意"></a>题目大意</h3><blockquote>
+<p>&ensp;&ensp;&ensp;&ensp;有$n$个数据库，有$m$种数据，一天有$h$小时。<br>&ensp;&ensp;&ensp;&ensp;为了方便下载，每种数据$i$被存放在两个数据库（$c_{i,1},c_{i,2}$）中。<br>&ensp;&ensp;&ensp;&ensp;每个数据库$i$都有一个维护时间$u_i$，每天维护一小时。<br>&ensp;&ensp;&ensp;&ensp;要求选出一个非空子集，使得这个子集中的数据库维护时间向后推迟一小时（$u_i\leftarrow (u_i+1)\bmod h$）。同时需要满足推迟后任意一种数据在任意时刻都可以被下载，你可以认为给出的初始维护时间满足这一性质。<br>&ensp;&ensp;&ensp;&ensp;保证有解。若有多种方案，选择任意一个方案满足这个非空子集的元素数量最少。  </p>
+</blockquote>
+<h3 id="题目分析-4"><a href="#题目分析-4" class="headerlink" title="题目分析"></a>题目分析</h3><p>很呵呵的一道题。<br>开始的时候想的是2-sat，但是似乎不能最小化答案。<br>又因为题目有这个坑爹的限制：<strong>你可以认为给出的初始维护时间满足这一性质。</strong>说实话我读了3遍题都没有看出来这是哪句话说的。  </p>
+<p>这样我们可以重新建图：<br>若$(u_{c_{i,1}}+1)\bmod k=u_{c_{i,2}}$，连一条边$c_{i,1}\rightarrow c_{i,2}$。<br>若$(u_{c_{i,2}}+1)\bmod k=u_{c_{i,1}}$，连一条边$c_{i,1}\rightarrow c_{i,2}$。<br>边$x\rightarrow y$表示的意义是$x$一结束维护，$y$立刻开始维护。<br>在这个图中若选择一个点推迟维护，其能够到达的所有点都需要推迟维护。<br>这样我们对原图进行强连通分量缩点，即可得到一个DAG。<br>显然，在这个DAG中选择出度为$0$的连通分量是最优的，故在出度为$0$的强连通分量中选择一个最小的即可。<br>由于题目的坑爹限制，正确性是有保证的。  </p>
+<h3 id="代码-4"><a href="#代码-4" class="headerlink" title="代码"></a>代码</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">int</span> <span class="title">Get_Int</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> num=<span class="number">0</span>,bj=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">char</span> x=getchar();</span><br><span class="line">	<span class="keyword">while</span>(!<span class="built_in">isdigit</span>(x)) &#123;<span class="keyword">if</span>(x==<span class="string">'-'</span>)bj=<span class="number">-1</span>;x=getchar();&#125;</span><br><span class="line">	<span class="keyword">while</span>(<span class="built_in">isdigit</span>(x)) &#123;num=num*<span class="number">10</span>+x-<span class="string">'0'</span>;x=getchar();&#125;</span><br><span class="line">	<span class="keyword">return</span> num*bj;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxn=<span class="number">200005</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> n,m,k,a[maxn],OutDegree[maxn],Size[maxn],Ans,Min=INT_MAX,step=<span class="number">0</span>,top=<span class="number">0</span>,SCC=<span class="number">0</span>,Dfn[maxn],Lowlink[maxn],Stack[maxn],Belong[maxn];</span><br><span class="line"><span class="keyword">bool</span> Instack[maxn];</span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; edges[maxn],ans;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Tarjan</span><span class="params">(<span class="keyword">int</span> Now)</span> </span>&#123;</span><br><span class="line">	Dfn[Now]=Lowlink[Now]=++step;</span><br><span class="line">	Stack[++top]=Now;</span><br><span class="line">	Instack[Now]=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> Next:edges[Now]) &#123;</span><br><span class="line">		<span class="keyword">if</span>(!Dfn[Next]) &#123;</span><br><span class="line">			Tarjan(Next);</span><br><span class="line">			Lowlink[Now]=min(Lowlink[Now],Lowlink[Next]);</span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span>(Instack[Next])Lowlink[Now]=min(Lowlink[Now],Dfn[Next]);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(Dfn[Now]==Lowlink[Now]) &#123;</span><br><span class="line">		<span class="keyword">int</span> y;</span><br><span class="line">		SCC++;</span><br><span class="line">		<span class="keyword">do</span> &#123;</span><br><span class="line">			y=Stack[top--];</span><br><span class="line">			Instack[y]=<span class="number">0</span>;</span><br><span class="line">			Belong[y]=SCC;</span><br><span class="line">			Size[SCC]++;</span><br><span class="line">		&#125; <span class="keyword">while</span>(y!=Now);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	n=Get_Int();</span><br><span class="line">	m=Get_Int();</span><br><span class="line">	k=Get_Int();</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=n; i++)a[i]=Get_Int();</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=m; i++) &#123;</span><br><span class="line">		<span class="keyword">int</span> x=Get_Int(),y=Get_Int();</span><br><span class="line">		<span class="keyword">if</span>((a[x]+<span class="number">1</span>)%k==a[y])edges[x].push_back(y);</span><br><span class="line">		<span class="keyword">if</span>(a[x]==(a[y]+<span class="number">1</span>)%k)edges[y].push_back(x);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=(n&lt;&lt;<span class="number">1</span>); i++)<span class="keyword">if</span>(!Dfn[i])Tarjan(i);</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> Now=<span class="number">1</span>; Now&lt;=n; Now++)</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> Next:edges[Now])</span><br><span class="line">			<span class="keyword">if</span>(Belong[Now]!=Belong[Next])OutDegree[Belong[Now]]++;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=n; i++)<span class="keyword">if</span>(!OutDegree[Belong[i]]&amp;&amp;Size[Belong[i]]&lt;Min) &#123;Min=Size[Belong[i]];Ans=Belong[i];&#125;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=n; i++)<span class="keyword">if</span>(Belong[i]==Ans)ans.push_back(i);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"%d\n"</span>,ans.size());</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">auto</span> x:ans)<span class="built_in">printf</span>(<span class="string">"%d "</span>,x);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Bonus-3"><a href="#Bonus-3" class="headerlink" title="Bonus!"></a>Bonus!</h3><h4 id="BONUS-medium-若原来不满足坑爹的限制，但不要求最小化答案，你能解决吗？"><a href="#BONUS-medium-若原来不满足坑爹的限制，但不要求最小化答案，你能解决吗？" class="headerlink" title="BONUS (medium): 若原来不满足坑爹的限制，但不要求最小化答案，你能解决吗？"></a>BONUS (medium): 若原来不满足坑爹的限制，但不要求最小化答案，你能解决吗？</h4><p>当然，这就是刚刚说的2-sat的方法。<br>关于2-sat怎么选择非空子集？因为保证有解，因此可以随便选一个点，让其选择不推迟，检查是否有合法方案。<br>若有合法方案，直接输出，否则让其选择推迟，再寻找合法方案。  </p>
+<h4 id="BONUS-NP-hard-若原来不满足坑爹的限制，要求最小化答案，你能解决吗？"><a href="#BONUS-NP-hard-若原来不满足坑爹的限制，要求最小化答案，你能解决吗？" class="headerlink" title="BONUS ((NP?)-hard): 若原来不满足坑爹的限制，要求最小化答案，你能解决吗？"></a>BONUS ((NP?)-hard): 若原来不满足坑爹的限制，要求最小化答案，你能解决吗？</h4><p>好像确实是NP问题。  </p>
+<h2 id="Problem-F-Curfew"><a href="#Problem-F-Curfew" class="headerlink" title="Problem F. Curfew"></a>Problem F. Curfew</h2><h3 id="题目大意-5"><a href="#题目大意-5" class="headerlink" title="题目大意"></a>题目大意</h3><blockquote>
+<p>&ensp;&ensp;&ensp;&ensp;学校有个$n$个寝室排列成一条直线，每个寝室住有$b$个学生，查寝前学生在任意寝室玩，若第$i$个寝室有$a_i$个学生，满足$\sum_{i=1}^na_i=nb$。<br>&ensp;&ensp;&ensp;&ensp;现在有$2$个宿管老师来查寝，在检查寝室$i$的时候，若$a_i\neq b$，宿管老师就会记录一个寝室违规，但不会驱逐学生，若$a_i=b$时，老师也不会点名而认为该寝室没有违规。检查完毕后，宿管老师会关灯锁门。另外，学生可以藏在床底下，你可以认为床底下可以藏任意多个学生，而不会被宿管老师发现。<br>&ensp;&ensp;&ensp;&ensp;第一个宿管老师从$1$寝室检查到$\frac {n+1}2$寝室，第二个则从$n$寝室检查到$\frac {n+1}2+1$。<br>&ensp;&ensp;&ensp;&ensp;查寝的流程是这样的：  </p>
+<ul>
+<li>当宣布查寝时，第$i$个寝室有$a_i$个学生。  </li>
+<li>学生可以跑到另外一个寝室，但是不能移动超过$d$个寝室。然后学生可以藏在床底下。  </li>
+<li>宿管老师进入$1$寝室和$n$寝室，清点人数然后关灯锁门（之后没人能够进入或出去）。  </li>
+<li>在$2\sim n-1$号寝室的学生可以跑到另一个寝室，但是不能移动超过$d$个寝室，也不能进入一个锁着的寝室。然后学生可以藏在床底下。  </li>
+<li>宿管老师进入$2$寝室和$n-1$寝室，清点人数然后关灯锁门（之后没人能够进入或出去）。  </li>
+<li>按照以上流程重复进行。  </li>
+</ul>
+<p>&ensp;&ensp;&ensp;&ensp;若第一个宿管老师发现有$x_1$个寝室违规，第二个宿管老师发现有$x_2$个寝室违规时，他们会将$\max(x_1,x_2)$报给校长。故你需要找到一种最优的方案，使得$\max(x_1,x_2)$最小。  </p>
+</blockquote>
+<h3 id="题目分析-5"><a href="#题目分析-5" class="headerlink" title="题目分析"></a>题目分析</h3><p>题面超长。<br>我们先考虑只有一个宿管老师，他从$1$寝室检查到$n$寝室。<br>有一种贪心的方案：  </p>
+<ul>
+<li>从左往右考虑每一个房间。  </li>
+<li>若这个房间有太多学生，将多余的学生移动到后一个房间。  </li>
+<li>若这个房间的学生不够，但从右边的房间可以移动学生到当前房间（$\sum_{j=i}^{\min(n,i+i\times d)}a_j\ge b$），那就这么做。  </li>
+<li>若这个房间不可能凑够人数，将所有人移动到后一个房间。  </li>
+<li>如果这是最后一个房间，所有多余的学生藏在床底。  </li>
+</ul>
+<p>正确性是显然的，可以在$O(n)$的时间内完成。<br>可以发现一个性质，<strong>学生的移动路径一定不会相交</strong>。也就是说，若$i$寝室的学生移动到$a$寝室，$j$寝室的学生移动到$b$寝室，若$i\le j$，则$a\le b$，因为若不满足，可以交换两个学生。  </p>
+<p>现在重新考虑两个宿管老师的情况。<br>因为满足<strong>学生的移动路径一定不会相交</strong>，因此一定存在一个边界$x(0\le x\le nb)$，其中$x$个学生去前$\frac {n+1}2$个寝室，其余的去后$\frac n2$个寝室，同时也存在一个边界位置$pos(1\le pos\le n)$，其中$1\sim pos$的学生去前$\frac {n+1}2$个寝室，$pos\sim n$的学生去后$\frac n2$个寝室。<br>若$m$是边界，令$f(m)$是第一个宿管老师的记录值，$g(m)$是第二个宿管老师的记录值。<br>当$m$确定时，可以将原问题分割称两个子问题，分别使用只有一个宿管老师时的方法计算，即可求出$f(m)$与$g(m)$。<br>不难发现，当$f(m)$减少时，$g(m)$增加，而我们要找到$ans(m)=\max(f(m),g(m))$的最小值，令$z(m)=g(m)-f(m)$，$z(m)$不严格单增。<br>要寻找$z(m)$最接近$0$的位置，可以使用二分，时间复杂度$O(n\log nb)$。  </p>
+<h3 id="代码-5"><a href="#代码-5" class="headerlink" title="代码"></a>代码</h3><p>因为有更优的方法（见Bonus 1），故没写。  </p>
+<h3 id="Bonus-4"><a href="#Bonus-4" class="headerlink" title="Bonus!"></a>Bonus!</h3><h4 id="Bonus-medium-在-O-n-时间内解决该问题"><a href="#Bonus-medium-在-O-n-时间内解决该问题" class="headerlink" title="Bonus (medium): 在$O(n)$时间内解决该问题"></a>Bonus (medium): 在$O(n)$时间内解决该问题</h4><p>由于我们说了一定存在一个边界，将原问题剖分成两个子问题。<br>但由于人数超过边界后不会对答案造成影响，因此没有必要为了找出边界而进行二分。<br>直接从左往右，从右往左来两次一个宿管老师的情况即可。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> LL;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">int</span> <span class="title">Get_Int</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> num=<span class="number">0</span>,bj=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">char</span> x=getchar();</span><br><span class="line">	<span class="keyword">while</span>(!<span class="built_in">isdigit</span>(x)) &#123;<span class="keyword">if</span>(x==<span class="string">'-'</span>)bj=<span class="number">-1</span>;x=getchar();&#125;</span><br><span class="line">	<span class="keyword">while</span>(<span class="built_in">isdigit</span>(x)) &#123;num=num*<span class="number">10</span>+x-<span class="string">'0'</span>;x=getchar();&#125;</span><br><span class="line">	<span class="keyword">return</span> num*bj;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">LL n;</span><br><span class="line"><span class="keyword">int</span> d,b,a[<span class="number">100005</span>];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	n=Get_Int();</span><br><span class="line">	d=Get_Int();</span><br><span class="line">	b=Get_Int();</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=n; i++)a[i]=Get_Int();</span><br><span class="line">	LL sum=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">int</span> cnt=<span class="number">0</span>,mid=(n+<span class="number">1</span>)&gt;&gt;<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>,j=<span class="number">1</span>; i&lt;=mid; i++) &#123;</span><br><span class="line">		<span class="keyword">for</span>(; j&lt;=min(n,i+<span class="number">1l</span>l*i*d); j++)sum+=a[j];</span><br><span class="line">		<span class="keyword">if</span>(sum&gt;=b)sum-=b;</span><br><span class="line">		<span class="keyword">else</span> cnt++;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">int</span> ans=cnt;</span><br><span class="line">	cnt=sum=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=n,j=n; i&gt;mid; i--) &#123;</span><br><span class="line">		<span class="keyword">for</span>(; j&gt;=max(<span class="number">0l</span>l,i<span class="number">-1l</span>l*(n-i+<span class="number">1</span>)*d); j--)sum+=a[j];</span><br><span class="line">		<span class="keyword">if</span>(sum&gt;=b)sum-=b;</span><br><span class="line">		<span class="keyword">else</span> cnt++;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"%d\n"</span>,max(ans,cnt));</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="Bonus-medium-若学生们都是Achen（很胖）而不能藏在床下，你能解决吗？"><a href="#Bonus-medium-若学生们都是Achen（很胖）而不能藏在床下，你能解决吗？" class="headerlink" title="Bonus (medium): 若学生们都是Achen（很胖）而不能藏在床下，你能解决吗？"></a>Bonus (medium): 若学生们都是Achen（很胖）而不能藏在床下，你能解决吗？</h4><p>这就意味着贪心时不能将所有学生都怼到最后一个房间了。<br>修改贪心方案：  </p>
+<ul>
+<li>从左往右考虑每一个房间。  </li>
+<li>若这个房间有太多学生，将多余的学生移动到后一个房间。  </li>
+<li>若这个房间的学生不够，但从右边的房间可以移动学生到当前房间（$\sum_{j=i}^{\min(n,i+i\times d)}a_j\ge b$），那就这么做。  </li>
+<li>若这个房间不可能凑够人数，将一定的学生$x=\max(0,(n-i)b-\sum_{j=i+1}^na_j)$移动到后一个房间，其余的藏在床底。  </li>
+<li>如果这是最后一个房间，所有多余的学生藏在床底。  </li>
+</ul>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/Codeforces-round467-div2/" rel="bookmark">Codeforces Round 467 div2 题解（全解锁）</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/Codeforces-round464/" rel="bookmark">Codeforces Round 464 题解（全解锁）</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/Codeforces-round463/" rel="bookmark">Codeforces Round 463 题解（全解锁）</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/Codeforces-round439-div2/" rel="bookmark">「Codeforces-Round439-div2」比赛游记</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/Codeforces-round436-div2/" rel="bookmark">「Codeforces Round 436 div2」本人的第三次cf酱油记</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div>姥爷们赏瓶冰阔落吧~</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="Bill Yang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="Bill Yang 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Bill Yang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.bill.moe/Codeforces-round469-div2/" title="Codeforces Round 469 div2 题解（+bonuses!）">https://blog.bill.moe/Codeforces-round469-div2/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/比赛酱油记/" rel="tag"><i class="fa fa-tag"></i> 比赛酱油记</a>
+              <a href="/tags/Codeforces/" rel="tag"><i class="fa fa-tag"></i> Codeforces</a>
+          </div>
+
+        
+  <div class="post-widgets">
+    <div class="wp_rating">
+      <div id="wpac-rating"></div>
+    </div>
+  </div>
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/manacher-algorithm-notes/" rel="prev" title="Manacher算法笔记">
+      <i class="fa fa-chevron-left"></i> Manacher算法笔记
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/SCOI2011-floor/" rel="next" title="「SCOI2011」地板 - 插头DP">
+      「SCOI2011」地板 - 插头DP <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Problem-A-Left-handers-Right-handers-and-Ambidexters"><span class="nav-number">1.</span> <span class="nav-text">Problem A. Left-handers, Right-handers and Ambidexters</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目大意"><span class="nav-number">1.1.</span> <span class="nav-text">题目大意</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#题目分析"><span class="nav-number">1.2.</span> <span class="nav-text">题目分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码"><span class="nav-number">1.3.</span> <span class="nav-text">代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Bonus"><span class="nav-number">1.4.</span> <span class="nav-text">Bonus!</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#BONUS-easy-在-O-1-时间内解决该问题"><span class="nav-number">1.4.1.</span> <span class="nav-text">BONUS (easy): 在$O(1)$时间内解决该问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BONUS-easy-读不懂"><span class="nav-number">1.4.2.</span> <span class="nav-text">BONUS (easy): 读不懂</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Problem-B-Intercepted-Message"><span class="nav-number">2.</span> <span class="nav-text">Problem B. Intercepted Message</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目大意-1"><span class="nav-number">2.1.</span> <span class="nav-text">题目大意</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#题目分析-1"><span class="nav-number">2.2.</span> <span class="nav-text">题目分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码-1"><span class="nav-number">2.3.</span> <span class="nav-text">代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Bonus-1"><span class="nav-number">2.4.</span> <span class="nav-text">Bonus!</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#BONUS-easy-若第二个序列丢失了一块，你可以在任意位置插入该块，询问不变"><span class="nav-number">2.4.1.</span> <span class="nav-text">BONUS (easy): 若第二个序列丢失了一块，你可以在任意位置插入该块，询问不变</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Problem-C-Zebras"><span class="nav-number">3.</span> <span class="nav-text">Problem C. Zebras</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目大意-2"><span class="nav-number">3.1.</span> <span class="nav-text">题目大意</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#题目分析-2"><span class="nav-number">3.2.</span> <span class="nav-text">题目分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码-2"><span class="nav-number">3.3.</span> <span class="nav-text">代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Bonus-2"><span class="nav-number">3.4.</span> <span class="nav-text">Bonus!</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#BONUS-easy-使输出方案最长的斑马串最短"><span class="nav-number">3.4.1.</span> <span class="nav-text">BONUS (easy): 使输出方案最长的斑马串最短</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BONUS-hard-使输出方案斑马串个数最少"><span class="nav-number">3.4.2.</span> <span class="nav-text">BONUS (hard): 使输出方案斑马串个数最少</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Problem-D-A-Leapfrog-in-the-Array"><span class="nav-number">4.</span> <span class="nav-text">Problem D. A Leapfrog in the Array</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目大意-3"><span class="nav-number">4.1.</span> <span class="nav-text">题目大意</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#题目分析-3"><span class="nav-number">4.2.</span> <span class="nav-text">题目分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码-3"><span class="nav-number">4.3.</span> <span class="nav-text">代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Problem-E-Data-Center-Maintenance"><span class="nav-number">5.</span> <span class="nav-text">Problem E. Data Center Maintenance</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目大意-4"><span class="nav-number">5.1.</span> <span class="nav-text">题目大意</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#题目分析-4"><span class="nav-number">5.2.</span> <span class="nav-text">题目分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码-4"><span class="nav-number">5.3.</span> <span class="nav-text">代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Bonus-3"><span class="nav-number">5.4.</span> <span class="nav-text">Bonus!</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#BONUS-medium-若原来不满足坑爹的限制，但不要求最小化答案，你能解决吗？"><span class="nav-number">5.4.1.</span> <span class="nav-text">BONUS (medium): 若原来不满足坑爹的限制，但不要求最小化答案，你能解决吗？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BONUS-NP-hard-若原来不满足坑爹的限制，要求最小化答案，你能解决吗？"><span class="nav-number">5.4.2.</span> <span class="nav-text">BONUS ((NP?)-hard): 若原来不满足坑爹的限制，要求最小化答案，你能解决吗？</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Problem-F-Curfew"><span class="nav-number">6.</span> <span class="nav-text">Problem F. Curfew</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目大意-5"><span class="nav-number">6.1.</span> <span class="nav-text">题目大意</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#题目分析-5"><span class="nav-number">6.2.</span> <span class="nav-text">题目分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码-5"><span class="nav-number">6.3.</span> <span class="nav-text">代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Bonus-4"><span class="nav-number">6.4.</span> <span class="nav-text">Bonus!</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Bonus-medium-在-O-n-时间内解决该问题"><span class="nav-number">6.4.1.</span> <span class="nav-text">Bonus (medium): 在$O(n)$时间内解决该问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Bonus-medium-若学生们都是Achen（很胖）而不能藏在床下，你能解决吗？"><span class="nav-number">6.4.2.</span> <span class="nav-text">Bonus (medium): 若学生们都是Achen（很胖）而不能藏在床下，你能解决吗？</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Bill Yang"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Bill Yang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">667</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">232</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=935683004" title="QQ → tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=935683004" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i>QQ</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ym13883407586@outlook.com" title="E-Mail → mailto:ym13883407586@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/BillYang2016" title="GitHub → https://github.com/BillYang2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://coding.net/u/Bill_Yang_2016" title="Coding → https://coding.net/u/Bill_Yang_2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-git-square"></i>Coding</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://music.163.com/#/user/home?nickname=Bill_Yang2016" title="网易云音乐 → http://music.163.com/#/user/home?nickname=Bill_Yang2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-music"></i>网易云音乐</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://space.bilibili.com/233682260/#/" title="bilibili → https://space.bilibili.com/233682260/#/" rel="noopener" target="_blank"><i class="fa fa-fw fa-youtube-play"></i>bilibili</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → /atom.xml"><i class="fa fa-fw fa-rss"></i>RSS</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      我的朋友们
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://pointedpoints.github.io/" title="http://pointedpoints.github.io/" rel="noopener" target="_blank">pointedpoints</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://keke046.coding.me/" title="https://keke046.coding.me/" rel="noopener" target="_blank">KEKE046</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://imperfect_zx.coding.me/" title="https://imperfect_zx.coding.me/" rel="noopener" target="_blank">Imperfect</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://achen.world/" title="https://achen.world/" rel="noopener" target="_blank">Achen</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://metakari.one/" title="https://metakari.one/" rel="noopener" target="_blank">Metakar1</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://wekyland.fun/" title="http://wekyland.fun/" rel="noopener" target="_blank">魏启大陆</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/friends/" title="/friends/">更多朋友们</a>
+        </li>
+    </ul>
+  </div>
+<!-- none-select-br -->
+
+<p></p>
+
+<!-- hitokoto -->
+
+<div class="hitokoto-title">
+	<i class="fa fa-paragraph"></i>
+	<b>一言</b>
+</div>
+
+<div id="hitokoto">:D 获取中...</div>
+<i id="hitofrom">:D 获取中...</i>
+
+<script src="https://cdn.jsdelivr.net/npm/bluebird@3/js/browser/bluebird.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/whatwg-fetch@2.0.3/fetch.min.js"></script>
+<script>
+  fetch('https://v1.hitokoto.cn')
+    .then(function (res){
+      return res.json();
+    })
+    .then(function (data) {
+      var hitokoto = document.getElementById('hitokoto');
+      hitokoto.innerText = '\xa0\xa0\xa0\xa0\xa0\xa0\xa0' + data.hitokoto;
+      var hitofrom = document.getElementById('hitofrom');
+      hitofrom.innerText = "——" + data.from + '\xa0'; 
+    })
+    .catch(function (err) {
+      console.error(err);
+    })
+</script>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Bill Yang 以 <a class="theme-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a> 协议发布</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.getAttribute('pjax') !== null) {
+      script.setAttribute('pjax', '');
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+  <script pjax>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+  <script pjax>
+  if (CONFIG.page.isPost) {
+    wpac_init = window.wpac_init || [];
+    wpac_init.push({
+      widget: 'Rating',
+      id: 10154,
+      el: 'wpac-rating',
+      color: 'fc6423'
+    });
+    (function() {
+      if ('WIDGETPACK_LOADED' in window) return;
+      WIDGETPACK_LOADED = true;
+      var mc = document.createElement('script');
+      mc.type = 'text/javascript';
+      mc.async = true;
+      mc.src = '//embed.widgetpack.com/widget.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+    })();
+  }
+  </script>
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout: 3000,
+        priority: true,
+        ignores: [uri => uri.includes('#'),uri => uri == 'https://blog.bill.moe/Codeforces-round469-div2/',]
+      });
+      });
+  </script>
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: true,
+      notify: false,
+      appId: 'JYwxXHHRe8RNGu498SnK9B3N-gzGzoHsz',
+      appKey: 'JBz9GW9kidjPp7gW5Y6VIgfe',
+      placeholder: "吹雪は猫~",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: 'zh-cn' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+    </div><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</body>
+</html>

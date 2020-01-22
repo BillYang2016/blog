@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.png">
+  <link rel="mask-icon" href="/images/logo.png" color="#222">
+  <meta name="baidu-site-verification" content="PcyS4kW5Yu">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-bounce.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://blog.bill.moe').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":true,"transition":{"post_block":"swoopIn","post_header":"shrinkIn","post_body":"shrinkIn","coll_header":"expandIn","sidebar":"bounceIn"}}
+  };
+</script>
+
+  <meta name="description" content="K-dimension Tree，简称K-D树，适用于在$k$维欧几里得空间中维护信息的数据结构。一般的数据结构只能维护线性或低维空间，而K-D树可以适用于$k$维空间，只是效率有所差异。K-D树是从排序二叉树扩展而来，其本质还是一棵排序二叉树。">
+<meta name="keywords" content="K-D树,学习笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="K-D树学习笔记">
+<meta property="og:url" content="https://blog.bill.moe/kd-tree-notes/index.html">
+<meta property="og:site_name" content="Bill Yang&#39;s Blog">
+<meta property="og:description" content="K-dimension Tree，简称K-D树，适用于在$k$维欧几里得空间中维护信息的数据结构。一般的数据结构只能维护线性或低维空间，而K-D树可以适用于$k$维空间，只是效率有所差异。K-D树是从排序二叉树扩展而来，其本质还是一棵排序二叉树。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://blog.bill.moe/img/kd-tree-1.svg">
+<meta property="og:image" content="https://blog.bill.moe/img/kd-tree-2.svg">
+<meta property="og:image" content="https://blog.bill.moe/img/kd-tree-3.svg">
+<meta property="og:image" content="https://blog.bill.moe/img/kd-tree-4.svg">
+<meta property="og:updated_time" content="2019-06-10T02:32:52.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="K-D树学习笔记">
+<meta name="twitter:description" content="K-dimension Tree，简称K-D树，适用于在$k$维欧几里得空间中维护信息的数据结构。一般的数据结构只能维护线性或低维空间，而K-D树可以适用于$k$维空间，只是效率有所差异。K-D树是从排序二叉树扩展而来，其本质还是一棵排序二叉树。">
+<meta name="twitter:image" content="https://blog.bill.moe/img/kd-tree-1.svg">
+
+<link rel="canonical" href="https://blog.bill.moe/kd-tree-notes/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+<!-- jquery -->
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+<!-- 打字礼花及震动特效 -->
+
+<div id="append_parent"></div><div id="ajaxwaitid"></div>
+<script type="text/javascript" src="/lib/activate-power-mode/activate-power-mode.js"></script>
+<script>
+	POWERMODE.colorful = true;
+	POWERMODE.shake = false;
+	document.body.addEventListener('input',POWERMODE);
+</script>
+
+<!-- live2d -->
+
+<div class="waifu">
+	<div class="waifu-tips"></div>
+	<canvas id="live2d" width="240" height="350" class="live2d"></canvas>
+	<div class="hide-button">隐藏</div>
+</div>
+<script async src="/lib/poster-girl/waifu-tips.js"></script>
+<script src="/lib/poster-girl/live2d.js"></script>
+<script type="text/javascript">
+	loadlive2d("live2d", "/live2d/assets/kanna.model.json");
+</script>
+  <title>K-D树学习笔记 | Bill Yang's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Bill Yang's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">路终会有尽头，但视野总能看到更远的地方。</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">10</span></a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-friends">
+
+    <a href="/friends" rel="section"><i class="fa fa-fw fa-users"></i>友链</a>
+
+  </li>
+        <li class="menu-item menu-item-board">
+
+    <a href="/board/" rel="section"><i class="fa fa-fw fa-sticky-note-o"></i>留言板</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">667</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">232</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.bill.moe/kd-tree-notes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Bill Yang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bill Yang's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          K-D树学习笔记
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-01-08 23:15:21" itemprop="dateCreated datePublished" datetime="2018-01-08T23:15:21+08:00">2018-01-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-06-10 10:32:52" itemprop="dateModified" datetime="2019-06-10T10:32:52+08:00">2019-06-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OI/" itemprop="url" rel="index">
+                    <span itemprop="name">OI</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/kd-tree-notes/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/kd-tree-notes/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>K-dimension Tree，简称K-D树，适用于在$k$维欧几里得空间中维护信息的数据结构。<br>一般的数据结构只能维护线性或低维空间，而K-D树可以适用于$k$维空间，只是效率有所差异。<br>K-D树是从排序二叉树扩展而来，其本质还是一棵排序二叉树。  </p>
+<a id="more"></a>
+<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><h3 id="比较维度"><a href="#比较维度" class="headerlink" title="比较维度"></a>比较维度</h3><p>定义，一个结点的比较维度$d$指当前结点在$d$维上满足二叉树性质。<br>如，第一层的$x$维度满足排序二叉树性质，第二层的$y$维度满足排序二叉树性质。  </p>
+<h3 id="分辨器"><a href="#分辨器" class="headerlink" title="分辨器"></a>分辨器</h3><p>K-D树是一棵排序二叉树，它不能直接地维护$k$维空间，只能分层分别维护$k$维空间。<br>分辨器用于判断当前结点所比较的维度，第$i$层的分辨器所比较的维度是$i\bmod k$。<br>举个栗子：如图，第一层结点比较$x$维，第二层结点比较$y$维，第三层结点比较$x$维。<br><img src="/img/kd-tree-1.svg" alt>  </p>
+<p>因此，我们可以将K-D树上的每一个非叶子节点视作一个超平面，按对应维度将空间分为两个半空间。<br>上图对应的2-d树，在平面上长这个样子：<br><img src="/img/kd-tree-2.svg" alt>  </p>
+<h3 id="不完全平衡性"><a href="#不完全平衡性" class="headerlink" title="不完全平衡性"></a>不完全平衡性</h3><p>和排序二叉树类似的，K-D树不是完全平衡的。<br>在某些情况下K-D树是平衡的，而某些情况K-D树可能不平衡。<br>在接下来的操作中我会说明其对平衡性的影响。  </p>
+<h2 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h2><h3 id="构建"><a href="#构建" class="headerlink" title="构建"></a>构建</h3><p>根据对分辨器的定义，K-D树的结构框架基本清晰了，接下来叙述如何构建一棵K-D树。  </p>
+<p>根据分辨器，选出对应维度靠中间的点$mid$。<br>将所有对应维度比$mid$小的点放到左子树递归处理，比$mid$大的点放到右子树递归处理。<br>这一步我们可以使用STL中的<code>nth_element</code>来完成。<br><code>nth_element(start,nth,end)</code>表示按照小于符号的比较方式，将开始指针为<code>start</code>，结束指针后一位为<code>end</code>的区间，使得<code>nth</code>位置即为所有元素第$n$小的值，并将不大于$nth$的值放在<code>nth</code>位置前，不小于<code>nth</code>的放在<code>nth</code>位置后，<strong>但不一定有序</strong>，时间复杂度$O(end-start)$，完全满足需求。  </p>
+<p>一直递归直到仅有一个元素为止。<br>不难发现，构建一棵K-D树的时间复杂度是$O(n\log n)$的。<br>此时这棵K-D树是十分平衡的，叶子结点高度十分接近。  </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> D;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Point</span> &#123;</span></span><br><span class="line">	<span class="keyword">int</span> d[K];</span><br><span class="line">	<span class="keyword">int</span> ls,rs,val;</span><br><span class="line">	<span class="keyword">int</span>&amp; <span class="keyword">operator</span> [] (<span class="keyword">int</span> x) &#123;</span><br><span class="line">		<span class="keyword">return</span> d[x];</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">bool</span> <span class="keyword">operator</span> &lt; (<span class="keyword">const</span> Point&amp; b) <span class="keyword">const</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> d[D]&lt;b.d[D];</span><br><span class="line">	&#125;</span><br><span class="line">&#125; p[maxn];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">build</span><span class="params">(<span class="keyword">int</span> Left,<span class="keyword">int</span> Right,<span class="keyword">int</span> now)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> mid=(Left+Right)&gt;&gt;<span class="number">1</span>,root=mid;</span><br><span class="line">	D=now;</span><br><span class="line">	nth_element(p+Left,p+mid,p+Right+<span class="number">1</span>);</span><br><span class="line">	<span class="keyword">if</span>(Left&lt;mid)p[root].ls=build(Left,mid<span class="number">-1</span>,(now+<span class="number">1</span>)%K);</span><br><span class="line">	<span class="keyword">if</span>(Right&gt;mid)p[root].rs=build(mid+<span class="number">1</span>,Right,(now+<span class="number">1</span>)%K);</span><br><span class="line">	<span class="keyword">return</span> root;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h3><p>与二叉树的插入类似，根据分辨器决定比较维度，然后使用排序二叉树的方法在左子树或右子树插入。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> lson p[index].ls</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> rson p[index].rs</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">insert</span><span class="params">(<span class="keyword">int</span> index,Point P,<span class="keyword">int</span> now)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(!index) &#123;</span><br><span class="line">		p[++size]=P;</span><br><span class="line">		<span class="keyword">return</span> size;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(P[now]&lt;=p[index][now])lson=insert(lson,P,(now+<span class="number">1</span>)%K);</span><br><span class="line">	<span class="keyword">else</span> rson=insert(rson,P,(now+<span class="number">1</span>)%K);</span><br><span class="line">	<span class="keyword">return</span> index;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在K-D树是平衡的时候，时间复杂度为$O(\log n)$。<br>在插入结点后，可能会影响K-D树的平衡性，导致K-D树失衡。  </p>
+<h3 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h3><p><del>删除？怎么做啊？不会啊？</del><br>这很简单嘛，打个标记就完了。  </p>
+<h3 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h3><h4 id="查询精确点"><a href="#查询精确点" class="headerlink" title="查询精确点"></a>查询精确点</h4><p>和二叉查找树的查询类似，根据分辨器决定对应维度，根据排序二叉树性质选择子树递归。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">check</span><span class="params">(Point x,Point y)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;K; i++)</span><br><span class="line">		<span class="keyword">if</span>(x[i]!=y[i])<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">find</span><span class="params">(<span class="keyword">int</span> index,Point P,<span class="keyword">int</span> now)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(check(p[index],P))<span class="keyword">return</span> index;</span><br><span class="line">	<span class="keyword">if</span>(P[now]&lt;=p[index][now])<span class="keyword">return</span> find(lson,P,(now+<span class="number">1</span>)%K);</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">return</span> find(rson,P,(now+<span class="number">1</span>)%K);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这是一个鸡肋的查询操作，基本上不会用到。<br>在K-D树是平衡的时候，时间复杂度为$O(\log n)$。  </p>
+<h4 id="模糊查询"><a href="#模糊查询" class="headerlink" title="模糊查询"></a>模糊查询</h4><h5 id="查询最远点"><a href="#查询最远点" class="headerlink" title="查询最远点"></a>查询最远点</h5><p>使用K-D树查询距离$P$最远点实际上是一个搜索剪枝的过程。  </p>
+<p>首先，我们要在构建与插入时维护两个信息：$Min[]$与$Max[]$，表示对应的维度的最小值与最大值。  </p>
+<p>定义乐观估价函数$get$-$max(index,P)$表示在$index$控制范围中包含的点与$P$最远距离的上界。（不一定能达到，但一定不大于它）<br>计算方法是对每个维度取最大差值计算距离。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">LL <span class="title">sqr</span><span class="params">(LL x)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> x*x;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">LL <span class="title">get_max</span><span class="params">(<span class="keyword">int</span> index,Point P)</span> </span>&#123; </span><br><span class="line">	<span class="keyword">if</span>(!index)<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	LL ans=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;K; i++)ans+=max(sqr(p[index].Max[i]-P[i]),sqr(p[index].Min[i]-P[i]));</span><br><span class="line">	<span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>初始化$ans=+\infty$。  </li>
+<li>从根结点开始，先用根节点代表的点更新答案。左右儿子均代表一部分半空间，都可能更新答案。计算左右儿子的乐观估价$ldist,rdist$，若$ldist\gt rdist$，先递归左儿子，再递归右儿子，反之类似。在递归前需要判断乐观估价函数是否$\gt ans$，若不成立显然没有递归的意义。  </li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">LL <span class="title">dist</span><span class="params">(Point a,Point b)</span> </span>&#123; </span><br><span class="line">	LL ans=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;K; i++)ans+=sqr(a[i]-b[i]);</span><br><span class="line">	<span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">find_max</span><span class="params">(<span class="keyword">int</span> index,Point P)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(!index)<span class="keyword">return</span>;</span><br><span class="line">	LL Dist=dist(p[index],P);</span><br><span class="line">	ans=max(ans,Dist);</span><br><span class="line">	LL ldist=get_max(lson,P),rdist=get_max(rson,P);</span><br><span class="line">	<span class="keyword">if</span>(ldist&gt;rdist) &#123;</span><br><span class="line">		<span class="keyword">if</span>(ldist&gt;ans)find_max(lson,P);</span><br><span class="line">		<span class="keyword">if</span>(rdist&gt;ans)find_max(rson,P);</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">if</span>(rdist&gt;ans)find_max(rson,P);</span><br><span class="line">		<span class="keyword">if</span>(ldist&gt;ans)find_max(lson,P);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="查询最近点"><a href="#查询最近点" class="headerlink" title="查询最近点"></a>查询最近点</h5><p>使用K-D树查询距离$P$最近点也是一个搜索剪枝的过程。  </p>
+<p>同样维护出$Min[],Max[]$。  </p>
+<p>因为查询最近点，因此不能再使用上述乐观估价函数。<br>我们重新定义乐观估价函数。<br>若一个矩阵在某一维度上的最小值比$P$的该维度还要大，或最大值比它还小才能更新估价。<br><img src="/img/kd-tree-3.svg" alt>  </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">LL <span class="title">get_min</span><span class="params">(<span class="keyword">int</span> index,Point P)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(!index)<span class="keyword">return</span> LLONG_MAX/<span class="number">2</span>;</span><br><span class="line">	LL ans=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;K; i++) &#123;</span><br><span class="line">		<span class="keyword">if</span>(p[index].Min[i]-P[i]&gt;<span class="number">0</span>)ans+=sqr(p[index].Min[i]-P[i]);</span><br><span class="line">		<span class="keyword">if</span>(P[i]-p[index].Max[i]&gt;<span class="number">0</span>)ans+=sqr(P[i]-p[index].Max[i]);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>除了乐观估价函数，最近点还可以使用边界相交判断。<br><img src="/img/kd-tree-4.svg" alt><br>先递归其中一个儿子，若以目标点为圆心，以答案为半径作圆，不与当前边界相交，则无递归另一个儿子的必要。  </p>
+<p>接下来寻找过程与最大值类似。  </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">find_min</span><span class="params">(<span class="keyword">int</span> index,Point P,<span class="keyword">int</span> now)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(!index)<span class="keyword">return</span>;</span><br><span class="line">	LL Dist=dist(p[index],P);</span><br><span class="line">	ans=min(ans,Dist);</span><br><span class="line">	LL ldist=get_min(lson,P),rdist=get_min(rson,P);</span><br><span class="line">	<span class="keyword">if</span>(ldist&lt;rdist) &#123;</span><br><span class="line">		<span class="keyword">if</span>(ldist&lt;ans)find_min(lson,P,(now+<span class="number">1</span>)%K);</span><br><span class="line">		<span class="keyword">if</span>(rdist&lt;ans&amp;&amp;P[now]+ans&gt;=p[index][now])find_min(rson,P,(now+<span class="number">1</span>)%K);</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">if</span>(rdist&lt;ans)find_min(rson,P,(now+<span class="number">1</span>)%K);</span><br><span class="line">		<span class="keyword">if</span>(ldist&lt;ans&amp;&amp;P[now]-ans&lt;=p[index][now])find_min(lson,P,(now+<span class="number">1</span>)%K);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="查询-k-远-近点"><a href="#查询-k-远-近点" class="headerlink" title="查询$k$远/近点"></a>查询$k$远/近点</h5><p>将询问过程中的更新答案部分使用堆维护。<br>如在查询第$k$远点时，开一个小根堆（初始化$k$个$0$），当$Dist$比堆顶大时，弹出堆顶，$Dist$入堆，最后堆顶即为第$k$远点。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">find_max</span><span class="params">(<span class="keyword">int</span> index,Point P)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(!index)<span class="keyword">return</span>;</span><br><span class="line">	LL Dist=dist(p[index],P);</span><br><span class="line">	<span class="keyword">if</span>(Dist&gt;Q.top()) &#123;</span><br><span class="line">		Q.pop();</span><br><span class="line">		Q.push(Dist);</span><br><span class="line">	&#125;</span><br><span class="line">	LL ldist=get_max(lson,P),rdist=get_max(rson,P);</span><br><span class="line">	<span class="keyword">if</span>(ldist&gt;rdist) &#123;</span><br><span class="line">		<span class="keyword">if</span>(ldist&gt;Q.top())find_max(lson,P);</span><br><span class="line">		<span class="keyword">if</span>(rdist&gt;Q.top())find_max(rson,P);</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">if</span>(rdist&gt;Q.top())find_max(rson,P);</span><br><span class="line">		<span class="keyword">if</span>(ldist&gt;Q.top())find_max(lson,P);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>第$k$近点与之类似。<br>之前提到的所有剪枝均适用。  </p>
+<h5 id="范围查询信息"><a href="#范围查询信息" class="headerlink" title="范围查询信息"></a>范围查询信息</h5><p>除了查询点对距离问题，K-D树还能用于定位一部分高维空间，可以相当于高维空间的平衡树维护信息。  </p>
+<p>如查询一部分$k$维空间中的最大权值。<br>使用$Left[],Right[]$表示询问的$k$维空间边界。<br>使用$p[index].max$记录$index$代表的空间中的最大权值。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">inspace</span><span class="params">(Point p)</span> </span>&#123; <span class="comment">//判断是否完全覆盖</span></span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;K; i++)</span><br><span class="line">		<span class="keyword">if</span>(p[i]&lt;Left[i]||p[i]&gt;Right[i])<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">check</span><span class="params">(<span class="keyword">int</span> index)</span> </span>&#123; <span class="comment">//判断是否相交</span></span><br><span class="line">	<span class="keyword">if</span>(!index)<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;K; i++)</span><br><span class="line">		<span class="keyword">if</span>(p[index].Max[i]&lt;Left[i]||p[index].Min[i]&gt;Right[i])<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">query</span><span class="params">(<span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(!index)<span class="keyword">return</span>;</span><br><span class="line">	<span class="keyword">if</span>(inspace(p[index]))ans=max(ans,p[index].val);</span><br><span class="line">	<span class="keyword">bool</span> lable=check(lson),rable=check(rson);</span><br><span class="line">	<span class="keyword">if</span>(p[lson].max&gt;p[rson].max) &#123;</span><br><span class="line">		<span class="keyword">if</span>(lable&amp;&amp;p[lson].max&gt;ans)query(lson);</span><br><span class="line">		<span class="keyword">if</span>(rable&amp;&amp;p[rson].max&gt;ans)query(rson);</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">if</span>(rable&amp;&amp;p[rson].max&gt;ans)query(rson);</span><br><span class="line">		<span class="keyword">if</span>(lable&amp;&amp;p[lson].max&gt;ans)query(lson);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h5 id="模板"><a href="#模板" class="headerlink" title="模板"></a>模板</h5><p>见<a href="https://github.com/BillYang2016/OI-Template/tree/master/data%20structure/kd-tree" target="_blank" rel="noopener">这里</a></p>
+<h5 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h5><p>在K-D树是平衡的时候，$n$个结点的$k$维K-D树模糊查询搜索过程时间复杂度上界为：  </p>
+<script type="math/tex; mode=display">O(kn^{1-\frac 1k})</script><p>在$k=2$时，时间复杂度为$O(\sqrt n)$，在$k$很大的时候，和暴力几乎无区别。  </p>
+<h2 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h2><p>我们发现K-D树在多次插入/删除后失衡，导致时间复杂度严重退化。<br>对于本问题较好的解决方案是使得K-D树平衡化。<br>因为K-D树不支持旋转操作，因此加入非旋转机制是较好的选择。  </p>
+<ul>
+<li>定期重构<br>每经过$O(\sqrt q)$的时间就对K-D树重新build一次，可以有效防止退化为$O(n)$的复杂度。  </li>
+<li><a href="/no-rotate-balance-tree-notes/">替罪羊化</a><br>除了定期重构，还可以对K-D树进行<a href="/no-rotate-balance-tree-notes/">替罪羊化</a>，发现依然满足优美的均摊性质，因此在不计算模糊查询的复杂度时，可以保持$O(\log n)$的优秀复杂度。  </li>
+</ul>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://en.wikipedia.org/wiki/K-d_tree" target="_blank" rel="noopener">k-d tree - Wikepedia</a>  </li>
+<li>k-d树.ppt - 巴蜀中学讲义</li>
+<li><a href="https://blog.sengxian.com/algorithms/k-dimensional-tree" target="_blank" rel="noopener">k-d树学习笔记 - sengxian</a>  </li>
+<li><a href="https://www.cnblogs.com/harvey888/p/5485238.html" target="_blank" rel="noopener">从K近邻算法谈到KD树、SIFT+BBF算法 - _harvey</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/bsoj4936-euclidean/" rel="bookmark">「bsoj4936」「模板题」类欧几里得 - 类欧几里得 附简要学习笔记</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/bzoj3815-constant/" rel="bookmark">「bzoj3815」卡常数 - K-D树+精准距离查询</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/bzoj4605-water/" rel="bookmark">「bzoj4605」崂山白花蛇草水 - K-D树+替罪羊化+权值线段树</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/thusc2012-hotel/" rel="bookmark">「THUSC 2012」森林旅店 - K-D树+定期重构</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/bzoj3489-rmqproblem/" rel="bookmark">「bzoj3489」A simple rmq problem - K-D树/主席树套主席树</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div>姥爷们赏瓶冰阔落吧~</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="Bill Yang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="Bill Yang 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Bill Yang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.bill.moe/kd-tree-notes/" title="K-D树学习笔记">https://blog.bill.moe/kd-tree-notes/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/K-D树/" rel="tag"><i class="fa fa-tag"></i> K-D树</a>
+              <a href="/tags/学习笔记/" rel="tag"><i class="fa fa-tag"></i> 学习笔记</a>
+          </div>
+
+        
+  <div class="post-widgets">
+    <div class="wp_rating">
+      <div id="wpac-rating"></div>
+    </div>
+  </div>
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/bzoj2959-jogging/" rel="prev" title="「bzoj2959」长跑 - LCT+并查集">
+      <i class="fa fa-chevron-left"></i> 「bzoj2959」长跑 - LCT+并查集
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/NOI2010-air/" rel="next" title="「NOI2010」航空管制 - 贪心">
+      「NOI2010」航空管制 - 贪心 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义"><span class="nav-number">1.</span> <span class="nav-text">定义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#比较维度"><span class="nav-number">1.1.</span> <span class="nav-text">比较维度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分辨器"><span class="nav-number">1.2.</span> <span class="nav-text">分辨器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不完全平衡性"><span class="nav-number">1.3.</span> <span class="nav-text">不完全平衡性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#操作"><span class="nav-number">2.</span> <span class="nav-text">操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#构建"><span class="nav-number">2.1.</span> <span class="nav-text">构建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#插入"><span class="nav-number">2.2.</span> <span class="nav-text">插入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除"><span class="nav-number">2.3.</span> <span class="nav-text">删除</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查询"><span class="nav-number">2.4.</span> <span class="nav-text">查询</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#查询精确点"><span class="nav-number">2.4.1.</span> <span class="nav-text">查询精确点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#模糊查询"><span class="nav-number">2.4.2.</span> <span class="nav-text">模糊查询</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#查询最远点"><span class="nav-number">2.4.2.1.</span> <span class="nav-text">查询最远点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#查询最近点"><span class="nav-number">2.4.2.2.</span> <span class="nav-text">查询最近点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#查询-k-远-近点"><span class="nav-number">2.4.2.3.</span> <span class="nav-text">查询$k$远/近点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#范围查询信息"><span class="nav-number">2.4.2.4.</span> <span class="nav-text">范围查询信息</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#模板"><span class="nav-number">2.4.2.5.</span> <span class="nav-text">模板</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#时间复杂度"><span class="nav-number">2.4.2.6.</span> <span class="nav-text">时间复杂度</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#优化"><span class="nav-number">3.</span> <span class="nav-text">优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">4.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Bill Yang"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Bill Yang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">667</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">232</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=935683004" title="QQ → tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=935683004" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i>QQ</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ym13883407586@outlook.com" title="E-Mail → mailto:ym13883407586@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/BillYang2016" title="GitHub → https://github.com/BillYang2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://coding.net/u/Bill_Yang_2016" title="Coding → https://coding.net/u/Bill_Yang_2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-git-square"></i>Coding</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://music.163.com/#/user/home?nickname=Bill_Yang2016" title="网易云音乐 → http://music.163.com/#/user/home?nickname=Bill_Yang2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-music"></i>网易云音乐</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://space.bilibili.com/233682260/#/" title="bilibili → https://space.bilibili.com/233682260/#/" rel="noopener" target="_blank"><i class="fa fa-fw fa-youtube-play"></i>bilibili</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → /atom.xml"><i class="fa fa-fw fa-rss"></i>RSS</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      我的朋友们
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://pointedpoints.github.io/" title="http://pointedpoints.github.io/" rel="noopener" target="_blank">pointedpoints</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://keke046.coding.me/" title="https://keke046.coding.me/" rel="noopener" target="_blank">KEKE046</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://imperfect_zx.coding.me/" title="https://imperfect_zx.coding.me/" rel="noopener" target="_blank">Imperfect</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://achen.world/" title="https://achen.world/" rel="noopener" target="_blank">Achen</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://metakari.one/" title="https://metakari.one/" rel="noopener" target="_blank">Metakar1</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://wekyland.fun/" title="http://wekyland.fun/" rel="noopener" target="_blank">魏启大陆</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/friends/" title="/friends/">更多朋友们</a>
+        </li>
+    </ul>
+  </div>
+<!-- none-select-br -->
+
+<p></p>
+
+<!-- hitokoto -->
+
+<div class="hitokoto-title">
+	<i class="fa fa-paragraph"></i>
+	<b>一言</b>
+</div>
+
+<div id="hitokoto">:D 获取中...</div>
+<i id="hitofrom">:D 获取中...</i>
+
+<script src="https://cdn.jsdelivr.net/npm/bluebird@3/js/browser/bluebird.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/whatwg-fetch@2.0.3/fetch.min.js"></script>
+<script>
+  fetch('https://v1.hitokoto.cn')
+    .then(function (res){
+      return res.json();
+    })
+    .then(function (data) {
+      var hitokoto = document.getElementById('hitokoto');
+      hitokoto.innerText = '\xa0\xa0\xa0\xa0\xa0\xa0\xa0' + data.hitokoto;
+      var hitofrom = document.getElementById('hitofrom');
+      hitofrom.innerText = "——" + data.from + '\xa0'; 
+    })
+    .catch(function (err) {
+      console.error(err);
+    })
+</script>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Bill Yang 以 <a class="theme-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a> 协议发布</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.getAttribute('pjax') !== null) {
+      script.setAttribute('pjax', '');
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+  <script pjax>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+  <script pjax>
+  if (CONFIG.page.isPost) {
+    wpac_init = window.wpac_init || [];
+    wpac_init.push({
+      widget: 'Rating',
+      id: 10154,
+      el: 'wpac-rating',
+      color: 'fc6423'
+    });
+    (function() {
+      if ('WIDGETPACK_LOADED' in window) return;
+      WIDGETPACK_LOADED = true;
+      var mc = document.createElement('script');
+      mc.type = 'text/javascript';
+      mc.async = true;
+      mc.src = '//embed.widgetpack.com/widget.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+    })();
+  }
+  </script>
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout: 3000,
+        priority: true,
+        ignores: [uri => uri.includes('#'),uri => uri == 'https://blog.bill.moe/kd-tree-notes/',]
+      });
+      });
+  </script>
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: true,
+      notify: false,
+      appId: 'JYwxXHHRe8RNGu498SnK9B3N-gzGzoHsz',
+      appKey: 'JBz9GW9kidjPp7gW5Y6VIgfe',
+      placeholder: "吹雪は猫~",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: 'zh-cn' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+    </div><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</body>
+</html>

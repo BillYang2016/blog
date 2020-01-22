@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.png">
+  <link rel="mask-icon" href="/images/logo.png" color="#222">
+  <meta name="baidu-site-verification" content="PcyS4kW5Yu">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-bounce.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://blog.bill.moe').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":true,"transition":{"post_block":"swoopIn","post_header":"shrinkIn","post_body":"shrinkIn","coll_header":"expandIn","sidebar":"bounceIn"}}
+  };
+</script>
+
+  <meta name="description" content="计数原理加法原理（分类计数原理）完成一件事有$n$种方法，每种方法有$a_i$种途径，那么完成这件事共有$\sum_i a_i$种不同的方法。   乘法原理（分步计数原理）完成一件事有$n$个步骤，每个步骤有$a_i$种途径，那么完成这件事共有$\prod_i a_i$种不同的方法。">
+<meta name="keywords" content="数论,组合数学">
+<meta property="og:type" content="article">
+<meta property="og:title" content="组合数学学习笔记">
+<meta property="og:url" content="https://blog.bill.moe/combinatorics-notes/index.html">
+<meta property="og:site_name" content="Bill Yang&#39;s Blog">
+<meta property="og:description" content="计数原理加法原理（分类计数原理）完成一件事有$n$种方法，每种方法有$a_i$种途径，那么完成这件事共有$\sum_i a_i$种不同的方法。   乘法原理（分步计数原理）完成一件事有$n$个步骤，每个步骤有$a_i$种途径，那么完成这件事共有$\prod_i a_i$种不同的方法。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://blog.bill.moe/img/combinatorics1.svg">
+<meta property="og:updated_time" content="2019-06-10T02:32:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="组合数学学习笔记">
+<meta name="twitter:description" content="计数原理加法原理（分类计数原理）完成一件事有$n$种方法，每种方法有$a_i$种途径，那么完成这件事共有$\sum_i a_i$种不同的方法。   乘法原理（分步计数原理）完成一件事有$n$个步骤，每个步骤有$a_i$种途径，那么完成这件事共有$\prod_i a_i$种不同的方法。">
+<meta name="twitter:image" content="https://blog.bill.moe/img/combinatorics1.svg">
+
+<link rel="canonical" href="https://blog.bill.moe/combinatorics-notes/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+<!-- jquery -->
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+<!-- 打字礼花及震动特效 -->
+
+<div id="append_parent"></div><div id="ajaxwaitid"></div>
+<script type="text/javascript" src="/lib/activate-power-mode/activate-power-mode.js"></script>
+<script>
+	POWERMODE.colorful = true;
+	POWERMODE.shake = false;
+	document.body.addEventListener('input',POWERMODE);
+</script>
+
+<!-- live2d -->
+
+<div class="waifu">
+	<div class="waifu-tips"></div>
+	<canvas id="live2d" width="240" height="350" class="live2d"></canvas>
+	<div class="hide-button">隐藏</div>
+</div>
+<script async src="/lib/poster-girl/waifu-tips.js"></script>
+<script src="/lib/poster-girl/live2d.js"></script>
+<script type="text/javascript">
+	loadlive2d("live2d", "/live2d/assets/kanna.model.json");
+</script>
+  <title>组合数学学习笔记 | Bill Yang's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Bill Yang's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">路终会有尽头，但视野总能看到更远的地方。</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">10</span></a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-friends">
+
+    <a href="/friends" rel="section"><i class="fa fa-fw fa-users"></i>友链</a>
+
+  </li>
+        <li class="menu-item menu-item-board">
+
+    <a href="/board/" rel="section"><i class="fa fa-fw fa-sticky-note-o"></i>留言板</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">667</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">232</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.bill.moe/combinatorics-notes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Bill Yang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bill Yang's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          组合数学学习笔记
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-12-14 21:08:50" itemprop="dateCreated datePublished" datetime="2017-12-14T21:08:50+08:00">2017-12-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-06-10 10:32:50" itemprop="dateModified" datetime="2019-06-10T10:32:50+08:00">2019-06-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OI/" itemprop="url" rel="index">
+                    <span itemprop="name">OI</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/combinatorics-notes/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/combinatorics-notes/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="计数原理"><a href="#计数原理" class="headerlink" title="计数原理"></a>计数原理</h2><h3 id="加法原理（分类计数原理）"><a href="#加法原理（分类计数原理）" class="headerlink" title="加法原理（分类计数原理）"></a>加法原理（分类计数原理）</h3><p>完成一件事有$n$种方法，每种方法有$a_i$种途径，那么完成这件事共有$\sum_i a_i$种不同的方法。  </p>
+<h3 id="乘法原理（分步计数原理）"><a href="#乘法原理（分步计数原理）" class="headerlink" title="乘法原理（分步计数原理）"></a>乘法原理（分步计数原理）</h3><p>完成一件事有$n$个步骤，每个步骤有$a_i$种途径，那么完成这件事共有$\prod_i a_i$种不同的方法。  </p>
+<a id="more"></a>  
+<h2 id="排列"><a href="#排列" class="headerlink" title="排列"></a>排列</h2><h3 id="全排列"><a href="#全排列" class="headerlink" title="全排列"></a>全排列</h3><p>将$n$各元素按照不同的顺序排列，设方案数有$f(n)$种（$f(0)=1$）。<br>考虑第一个元素有$n$种选择，故$f(n)=f(n-1)\times n$。  </p>
+<script type="math/tex; mode=display">\therefore f(n)=n!</script><h3 id="线排列"><a href="#线排列" class="headerlink" title="线排列"></a>线排列</h3><p>从$n$个不同的元素中，选出$m$个元素按照一定顺序排列，其方案数称为线排列。<br>第一个元素有$n$种选择，第二个元素有$n-1$种选择，$\ldots$，第$m$个元素只有$1$种选择。  </p>
+<script type="math/tex; mode=display">\therefore A_n^m=\frac{n!}{(n-m)!}</script><h3 id="相异元素可重排列"><a href="#相异元素可重排列" class="headerlink" title="相异元素可重排列"></a>相异元素可重排列</h3><p>从$n$个不同元素中，可以重复地选出$m$个元素的排列。<br>每次选择有$n$种方法，共有$n^m$种方案。  </p>
+<h3 id="不全相异元素排列"><a href="#不全相异元素排列" class="headerlink" title="不全相异元素排列"></a>不全相异元素排列</h3><p>如果在$n$个元素中，有$m$种不同的元素，每种元素有$a_i$个，满足$\sum_i a_i=n$。<br>$n$个元素的全排列有$n!$种，再除去每一种元素的重复情况。因此答案为：  </p>
+<script type="math/tex; mode=display">\frac{n!}{\prod_i a_i!}</script><h3 id="圆排列"><a href="#圆排列" class="headerlink" title="圆排列"></a>圆排列</h3><p>从$n$个不同元素中选取出$m$个元素，不分首尾地排成一个圆圈。<br>先随便排列，有$A_n^m$种方法，因为是圆排列，重复了$m$次，故答案为：  </p>
+<script type="math/tex; mode=display">\frac{A_n^m}m=\frac{n!}{m(n-m)!}</script><h3 id="错排问题"><a href="#错排问题" class="headerlink" title="错排问题"></a>错排问题</h3><p>有一个$n$个数的排列$a$，要求任何数$i$都不在位置$i$上，设答案为$D(n)$。<br>其实是动态规划。  </p>
+<h4 id="递推公式"><a href="#递推公式" class="headerlink" title="递推公式"></a>递推公式</h4><p>假设已有一个排列$a$，显然$a_n\neq n$，不妨设$n=a_i$，考虑数$i$的位置：  </p>
+<ul>
+<li>$i=a_n$：此时$i$与$n$的位置已确定，转化为$n-2$个数的错排问题，情况数为$D(n-2)$。  </li>
+<li>$i\neq a_n$：此时$i$的位置已确定是$n$，转化为$n-1$个数的错排问题，情况数为$D(n-1)$。  </li>
+</ul>
+<p>以上两种情况$i$有$n-1$种取值，所以$D(n)=(n-1)(D(n-2)+D(n-1))$。  </p>
+<h4 id="通项公式"><a href="#通项公式" class="headerlink" title="通项公式"></a>通项公式</h4><p>通过递推式归纳通项公式，或容斥原理可得：  </p>
+<script type="math/tex; mode=display">D(n)=n!(\frac{1}{0!}-\frac{1}{1!}+\frac{1}{2!}-\cdots+\frac{(-1)^n}{n!})</script><h4 id="简化公式"><a href="#简化公式" class="headerlink" title="简化公式"></a>简化公式</h4><p>可以简化通项公式为：  </p>
+<script type="math/tex; mode=display">D(n)=\lfloor\frac{n!}{e+0.5}\rfloor</script><p>然后就可以用$O(\log^2 n)$的方法解决了。  </p>
+<h2 id="组合"><a href="#组合" class="headerlink" title="组合"></a>组合</h2><h3 id="非重组合"><a href="#非重组合" class="headerlink" title="非重组合"></a>非重组合</h3><p>从$n$个数中选择$m$个数，不考虑选择数的次序，则总方案数记为$C_n^m$。<br>我们可以将线排列$A_n^m$看做先从$n$个数中选择$m$个数，再对$m$个元素做全排列。  </p>
+<script type="math/tex; mode=display">\therefore A_n^m=C_n^m\times m!</script><p>移项得：  </p>
+<script type="math/tex; mode=display">C_n^m=\frac{A_n^m}{m!}=\frac{n!}{(n-m)!m!}</script><h3 id="组合数的性质"><a href="#组合数的性质" class="headerlink" title="组合数的性质"></a>组合数的性质</h3><h4 id="互补性质"><a href="#互补性质" class="headerlink" title="互补性质"></a>互补性质</h4><script type="math/tex; mode=display">C_n^m=C_n^{n-m}</script><p>选出$m$个和保留$m$个是等价的。  </p>
+<h4 id="Pascal公式"><a href="#Pascal公式" class="headerlink" title="Pascal公式"></a>Pascal公式</h4><script type="math/tex; mode=display">C_n^m=C_{n-1}^m+C_{n-1}^{m-1}</script><p>考虑最后一个数选与不选。<br>可以验证组合数排列起来构成杨辉三角。  </p>
+<h4 id="全方案数"><a href="#全方案数" class="headerlink" title="全方案数"></a>全方案数</h4><script type="math/tex; mode=display">\sum_{i=0}^nC_n^i=2^n</script><p>所有的方案数相当于考虑每个数选或不选。  </p>
+<h4 id="翻转杨辉三角"><a href="#翻转杨辉三角" class="headerlink" title="翻转杨辉三角"></a>翻转杨辉三角</h4><p><a href="/bsoj5045-philosophy/">怎样学习哲学</a><br>每一行选一个数，每一行选的数必须比上一行靠右（靠左），问方案数。<br>画出矩阵发现构成一个翻转的杨辉三角，故用组合数解决。  </p>
+<h3 id="可重组合"><a href="#可重组合" class="headerlink" title="可重组合"></a>可重组合</h3><p>从$n$种无限多的元素中选择$k$个，共有$C_{n+k-1}^k$种方案。<br>证明：<br>用$n$个框表示不同的种类，原问题相当于将$k$个元素放入这些框中。<br>我们可以将$n$个框视为$n-1$个隔板（最前与最后的隔板位置不变，忽略），因此就是隔板与元素随意排列，有$(k+n-1)!$种放法。元素是一样的，隔板也是一样的，都与顺序无关，因此我们需要除掉$k!(n-1)!$种重复情况。<br>故答案为：  </p>
+<script type="math/tex; mode=display">C_{n+k-1}^k</script><h4 id="拓展1"><a href="#拓展1" class="headerlink" title="拓展1"></a>拓展1</h4><p>可重组合可以理解为不定方程$x_1+x_2+\cdots+x_n=c$的非负整数解个数。<br>故其可以运用到生成函数中。  </p>
+<h4 id="拓展2"><a href="#拓展2" class="headerlink" title="拓展2"></a>拓展2</h4><p>将$c$个相同的球放在$n$个不同的盒子中，要求每个盒子至少要有一个球的方法总数。<br>也就是不定方程$x_1+x_2+\cdots+x_n=c$的正整数解个数。  </p>
+<p>我们可以先将每个盒子都放一个球，故剩下$c-n$个球，转化为非负整数解个数。<br>故答案为：  </p>
+<script type="math/tex; mode=display">C_{(c-n)+n-1}^{(c-n)}=C_{c-1}^{c-n}=C_{c-1}^{n-1}</script><h3 id="组合数的计算"><a href="#组合数的计算" class="headerlink" title="组合数的计算"></a>组合数的计算</h3><p><a href="/chinese-remainder-theorem-notes.md/">这里</a>提到过所有组合数的计算方法。  </p>
+<h2 id="一些公式"><a href="#一些公式" class="headerlink" title="一些公式"></a>一些公式</h2><h3 id="自然数平方和"><a href="#自然数平方和" class="headerlink" title="自然数平方和"></a>自然数平方和</h3><script type="math/tex; mode=display">\sum_{i=1}^ni^2=\frac{n(n+1)(2n+1)}6</script><p>证明：  </p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+S & =1^2+2^2+\cdots+n^2 \\
+  & =1(2-1)+2(3-1)+\cdots+n(n+1-1) \\
+  & =1\cdot2+2\cdot3+\cdots+n(n+1)-\frac{n(n+1)}2
+\end{aligned}</script><p>因为有$n(n+1)=\frac{n(n+1)(n+2)-(n-1)n(n+1)}3$。<br>所以有：  </p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+S & =\frac{1\cdot2\cdot3-0\cdot1\cdot2}3+\frac{2\cdot3\cdot4-1\cdot2\cdot3}3+\cdots+\frac{n(n+1)(n+2)-(n-1)n(n+1)}3-\frac{n(n+1)}2 \\
+  & =\frac{n(n+1)(n+2)}3-\frac{n(n+1)}2 \\
+  & =\frac{(n+1)(2n^2+4n-3n)}6 \\
+  & =\frac{n(n+1)(2n+1)}6
+\end{aligned}</script><h3 id="二项式定理"><a href="#二项式定理" class="headerlink" title="二项式定理"></a>二项式定理</h3><script type="math/tex; mode=display">(a+b)^n=\sum_{i=0}^nC_n^ia^{n-i}b^i</script><h4 id="推广"><a href="#推广" class="headerlink" title="推广"></a>推广</h4><p><a href="https://baike.baidu.com/item/二项式定理/7134359?fr=aladdin" target="_blank" rel="noopener">见百度百科</a><br>其中<strong>牛顿二项式扩充定理</strong>可用于证明生成函数的一个结论（用上述可重组合也可证明）  </p>
+<h2 id="Catalan数"><a href="#Catalan数" class="headerlink" title="Catalan数"></a>Catalan数</h2><p>Catalan数的递归定义式为：  </p>
+<script type="math/tex; mode=display">f(0)=f(1)=1</script><script type="math/tex; mode=display">f(n)=\sum_{i=1}^nf(i-1)f(n-i)</script><p>另类递推式为：  </p>
+<script type="math/tex; mode=display">f(n)=f(n-1)\times\frac{4n-2}{n+1}</script><p>根据递推关系归纳通项公式：  </p>
+<script type="math/tex; mode=display">f(n)=\frac{C_{2n}^n}{n+1}=C_{2n}^n-C_{2n}^{n-1}</script><h3 id="应用1：凸-n-边形的三角形剖分"><a href="#应用1：凸-n-边形的三角形剖分" class="headerlink" title="应用1：凸$n$边形的三角形剖分"></a>应用1：凸$n$边形的三角形剖分</h3><p><img src="/img/combinatorics1.svg" alt><br>我们每次在一个编号不为$1,n$的点中找到一个点$i$，$P_1,P_n,P_i$构成三角形③，剩下了区域①和区域②，可以划归为子问题，故可以得到递推式：  </p>
+<script type="math/tex; mode=display">f(n)=\sum_{i=2}^{n-1}f(i)f(n-i+1)</script><p>这就是Catalan数列经过平移后得到的数列。  </p>
+<h3 id="应用2：01排列问题"><a href="#应用2：01排列问题" class="headerlink" title="应用2：01排列问题"></a>应用2：01排列问题</h3><p>$n$个$1$和$n$个$0$组成$2$n位的二进制数，要求从左到右扫描，$1$的累计数不小于$0$的累计数，试求满足这条件的数有多少？  </p>
+<p>不符合要求的数从左向右扫描的时候，必然在某一奇数位$2m+1$位首次出现$m+1$个$0$和$m$个$1$的累计数，此后的$2(n-m)-1$位上有$n-m$个$1$和$n-m-1$个$0$，若将后面$2(n-m)-1$位的$01$互换，可得到一个$n+1$个$0$与$n-1$个$1$组成的排列。<br>反过来也是对应的。  </p>
+<p>因此，不符合要求的排列与$n+1$个$0$与$n-1$个$1$组成的排列一一对应，故不符合要求的方案数有$C_{2n}^{n+1}$，故答案为：  </p>
+<script type="math/tex; mode=display">C_{2n}^n-C_{2n}^{n+1}</script><p>Catalan通项公式之一。  </p>
+<h3 id="应用3：出栈序列"><a href="#应用3：出栈序列" class="headerlink" title="应用3：出栈序列"></a>应用3：出栈序列</h3><p>$n$个数按照一定顺序入栈，求不同的出栈序列数目。（本问题可转化为应用2）<br>设$f(n)$为答案。<br>设第$n$个元素第$i$个出栈，前面出栈的有$i-1$个元素，后面出栈$n-1$个元素，因此有：  </p>
+<script type="math/tex; mode=display">f(n)=\sum_{i=1}^nf(i-1)f(n-i)</script><p>标准Calatan递推公式。  </p>
+<h3 id="应用4：二叉树形态计数"><a href="#应用4：二叉树形态计数" class="headerlink" title="应用4：二叉树形态计数"></a>应用4：二叉树形态计数</h3><p>求$n$个结点能构成不同的二叉树数目。  </p>
+<p>选定一个结点为根，左子树结点数为$i$，右子树结点数为$n-i-1$，则：  </p>
+<script type="math/tex; mode=display">f(n)=\sum_{i=0}^{n-1}f(i)f(n-i-1)</script><p>标准Catalan递推公式。  </p>
+<h3 id="应用5：乘法加括号"><a href="#应用5：乘法加括号" class="headerlink" title="应用5：乘法加括号"></a>应用5：乘法加括号</h3><p>对于连乘$a_0\times a_1\times a_2\times\cdots\times a_n$，加括号改变它的运算顺序，问有多少种不同的运算顺序。<br>将乘号依次作为根当为二叉树处理，转化为应用4。  </p>
+<h2 id="stirling数"><a href="#stirling数" class="headerlink" title="stirling数"></a>stirling数</h2><p>其实stirling数就是两类动态规划，单独称为stirling数。<br>其中第二类stirling数更重要且应用更广泛。  </p>
+<h3 id="第一类stirling数"><a href="#第一类stirling数" class="headerlink" title="第一类stirling数"></a>第一类stirling数</h3><p>$S_1(n,k)$表示将$n$个不同元素排成$k$个非空循环排列的方案数。  </p>
+<script type="math/tex; mode=display">S_1(n,0)=0(n\ge1),S_1(n,n)=1(n\ge0)</script><script type="math/tex; mode=display">S_1(n,k)=(n-1)S_1(n-1,k)+S_1(n-1,k-1)</script><p>考虑第$n$个元素，可以单独构成一个非空循环排列，有$S_1(n-1,k-1)$种方案。也可以和前$n-1$个元素构成$k$个非空循环排列，第$n$个元素插入到其中一个数的左边，有$(n-1)S_1(n-1,k)$种方案。  </p>
+<h3 id="第二类stirling数"><a href="#第二类stirling数" class="headerlink" title="第二类stirling数"></a>第二类stirling数</h3><p>$S_2(n,k)$表示将$n$个不同元素的集合划分成正好$k$个非空子集的方案数。  </p>
+<script type="math/tex; mode=display">S_2(n,0)=0,S_2(n,1)=S_2(n,n)=1</script><script type="math/tex; mode=display">S_2(n,k)=S_2(n-1,k-1)+kS_2(n-1,k)</script><p>考虑第$n$个元素，可以单独构成一个集合，有$S_2(n-1,k-1)$种方案。也可以加入前$n-1$个元素构成的集合，一共有$k$个可加入的集合，方案数为$kS_2(n-1,k)$。</p>
+<h2 id="容斥原理"><a href="#容斥原理" class="headerlink" title="容斥原理"></a>容斥原理</h2><p>统计多个集合并的大小。<br>可以先加上所有集合大小，再减去多加的两个集合交的大小，再加上多减的三个集合交的大小$\cdots\cdots$  </p>
+<p>每一项的符号取决于是几个集合的交。  </p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/lucas-theorem-notes/" rel="bookmark">Lucas定理学习笔记</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/loj110-multiplication/" rel="bookmark">「LibreOJ110」乘法逆元 - 线性求逆元</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/poj2429-gcdlcm/" rel="bookmark">「poj2429」GCD & LCM Inverse - Pollard-Rho+状态压缩</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/NOI2018simulation7-yja/" rel="bookmark">「NOI2018模拟7」Yja - 拉格朗日乘数法+二分</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/NOI2018simulation6-permutation/" rel="bookmark">「NOI2018模拟6」全排列 - 数论+动态规划</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div>姥爷们赏瓶冰阔落吧~</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="Bill Yang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="Bill Yang 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Bill Yang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.bill.moe/combinatorics-notes/" title="组合数学学习笔记">https://blog.bill.moe/combinatorics-notes/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/数论/" rel="tag"><i class="fa fa-tag"></i> 数论</a>
+              <a href="/tags/组合数学/" rel="tag"><i class="fa fa-tag"></i> 组合数学</a>
+          </div>
+
+        
+  <div class="post-widgets">
+    <div class="wp_rating">
+      <div id="wpac-rating"></div>
+    </div>
+  </div>
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/git/" rel="prev" title="「持续更新」Git常用指令集">
+      <i class="fa fa-chevron-left"></i> 「持续更新」Git常用指令集
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/essay3/" rel="next" title="「随笔3」12.15 DELL杯（拼凑SDOI2017）">
+      「随笔3」12.15 DELL杯（拼凑SDOI2017） <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#计数原理"><span class="nav-number">1.</span> <span class="nav-text">计数原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#加法原理（分类计数原理）"><span class="nav-number">1.1.</span> <span class="nav-text">加法原理（分类计数原理）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#乘法原理（分步计数原理）"><span class="nav-number">1.2.</span> <span class="nav-text">乘法原理（分步计数原理）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#排列"><span class="nav-number">2.</span> <span class="nav-text">排列</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#全排列"><span class="nav-number">2.1.</span> <span class="nav-text">全排列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线排列"><span class="nav-number">2.2.</span> <span class="nav-text">线排列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#相异元素可重排列"><span class="nav-number">2.3.</span> <span class="nav-text">相异元素可重排列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不全相异元素排列"><span class="nav-number">2.4.</span> <span class="nav-text">不全相异元素排列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#圆排列"><span class="nav-number">2.5.</span> <span class="nav-text">圆排列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#错排问题"><span class="nav-number">2.6.</span> <span class="nav-text">错排问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#递推公式"><span class="nav-number">2.6.1.</span> <span class="nav-text">递推公式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#通项公式"><span class="nav-number">2.6.2.</span> <span class="nav-text">通项公式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#简化公式"><span class="nav-number">2.6.3.</span> <span class="nav-text">简化公式</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#组合"><span class="nav-number">3.</span> <span class="nav-text">组合</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#非重组合"><span class="nav-number">3.1.</span> <span class="nav-text">非重组合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#组合数的性质"><span class="nav-number">3.2.</span> <span class="nav-text">组合数的性质</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#互补性质"><span class="nav-number">3.2.1.</span> <span class="nav-text">互补性质</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Pascal公式"><span class="nav-number">3.2.2.</span> <span class="nav-text">Pascal公式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#全方案数"><span class="nav-number">3.2.3.</span> <span class="nav-text">全方案数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#翻转杨辉三角"><span class="nav-number">3.2.4.</span> <span class="nav-text">翻转杨辉三角</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可重组合"><span class="nav-number">3.3.</span> <span class="nav-text">可重组合</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#拓展1"><span class="nav-number">3.3.1.</span> <span class="nav-text">拓展1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#拓展2"><span class="nav-number">3.3.2.</span> <span class="nav-text">拓展2</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#组合数的计算"><span class="nav-number">3.4.</span> <span class="nav-text">组合数的计算</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一些公式"><span class="nav-number">4.</span> <span class="nav-text">一些公式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#自然数平方和"><span class="nav-number">4.1.</span> <span class="nav-text">自然数平方和</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二项式定理"><span class="nav-number">4.2.</span> <span class="nav-text">二项式定理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#推广"><span class="nav-number">4.2.1.</span> <span class="nav-text">推广</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Catalan数"><span class="nav-number">5.</span> <span class="nav-text">Catalan数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#应用1：凸-n-边形的三角形剖分"><span class="nav-number">5.1.</span> <span class="nav-text">应用1：凸$n$边形的三角形剖分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用2：01排列问题"><span class="nav-number">5.2.</span> <span class="nav-text">应用2：01排列问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用3：出栈序列"><span class="nav-number">5.3.</span> <span class="nav-text">应用3：出栈序列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用4：二叉树形态计数"><span class="nav-number">5.4.</span> <span class="nav-text">应用4：二叉树形态计数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用5：乘法加括号"><span class="nav-number">5.5.</span> <span class="nav-text">应用5：乘法加括号</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#stirling数"><span class="nav-number">6.</span> <span class="nav-text">stirling数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#第一类stirling数"><span class="nav-number">6.1.</span> <span class="nav-text">第一类stirling数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第二类stirling数"><span class="nav-number">6.2.</span> <span class="nav-text">第二类stirling数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#容斥原理"><span class="nav-number">7.</span> <span class="nav-text">容斥原理</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Bill Yang"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Bill Yang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">667</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">232</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=935683004" title="QQ → tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=935683004" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i>QQ</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ym13883407586@outlook.com" title="E-Mail → mailto:ym13883407586@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/BillYang2016" title="GitHub → https://github.com/BillYang2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://coding.net/u/Bill_Yang_2016" title="Coding → https://coding.net/u/Bill_Yang_2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-git-square"></i>Coding</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://music.163.com/#/user/home?nickname=Bill_Yang2016" title="网易云音乐 → http://music.163.com/#/user/home?nickname=Bill_Yang2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-music"></i>网易云音乐</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://space.bilibili.com/233682260/#/" title="bilibili → https://space.bilibili.com/233682260/#/" rel="noopener" target="_blank"><i class="fa fa-fw fa-youtube-play"></i>bilibili</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → /atom.xml"><i class="fa fa-fw fa-rss"></i>RSS</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      我的朋友们
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://pointedpoints.github.io/" title="http://pointedpoints.github.io/" rel="noopener" target="_blank">pointedpoints</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://keke046.coding.me/" title="https://keke046.coding.me/" rel="noopener" target="_blank">KEKE046</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://imperfect_zx.coding.me/" title="https://imperfect_zx.coding.me/" rel="noopener" target="_blank">Imperfect</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://achen.world/" title="https://achen.world/" rel="noopener" target="_blank">Achen</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://metakari.one/" title="https://metakari.one/" rel="noopener" target="_blank">Metakar1</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://wekyland.fun/" title="http://wekyland.fun/" rel="noopener" target="_blank">魏启大陆</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/friends/" title="/friends/">更多朋友们</a>
+        </li>
+    </ul>
+  </div>
+<!-- none-select-br -->
+
+<p></p>
+
+<!-- hitokoto -->
+
+<div class="hitokoto-title">
+	<i class="fa fa-paragraph"></i>
+	<b>一言</b>
+</div>
+
+<div id="hitokoto">:D 获取中...</div>
+<i id="hitofrom">:D 获取中...</i>
+
+<script src="https://cdn.jsdelivr.net/npm/bluebird@3/js/browser/bluebird.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/whatwg-fetch@2.0.3/fetch.min.js"></script>
+<script>
+  fetch('https://v1.hitokoto.cn')
+    .then(function (res){
+      return res.json();
+    })
+    .then(function (data) {
+      var hitokoto = document.getElementById('hitokoto');
+      hitokoto.innerText = '\xa0\xa0\xa0\xa0\xa0\xa0\xa0' + data.hitokoto;
+      var hitofrom = document.getElementById('hitofrom');
+      hitofrom.innerText = "——" + data.from + '\xa0'; 
+    })
+    .catch(function (err) {
+      console.error(err);
+    })
+</script>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Bill Yang 以 <a class="theme-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a> 协议发布</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.getAttribute('pjax') !== null) {
+      script.setAttribute('pjax', '');
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+  <script pjax>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+  <script pjax>
+  if (CONFIG.page.isPost) {
+    wpac_init = window.wpac_init || [];
+    wpac_init.push({
+      widget: 'Rating',
+      id: 10154,
+      el: 'wpac-rating',
+      color: 'fc6423'
+    });
+    (function() {
+      if ('WIDGETPACK_LOADED' in window) return;
+      WIDGETPACK_LOADED = true;
+      var mc = document.createElement('script');
+      mc.type = 'text/javascript';
+      mc.async = true;
+      mc.src = '//embed.widgetpack.com/widget.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+    })();
+  }
+  </script>
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout: 3000,
+        priority: true,
+        ignores: [uri => uri.includes('#'),uri => uri == 'https://blog.bill.moe/combinatorics-notes/',]
+      });
+      });
+  </script>
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: true,
+      notify: false,
+      appId: 'JYwxXHHRe8RNGu498SnK9B3N-gzGzoHsz',
+      appKey: 'JBz9GW9kidjPp7gW5Y6VIgfe',
+      placeholder: "吹雪は猫~",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: 'zh-cn' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+    </div><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</body>
+</html>

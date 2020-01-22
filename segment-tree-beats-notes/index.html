@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.png">
+  <link rel="mask-icon" href="/images/logo.png" color="#222">
+  <meta name="baidu-site-verification" content="PcyS4kW5Yu">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-bounce.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://blog.bill.moe').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":true,"transition":{"post_block":"swoopIn","post_header":"shrinkIn","post_body":"shrinkIn","coll_header":"expandIn","sidebar":"bounceIn"}}
+  };
+</script>
+
+  <meta name="description" content="在jiry_2大佬的研究下，线段树有了全新一类的应用，也使得线段树从NOIP难度上升了许多。无法使用懒标记的区间取最值问题与难以分析的历史最值问题成为了线段树全新的难点。">
+<meta name="keywords" content="线段树,学习笔记,segment_tree_beats">
+<meta property="og:type" content="article">
+<meta property="og:title" content="线段树区间取最值与历史最值问题梳理与例题选讲">
+<meta property="og:url" content="https://blog.bill.moe/segment-tree-beats-notes/index.html">
+<meta property="og:site_name" content="Bill Yang&#39;s Blog">
+<meta property="og:description" content="在jiry_2大佬的研究下，线段树有了全新一类的应用，也使得线段树从NOIP难度上升了许多。无法使用懒标记的区间取最值问题与难以分析的历史最值问题成为了线段树全新的难点。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-06-17T01:06:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="线段树区间取最值与历史最值问题梳理与例题选讲">
+<meta name="twitter:description" content="在jiry_2大佬的研究下，线段树有了全新一类的应用，也使得线段树从NOIP难度上升了许多。无法使用懒标记的区间取最值问题与难以分析的历史最值问题成为了线段树全新的难点。">
+
+<link rel="canonical" href="https://blog.bill.moe/segment-tree-beats-notes/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+<!-- jquery -->
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+<!-- 打字礼花及震动特效 -->
+
+<div id="append_parent"></div><div id="ajaxwaitid"></div>
+<script type="text/javascript" src="/lib/activate-power-mode/activate-power-mode.js"></script>
+<script>
+	POWERMODE.colorful = true;
+	POWERMODE.shake = false;
+	document.body.addEventListener('input',POWERMODE);
+</script>
+
+<!-- live2d -->
+
+<div class="waifu">
+	<div class="waifu-tips"></div>
+	<canvas id="live2d" width="240" height="350" class="live2d"></canvas>
+	<div class="hide-button">隐藏</div>
+</div>
+<script async src="/lib/poster-girl/waifu-tips.js"></script>
+<script src="/lib/poster-girl/live2d.js"></script>
+<script type="text/javascript">
+	loadlive2d("live2d", "/live2d/assets/kanna.model.json");
+</script>
+  <title>线段树区间取最值与历史最值问题梳理与例题选讲 | Bill Yang's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Bill Yang's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">路终会有尽头，但视野总能看到更远的地方。</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">10</span></a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-friends">
+
+    <a href="/friends" rel="section"><i class="fa fa-fw fa-users"></i>友链</a>
+
+  </li>
+        <li class="menu-item menu-item-board">
+
+    <a href="/board/" rel="section"><i class="fa fa-fw fa-sticky-note-o"></i>留言板</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">667</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">232</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.bill.moe/segment-tree-beats-notes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Bill Yang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bill Yang's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          线段树区间取最值与历史最值问题梳理与例题选讲
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-12-02 19:07:15" itemprop="dateCreated datePublished" datetime="2017-12-02T19:07:15+08:00">2017-12-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-06-17 09:06:50" itemprop="dateModified" datetime="2019-06-17T09:06:50+08:00">2019-06-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OI/" itemprop="url" rel="index">
+                    <span itemprop="name">OI</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/segment-tree-beats-notes/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/segment-tree-beats-notes/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>在<code>jiry_2</code>大佬的研究下，线段树有了全新一类的应用，也使得线段树从NOIP难度上升了许多。无法使用懒标记的区间取最值问题与难以分析的历史最值问题成为了线段树全新的难点。  </p>
+<a id="more"></a>
+<h2 id="区间取最值问题"><a href="#区间取最值问题" class="headerlink" title="区间取最值问题"></a>区间取最值问题</h2><p>按照<code>jiry_2</code>论文上的讲题顺序介绍例题：</p>
+<h3 id="例1-Gorgeous-Sequence"><a href="#例1-Gorgeous-Sequence" class="headerlink" title="例1.Gorgeous Sequence"></a>例1.<a href="/HDU5306-sequence/">Gorgeous Sequence</a></h3><h4 id="题面"><a href="#题面" class="headerlink" title="题面"></a>题面</h4><blockquote>
+<p>&ensp;&ensp;&ensp;&ensp;维护一个数组$a$，支持以下操作：  </p>
+<ul>
+<li>给出$l,r,x$，对$i\in[l,r]$，将$a_i$变为$\min(a_i,x)$。</li>
+<li>给出$l,r$，对$i\in[l,r]$，询问$a_i$的最大值。</li>
+<li>给出$l,r$，询问$\sum_{i=l}^r a_i$。  </li>
+</ul>
+</blockquote>
+<h4 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h4><p>线段树维护最大值$max$，次大值$sec$，最大值个数$maxt$。<br>若使区间$[L,R]$对$x$取$\min$，先定位这个区间，对定位到的区间暴力递归：</p>
+<ul>
+<li>当$max\le x$，直接退出。</li>
+<li>当$sec\lt x\lt max$时，维护区间和，更新$max$，打标记，退出。</li>
+<li>当$sec\ge x$，递归左右儿子。</li>
+</ul>
+<h4 id="时间复杂度证明"><a href="#时间复杂度证明" class="headerlink" title="时间复杂度证明"></a>时间复杂度证明</h4><p>原论文给出了一种正确的证明，这里用另一种方式证明。  </p>
+<p>我们只讨论含有递归的修改操作，若不递归，说明满足$sec\lt v\lt max$或$v\ge max$，这对时间复杂度没有影响。  </p>
+<p>若递归，此时必有一个$max$被修改到$\le$原有$sec$，至少把一个数变成和另一个数一样，即可用值域至少减少了$1$，值域只可能减少$n$次，而在线段树上定位的时间复杂度是$O(\log n)$，故修改操作的时间复杂度是$O(n\log n)$，故总时间复杂度是$O(n\log n+q\log n)$。  </p>
+<h3 id="例2-Picks-loves-segment-tree"><a href="#例2-Picks-loves-segment-tree" class="headerlink" title="例2.Picks loves segment tree"></a>例2.Picks loves segment tree</h3><h4 id="题面-1"><a href="#题面-1" class="headerlink" title="题面"></a>题面</h4><blockquote>
+<p>&ensp;&ensp;&ensp;&ensp;维护一个数组$a$，支持以下操作：  </p>
+<ul>
+<li>给出$l,r,x$，对$i\in[l,r]$，将$a_i$变为$\min(a_i,x)$。</li>
+<li>给出$l,r,x$，对$i\in[l,r]$，将$a_i$变为$a_i+x$。</li>
+<li>给出$l,r$，对$i\in[l,r]$，询问$a_i$的最大值。</li>
+<li>给出$l,r$，询问$\sum_{i=l}^r a_i$。  </li>
+</ul>
+</blockquote>
+<h4 id="题解-1"><a href="#题解-1" class="headerlink" title="题解"></a>题解</h4><p>不难发现即使有区间加减，例1的信息还是可以维护，因此直接套用例1做法。  </p>
+<h4 id="时间复杂度证明-1"><a href="#时间复杂度证明-1" class="headerlink" title="时间复杂度证明"></a>时间复杂度证明</h4><p>感性认识：有了区间加减操作，可选值域肯定会增加，因此时间复杂度会比$O(n\log n)$要大。  </p>
+<p>不会证明（例1的证明不能沿用），<code>jiry_2</code>说时间复杂度是$O(n\log^2n)$的（如果能看懂的可以看<code>jiry_2</code>的论文）。  </p>
+<h3 id="例3-AcrossTheSky-loves-segment-tree"><a href="#例3-AcrossTheSky-loves-segment-tree" class="headerlink" title="例3.AcrossTheSky loves segment tree"></a>例3.AcrossTheSky loves segment tree</h3><h4 id="题面-2"><a href="#题面-2" class="headerlink" title="题面"></a>题面</h4><blockquote>
+<p>&ensp;&ensp;&ensp;&ensp;维护一个数组$a$，支持以下操作：  </p>
+<ul>
+<li>给出$l,r,x$，对$i\in[l,r]$，将$a_i$变为$\min(a_i,x)$。</li>
+<li>给出$l,r,x$，对$i\in[l,r]$，将$a_i$变为$\max(a_i,x)$。</li>
+<li>给出$l,r$，询问$\sum_{i=l}^r a_i$。  </li>
+</ul>
+</blockquote>
+<h4 id="题解-2"><a href="#题解-2" class="headerlink" title="题解"></a>题解</h4><p>我们只需要维护区间最小值，区间严格次小值，区间最小值个数，区间最大值，区间严格次大值，区间最大值个数，就可以套用例1的方法做了。  </p>
+<h4 id="时间复杂度证明-2"><a href="#时间复杂度证明-2" class="headerlink" title="时间复杂度证明"></a>时间复杂度证明</h4><p>不难发现仅有这两个操作，值域还是只会减少不会增加，故时间复杂度和例1一样是$O(n\log n+q\log n)$的。</p>
+<h3 id="一类通用的转化"><a href="#一类通用的转化" class="headerlink" title="一类通用的转化"></a>一类通用的转化</h3><p>我们发现通过例1的思想，区间取最值操作可以一直递归到某个区间然后修改最大值，这就是只对最大值有影响的区间加减问题。<br>因此对于含有区间取最值的线段树问题，我们可以将维护的信息分为最大值的信息与非最大值的信息分开维护，区间取最值操作一直递归到$sec\lt x\lt max$退出，而其他的操作定位了区间后就可以退出了。  </p>
+<p>这样我们就使用了一个$\log$的代价将区间取最值转化为了区间加减问题。<br>这样转化过后，套入了其他操作的区间取最值问题思路就很清晰了。  </p>
+<h3 id="其他例题"><a href="#其他例题" class="headerlink" title="其他例题"></a>其他例题</h3><p>可以参考<code>jiry_2</code>的论文，讲得很清楚。  </p>
+<h2 id="历史最值问题"><a href="#历史最值问题" class="headerlink" title="历史最值问题"></a>历史最值问题</h2><p>考虑一类问题，除了维护最新的信息，还要查询历史的最大值/最小值/求和信息，这类问题我们可以使用懒标记进行维护。  </p>
+<h3 id="例7-CPU监控"><a href="#例7-CPU监控" class="headerlink" title="例7.CPU监控"></a>例7.<a href="/bzoj3064-CPU/">CPU监控</a></h3><h4 id="题面-3"><a href="#题面-3" class="headerlink" title="题面"></a>题面</h4><blockquote>
+<p>&ensp;&ensp;&ensp;&ensp;维护一个数列$a$，支持区间加减，区间覆盖，询问一段连续区间的最大值与历史最大值。  </p>
+</blockquote>
+<h4 id="题解-3"><a href="#题解-3" class="headerlink" title="题解"></a>题解</h4><p><a href="/bzoj3064-CPU/">传送门</a></p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>这道题我们用到了一个技巧，将两种操作转化成了一种通用的标记，但是这个标记包含区间取最值的操作，因为这道题标记的$\max$和历史查询的$\max$是同向的故可以采用这样的标记合并从而绕开区间取最值的操作。<br>同时我们还发现，历史最值的标记和当前的标记很类似，只是合并标记的时候略有不同，一般定义了标记的加法与大小关系后，历史标记的合并过程都是一样的。  </p>
+<h3 id="例8-V"><a href="#例8-V" class="headerlink" title="例8.V"></a>例8.<a href="/uoj164-V/">V</a></h3><h4 id="题面-4"><a href="#题面-4" class="headerlink" title="题面"></a>题面</h4><blockquote>
+<p>&ensp;&ensp;&ensp;&ensp;区间加，区间变成$\max\lbrace a_i-v,0\rbrace$，区间覆盖，询问单点的最大值和历史最大值。 </p>
+</blockquote>
+<h4 id="题解-4"><a href="#题解-4" class="headerlink" title="题解"></a>题解</h4><p><a href="/uoj164-V/">传送门</a></p>
+<h4 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h4><p>和上题类似的，标记可以合并，信息处理就很方便了。  </p>
+<h3 id="例10-元旦老人与数列"><a href="#例10-元旦老人与数列" class="headerlink" title="例10.元旦老人与数列"></a>例10.<a href="/uoj169-oldman/">元旦老人与数列</a></h3><h4 id="题面-5"><a href="#题面-5" class="headerlink" title="题面"></a>题面</h4><blockquote>
+<p>&ensp;&ensp;&ensp;&ensp;最开始xyz111有两个长度为$n$的完全相同的数列$A$和$B$，接下来有$m$次操作，每一次操作都是以下的四种之一：<br>&ensp;&ensp;&ensp;&ensp;1.对于所有的$i\in[l,r]$，将$A_i$变成$A_i+c$。<br>&ensp;&ensp;&ensp;&ensp;2.对于所有的$i\in[l,r]$，将$A_i$变成$\max(A_i,d)$。<br>&ensp;&ensp;&ensp;&ensp;3.对于所有的$i\in[l,r]$，询问$A_i$的最小值。<br>&ensp;&ensp;&ensp;&ensp;4.对于所有的$i\in[l,r]$，询问$B_i$的最小值。<br>&ensp;&ensp;&ensp;&ensp;在每一次操作结束之后，xyz111 都会进行一次更新：对于所有的$i\in[1,n]$，将$B_i$变成 $\min(B_i,A_i)$。</p>
+</blockquote>
+<h4 id="题解-5"><a href="#题解-5" class="headerlink" title="题解"></a>题解</h4><p><a href="/uoj169-oldman/">传送门</a></p>
+<h4 id="总结-2"><a href="#总结-2" class="headerlink" title="总结"></a>总结</h4><p>这道题和前两题不同在于，前两题的标记可合并，而本题的标记最值方向与历史最值方向相反，写出的标记表达式无法合并，故不能套用上面的方法。<br>为了解决这个问题，我们使用区间取最值时的转化方法，将所有的操作分为最小值与非最小值进行考虑与维护，故问题得到解决。  </p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/wannafly-camp-day1/" rel="bookmark">2019 CCPC wannafly 冬令营 Day1 游记+解题报告</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/tree-subdivision-for-tree-dp/" rel="bookmark">基于变换合并的树链剖分维护动态树形动规算法</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/uoj169-oldman/" rel="bookmark">「UOJ169」元旦老人与数列 - 线段树+区间取最值+历史最值</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/uoj164-V/" rel="bookmark">「UOJ164」V - 线段树+历史最值</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/bzoj3064-CPU/" rel="bookmark">「bzoj3064」CPU监控 - 线段树+历史最值</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div>姥爷们赏瓶冰阔落吧~</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="Bill Yang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="Bill Yang 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Bill Yang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.bill.moe/segment-tree-beats-notes/" title="线段树区间取最值与历史最值问题梳理与例题选讲">https://blog.bill.moe/segment-tree-beats-notes/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/线段树/" rel="tag"><i class="fa fa-tag"></i> 线段树</a>
+              <a href="/tags/学习笔记/" rel="tag"><i class="fa fa-tag"></i> 学习笔记</a>
+              <a href="/tags/segment-tree-beats/" rel="tag"><i class="fa fa-tag"></i> segment_tree_beats</a>
+          </div>
+
+        
+  <div class="post-widgets">
+    <div class="wp_rating">
+      <div id="wpac-rating"></div>
+    </div>
+  </div>
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/no-rotate-balance-tree-notes/" rel="prev" title="非旋转平衡树与重量平衡树学习笔记">
+      <i class="fa fa-chevron-left"></i> 非旋转平衡树与重量平衡树学习笔记
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/bzoj3682-phorni/" rel="next" title="「bzoj3682」Phorni - 后缀平衡树">
+      「bzoj3682」Phorni - 后缀平衡树 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#区间取最值问题"><span class="nav-number">1.</span> <span class="nav-text">区间取最值问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#例1-Gorgeous-Sequence"><span class="nav-number">1.1.</span> <span class="nav-text">例1.Gorgeous Sequence</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#题面"><span class="nav-number">1.1.1.</span> <span class="nav-text">题面</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#题解"><span class="nav-number">1.1.2.</span> <span class="nav-text">题解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#时间复杂度证明"><span class="nav-number">1.1.3.</span> <span class="nav-text">时间复杂度证明</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#例2-Picks-loves-segment-tree"><span class="nav-number">1.2.</span> <span class="nav-text">例2.Picks loves segment tree</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#题面-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">题面</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#题解-1"><span class="nav-number">1.2.2.</span> <span class="nav-text">题解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#时间复杂度证明-1"><span class="nav-number">1.2.3.</span> <span class="nav-text">时间复杂度证明</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#例3-AcrossTheSky-loves-segment-tree"><span class="nav-number">1.3.</span> <span class="nav-text">例3.AcrossTheSky loves segment tree</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#题面-2"><span class="nav-number">1.3.1.</span> <span class="nav-text">题面</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#题解-2"><span class="nav-number">1.3.2.</span> <span class="nav-text">题解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#时间复杂度证明-2"><span class="nav-number">1.3.3.</span> <span class="nav-text">时间复杂度证明</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一类通用的转化"><span class="nav-number">1.4.</span> <span class="nav-text">一类通用的转化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他例题"><span class="nav-number">1.5.</span> <span class="nav-text">其他例题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#历史最值问题"><span class="nav-number">2.</span> <span class="nav-text">历史最值问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#例7-CPU监控"><span class="nav-number">2.1.</span> <span class="nav-text">例7.CPU监控</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#题面-3"><span class="nav-number">2.1.1.</span> <span class="nav-text">题面</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#题解-3"><span class="nav-number">2.1.2.</span> <span class="nav-text">题解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结"><span class="nav-number">2.1.3.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#例8-V"><span class="nav-number">2.2.</span> <span class="nav-text">例8.V</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#题面-4"><span class="nav-number">2.2.1.</span> <span class="nav-text">题面</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#题解-4"><span class="nav-number">2.2.2.</span> <span class="nav-text">题解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结-1"><span class="nav-number">2.2.3.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#例10-元旦老人与数列"><span class="nav-number">2.3.</span> <span class="nav-text">例10.元旦老人与数列</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#题面-5"><span class="nav-number">2.3.1.</span> <span class="nav-text">题面</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#题解-5"><span class="nav-number">2.3.2.</span> <span class="nav-text">题解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结-2"><span class="nav-number">2.3.3.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Bill Yang"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Bill Yang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">667</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">232</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=935683004" title="QQ → tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=935683004" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i>QQ</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ym13883407586@outlook.com" title="E-Mail → mailto:ym13883407586@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/BillYang2016" title="GitHub → https://github.com/BillYang2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://coding.net/u/Bill_Yang_2016" title="Coding → https://coding.net/u/Bill_Yang_2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-git-square"></i>Coding</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://music.163.com/#/user/home?nickname=Bill_Yang2016" title="网易云音乐 → http://music.163.com/#/user/home?nickname=Bill_Yang2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-music"></i>网易云音乐</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://space.bilibili.com/233682260/#/" title="bilibili → https://space.bilibili.com/233682260/#/" rel="noopener" target="_blank"><i class="fa fa-fw fa-youtube-play"></i>bilibili</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → /atom.xml"><i class="fa fa-fw fa-rss"></i>RSS</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      我的朋友们
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://pointedpoints.github.io/" title="http://pointedpoints.github.io/" rel="noopener" target="_blank">pointedpoints</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://keke046.coding.me/" title="https://keke046.coding.me/" rel="noopener" target="_blank">KEKE046</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://imperfect_zx.coding.me/" title="https://imperfect_zx.coding.me/" rel="noopener" target="_blank">Imperfect</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://achen.world/" title="https://achen.world/" rel="noopener" target="_blank">Achen</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://metakari.one/" title="https://metakari.one/" rel="noopener" target="_blank">Metakar1</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://wekyland.fun/" title="http://wekyland.fun/" rel="noopener" target="_blank">魏启大陆</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/friends/" title="/friends/">更多朋友们</a>
+        </li>
+    </ul>
+  </div>
+<!-- none-select-br -->
+
+<p></p>
+
+<!-- hitokoto -->
+
+<div class="hitokoto-title">
+	<i class="fa fa-paragraph"></i>
+	<b>一言</b>
+</div>
+
+<div id="hitokoto">:D 获取中...</div>
+<i id="hitofrom">:D 获取中...</i>
+
+<script src="https://cdn.jsdelivr.net/npm/bluebird@3/js/browser/bluebird.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/whatwg-fetch@2.0.3/fetch.min.js"></script>
+<script>
+  fetch('https://v1.hitokoto.cn')
+    .then(function (res){
+      return res.json();
+    })
+    .then(function (data) {
+      var hitokoto = document.getElementById('hitokoto');
+      hitokoto.innerText = '\xa0\xa0\xa0\xa0\xa0\xa0\xa0' + data.hitokoto;
+      var hitofrom = document.getElementById('hitofrom');
+      hitofrom.innerText = "——" + data.from + '\xa0'; 
+    })
+    .catch(function (err) {
+      console.error(err);
+    })
+</script>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Bill Yang 以 <a class="theme-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a> 协议发布</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.getAttribute('pjax') !== null) {
+      script.setAttribute('pjax', '');
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+  <script pjax>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+  <script pjax>
+  if (CONFIG.page.isPost) {
+    wpac_init = window.wpac_init || [];
+    wpac_init.push({
+      widget: 'Rating',
+      id: 10154,
+      el: 'wpac-rating',
+      color: 'fc6423'
+    });
+    (function() {
+      if ('WIDGETPACK_LOADED' in window) return;
+      WIDGETPACK_LOADED = true;
+      var mc = document.createElement('script');
+      mc.type = 'text/javascript';
+      mc.async = true;
+      mc.src = '//embed.widgetpack.com/widget.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+    })();
+  }
+  </script>
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout: 3000,
+        priority: true,
+        ignores: [uri => uri.includes('#'),uri => uri == 'https://blog.bill.moe/segment-tree-beats-notes/',]
+      });
+      });
+  </script>
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: true,
+      notify: false,
+      appId: 'JYwxXHHRe8RNGu498SnK9B3N-gzGzoHsz',
+      appKey: 'JBz9GW9kidjPp7gW5Y6VIgfe',
+      placeholder: "吹雪は猫~",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: 'zh-cn' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+    </div><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</body>
+</html>

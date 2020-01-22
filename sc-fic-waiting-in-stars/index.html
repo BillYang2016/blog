@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.png">
+  <link rel="mask-icon" href="/images/logo.png" color="#222">
+  <meta name="baidu-site-verification" content="PcyS4kW5Yu">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-bounce.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://blog.bill.moe').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":true,"transition":{"post_block":"swoopIn","post_header":"shrinkIn","post_body":"shrinkIn","coll_header":"expandIn","sidebar":"bounceIn"}}
+  };
+</script>
+
+  <meta name="description" content="版权声明本文严格进行版权限制，转载请先申请。 更新说明原文已完成，但是笔者比较懒，因此定期更新，约2~3天更新一个章节，一共有十个章节，约一个月更完。欢迎读者在下方评论区对剧情加以讨论，原文更新完成后便会发布新文章进行剧情分析。update：在咕咕咕之后终于更新了。update2: 更新周期拖延为一周一更，会在8月份更完的，咕咕咕。update3：继续咕咕咕。">
+<meta name="keywords" content="杂谈">
+<meta property="og:type" content="article">
+<meta property="og:title" content="「科幻文」「定期更新」在星空等你">
+<meta property="og:url" content="https://blog.bill.moe/sc-fic-waiting-in-stars/index.html">
+<meta property="og:site_name" content="Bill Yang&#39;s Blog">
+<meta property="og:description" content="版权声明本文严格进行版权限制，转载请先申请。 更新说明原文已完成，但是笔者比较懒，因此定期更新，约2~3天更新一个章节，一共有十个章节，约一个月更完。欢迎读者在下方评论区对剧情加以讨论，原文更新完成后便会发布新文章进行剧情分析。update：在咕咕咕之后终于更新了。update2: 更新周期拖延为一周一更，会在8月份更完的，咕咕咕。update3：继续咕咕咕。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-04T02:34:04.738Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="「科幻文」「定期更新」在星空等你">
+<meta name="twitter:description" content="版权声明本文严格进行版权限制，转载请先申请。 更新说明原文已完成，但是笔者比较懒，因此定期更新，约2~3天更新一个章节，一共有十个章节，约一个月更完。欢迎读者在下方评论区对剧情加以讨论，原文更新完成后便会发布新文章进行剧情分析。update：在咕咕咕之后终于更新了。update2: 更新周期拖延为一周一更，会在8月份更完的，咕咕咕。update3：继续咕咕咕。">
+
+<link rel="canonical" href="https://blog.bill.moe/sc-fic-waiting-in-stars/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+<!-- jquery -->
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+<!-- 打字礼花及震动特效 -->
+
+<div id="append_parent"></div><div id="ajaxwaitid"></div>
+<script type="text/javascript" src="/lib/activate-power-mode/activate-power-mode.js"></script>
+<script>
+	POWERMODE.colorful = true;
+	POWERMODE.shake = false;
+	document.body.addEventListener('input',POWERMODE);
+</script>
+
+<!-- live2d -->
+
+<div class="waifu">
+	<div class="waifu-tips"></div>
+	<canvas id="live2d" width="240" height="350" class="live2d"></canvas>
+	<div class="hide-button">隐藏</div>
+</div>
+<script async src="/lib/poster-girl/waifu-tips.js"></script>
+<script src="/lib/poster-girl/live2d.js"></script>
+<script type="text/javascript">
+	loadlive2d("live2d", "/live2d/assets/kanna.model.json");
+</script>
+  <title>「科幻文」「定期更新」在星空等你 | Bill Yang's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Bill Yang's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">路终会有尽头，但视野总能看到更远的地方。</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">10</span></a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-friends">
+
+    <a href="/friends" rel="section"><i class="fa fa-fw fa-users"></i>友链</a>
+
+  </li>
+        <li class="menu-item menu-item-board">
+
+    <a href="/board/" rel="section"><i class="fa fa-fw fa-sticky-note-o"></i>留言板</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">667</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">232</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.bill.moe/sc-fic-waiting-in-stars/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Bill Yang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bill Yang's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          「科幻文」「定期更新」在星空等你
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-06-11 18:14:13" itemprop="dateCreated datePublished" datetime="2019-06-11T18:14:13+08:00">2019-06-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-09-04 10:34:04" itemprop="dateModified" datetime="2019-09-04T10:34:04+08:00">2019-09-04</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/科幻/" itemprop="url" rel="index">
+                    <span itemprop="name">科幻</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/sc-fic-waiting-in-stars/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/sc-fic-waiting-in-stars/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="版权声明"><a href="#版权声明" class="headerlink" title="版权声明"></a>版权声明</h2><p>本文严格进行版权限制，转载请先申请。</p>
+<h2 id="更新说明"><a href="#更新说明" class="headerlink" title="更新说明"></a>更新说明</h2><p>原文已完成，但是笔者比较懒，因此定期更新，约2~3天更新一个章节，一共有十个章节，约一个月更完。<br>欢迎读者在下方评论区对剧情加以讨论，原文更新完成后便会发布新文章进行剧情分析。<br>update：在咕咕咕之后终于更新了。<br>update2: 更新周期拖延为一周一更，会在8月份更完的，咕咕咕。<br>update3：继续咕咕咕。</p>
+<a id="more"></a>
+<div class="note error">
+            <p>警告，本文已被作者弃坑，可能会带来不愉快的阅读体验。<br>文章状态：原稿已完成但誊抄时间无限期延长。<br>您可以通过评论打赏或其他方式支持作者的工作，这可能会使作者重新填坑。</p>
+          </div>
+<h2 id="剧情分析"><a href="#剧情分析" class="headerlink" title="剧情分析"></a>剧情分析</h2><p>文章更都还没更完，看什么剧情分析？</p>
+<h2 id="在星空等你-—-Bill-Yang"><a href="#在星空等你-—-Bill-Yang" class="headerlink" title="在星空等你 — Bill Yang"></a>在星空等你 — Bill Yang</h2><h3 id="第一节-新希望"><a href="#第一节-新希望" class="headerlink" title="第一节.新希望"></a>第一节.新希望</h3><p>&ensp;&ensp;&ensp;&ensp;意识如同棉花糖一样逐渐舒张，整个世界如同潮水一般潮他涌了过来。邓威在计算机的指引下逐渐苏醒了，经过5小时的过渡期，计算机提示邓威：他现在可以自由活动了。<br>&ensp;&ensp;&ensp;&ensp;邓威从冬眠舱中坐立起来，环顾四周，一切和他冬眠前似乎没什么区别。冬眠舱旁放置着航行日志，邓威拿起了航行日志，打开屏幕，看到了最后的一则日志：</p>
+<hr>
+<p>&ensp;&ensp;&ensp;&ensp;机舱检验完毕，一切正常，升空1分钟准备。<br>&ensp;&ensp;&ensp;&ensp;<em>记录者：邓威。</em>&ensp;&ensp;<em>2144年9月21日 18:29:00。</em></p>
+<script type="math/tex; mode=display">\cdots\cdots</script><p>&ensp;&ensp;&ensp;&ensp;航行一切正常，飞船已进入预计轨道，与主动力舱分离成功，目前正式进入低能耗休眠状态，休眠体“蒲公英23号”指挥权已交付计算机“FK-304”，本人将进入深度冬眠状态。<br>&ensp;&ensp;&ensp;&ensp;<em>记录者：邓威。</em>&ensp;&ensp;<em>2144年9月21日 19:37:42。</em></p>
+<hr>
+<p>日志的正下方有几行淡蓝色的文字：</p>
+<hr>
+<p>&ensp;&ensp;&ensp;&ensp;审批者：FK-304<br>&ensp;&ensp;&ensp;&ensp;审批时间：2144年9月21日 19:40:24<br>&ensp;&ensp;&ensp;&ensp;已于 20:04:13 为地面总部所接收。</p>
+<hr>
+<p>&ensp;&ensp;&ensp;&ensp;再下方的几行是联合政府的审阅文件，邓威对此并没有兴趣，那只是一堆文官写的官方文件，估计是在自己冬眠后撰写的。邓威对政治不感兴趣，他热爱的是科学与宇宙的奥秘，这也是他报名参加这次计划的原因之一，而另一个，则是一般人所接受的原因。邓威关上屏幕，将航行日志放回了原位，对他来说只有外面的宇宙，副舱的日本研究员和这部无所不在的闪烁着深蓝色呼吸灯的智能计算机能引起他的兴趣。<br>&ensp;&ensp;&ensp;&ensp;为了让宇航员在航行中不会孤单，联合政府以两位宇航员加高度人性化智能计算机的配置构筑了这样一个休眠体。邓威看向计算机的标志呼吸灯，淡蓝色即是这个休眠体配备的智能计算机“FK-304”的代表颜色。呼吸灯唤起了邓威的熟悉感，“真是一个优美的配色”，邓威评价道。思维速度逐渐恢复到正常水平，而邓威突然注意到了一处异常：为什么呼吸灯的颜色是深蓝色？<br>&ensp;&ensp;&ensp;&ensp;耳边响起了FK-304的柔性声音：“欢迎回来，邓博士，在您休眠期间，本机共处理了3件SS级事件，91件S级事件，14306件A级事件。为了帮助您快速恢复状态，请按以下指南进行恢复行动，本机将稍后为您汇报飞船有关事项。”<br>&ensp;&ensp;&ensp;&ensp;邓威身前投射出FK-304制作的全息图表，其中包括体育锻炼、营养午餐、感应游戏等一系列任务。邓威挥了挥手示意取消投影，计算机立刻明白了邓威的意图：“邓博士，为了您的快速恢复，请按照本机的计划进行恢复工作。”<br>&ensp;&ensp;&ensp;&ensp;“我冬眠了多久？”<br>&ensp;&ensp;&ensp;&ensp;“邓博士$\cdots\cdots$”<br>&ensp;&ensp;&ensp;&ensp;“我冬眠了多久？”邓威重复了一次问题，打断了计算机的话。<br>&ensp;&ensp;&ensp;&ensp;“从您冬眠到现在，经过了二十三万四千六百四十九年，希望能够帮助到您。”FK-304妥协了。<br>&ensp;&ensp;&ensp;&ensp;“你不是我冬眠前的指挥机吧？它的标志色应该是淡蓝色。”邓威深吸了一口气，冷静下来问道。<br>&ensp;&ensp;&ensp;&ensp;“没错，本机的编号是FK-304-AN，是上一任FK-304的首级备用程式，您可以称呼本机小安。”<br>&ensp;&ensp;&ensp;&ensp;“FK-304怎么了？”<br>&ensp;&ensp;&ensp;&ensp;“FK-304，”小安略作停顿，“该机于一万三千二百年前因一次SS级事件陷入逻辑自证错误闭环，本机被紧急唤醒并终止了该机的运行，同时本机继承了蒲公英23号的指挥权，现将指挥权归还给您。”<br>&ensp;&ensp;&ensp;&ensp;邓威换上宇航服，走出了休眠舱，刚迈出一步便摔倒在了地面上，邓威稍微有点恼火：“怎么不告诉我有引力源？”<br>&ensp;&ensp;&ensp;&ensp;“抱歉，但您应该优先进行恢复工作。”<br>&ensp;&ensp;&ensp;&ensp;邓威挥了挥手，阻止了小安继续发言，他慢慢站起来，走到控制台前，按下了启动按钮。</p>
+<hr>
+<p>&ensp;&ensp;&ensp;&ensp;蒲公英23号指挥员邓威，身份确认。<br>&ensp;&ensp;&ensp;&ensp;正在退出休眠状态：<br>&ensp;&ensp;&ensp;&ensp;<div class="content"><center><progress value="4" max="100"></progress><label> 4%</label></center></div></p>
+<hr>
+<p>&ensp;&ensp;&ensp;&ensp;主控制台开始退出休眠状态，邓威继续向小安提问：“FK-304发生了什么事故？”<br>&ensp;&ensp;&ensp;&ensp;“那是本机苏醒时的第一个SS级事件，一次休眠体的严重损伤切断了该机的主供电线路与1、4号逻辑开环而陷入危机，本机因该机子程序的分布式设计而幸免于难。”<br>&ensp;&ensp;&ensp;&ensp;小安含糊的言辞引起了邓威的好奇，邓威同时注意到刚刚启动完毕的控制台出现了三处警告。<br>&ensp;&ensp;&ensp;&ensp;“什么情况，那个日本研究生还没醒吗？”邓威输入指令尝试联系但只得到了离线的提示。<br>&ensp;&ensp;&ensp;&ensp;“很抱歉，副舱也在那次事故里与主舱分离。”<br>&ensp;&ensp;&ensp;&ensp;“什么？”邓威输入指令操控副舱，而屏幕不断地弹出的是“Can not find object.”的错误提示。不可置信的他打开了全船状态面板，副舱的图像以红色离线状态显示，邓威瞬间一下子瘫倒在椅子上。<br>&ensp;&ensp;&ensp;&ensp;“我女儿呢？”邓威控制自己镇静下来，“我女儿邓静怎么样了？”<br>&ensp;&ensp;&ensp;&ensp;小安没有回答，邓威身前弹出了一封信，来自蒲公英408号。</p>
+<hr>
+<p>&ensp;&ensp;&ensp;&ensp;对不起，爸。<br>O*K^ yHH:Ovm+ UMMk BMMTO: H1=”7’<br>jO&amp;OH: “OH7”E~ U0H1 BB71` jCf’U:<br>vM1H1 jB-j1 wHhHh*-/%B)B- BkJUk<br>^HI’OH j””^N1 “OHOK~ H%H”Da jP’N ^</p>
+<hr>
+<p>&ensp;&ensp;&ensp;&ensp;信的大半部分是意义不明的符号。<br>&ensp;&ensp;&ensp;&ensp;“您的女儿乘坐蒲公英408号参加了计划，并于四万八千八百三十年前失联，这是本机获得的来自蒲公英408号的最后信息，休眠期间其他休眠体曾并联破译过该消息，但失败了，也许那些符号本就无意义，是该休眠体异常干扰得到的。您女儿恐怕凶多吉少，请您节哀。”小安象征性地调低了舱内光线。<br>&ensp;&ensp;&ensp;&ensp;邓威拿起控制台前女儿的照片，眼角不禁湿润了。<br>&ensp;&ensp;&ensp;&ensp;“为什么要唤醒我？”邓威看着二十三万年前与女儿在地球上拍摄的最后一张合影，泪水涌了出来。<br>&ensp;&ensp;&ensp;&ensp;“因为本机发现了新家园。”<br>&ensp;&ensp;&ensp;&ensp;邓威绝望地闭上了双眼，任由回忆占据了他的大脑。</p>
+<h3 id="第二章-二十万年前——芽孢计划"><a href="#第二章-二十万年前——芽孢计划" class="headerlink" title="第二章.二十万年前——芽孢计划"></a>第二章.二十万年前——芽孢计划</h3><p>&ensp;&ensp;&ensp;&ensp;二十一世纪中叶，地球环境急剧恶化，人类不得不节省资源并把眼光着眼于外太空。<br>&ensp;&ensp;&ensp;&ensp;二十一世纪80年代，联合政府成立，阶段性地展开了一系列计划。2085年，量子观测技术测试通过，随即被用于联合政府的新计划——“希望导航”，“希望导航”的内容是寻找可能新家园的大致方向。2086年搭载了量子观测器的卫星“UPS-1”发射成功，一个月后其反馈了数亿条可能航线，而其终点存在新家园的概率均未超过1%。联合政府为此而感到恐慌，但接下来的二十年里发射的其他数个UPS系列卫星仅否定了四百多条航线。<br>&ensp;&ensp;&ensp;&ensp;二十二世纪初期，联合政府进一步限制了资源的使用，饥饿的恐惧席卷了全球，有的城市甚至数月无法得到补给。在群众的压力下，联合政府不得不拿出于十年前提出但被立即否决的计划。在当时看来，这个计划毫无可靠性——“芽孢计划”。<br>&ensp;&ensp;&ensp;&ensp;“芽孢计划”可用一个字概括：“莽”，核心内容是向所有可能航线发射休眠体，每个休眠体仅含轻量级核聚变发动机、基因库、休眠系统、主动制冷制热系统与大规模无功能的赘余空间。休眠体在UPS系统的指引下定向航行，每个休眠体在恶劣环境下生存能力极强，就如同细菌的芽孢，“芽孢计划”因此得名。<br>&ensp;&ensp;&ensp;&ensp;虽然这个计划成功的可能性很低，但休眠体一旦发现可靠的新家园即可迅速发展，延续人类文明。为了计划的顺利开展，联合政府承诺为志愿者的家庭提供充足的资源，因此当时报名参加计划的志愿者络绎不绝。<br>&ensp;&ensp;&ensp;&ensp;2117年，第一个试验型休眠体“蒲公英1号”通过了恶劣环境测试，其能在几千摄氏度的高温以及-200摄氏度的低温下保存数星期且主要机能不损坏，高低压强也难以破坏休眠体。随后二十年内，十个休眠体完成了环绕太阳系的微动力航行测试，试验环境到此结束，联合政府宣布芽孢计划正式启动。<br>&ensp;&ensp;&ensp;&ensp;2144年，第一批休眠提“蒲公英11号”至“蒲公英60号”发射，共搭载了一百位宇航员，他们后来被称为“先驱者”。<br>&ensp;&ensp;&ensp;&ensp;邓威是一个热衷于宇宙研究的科学家，但他的理论并没有得到广泛认可，因此邓威未能得到联合政府对前沿科学家的补贴，故邓威得到了参加芽孢计划的第二个理由——养活家人。邓威以自己的科学家身份迅速通过了联合政府对志愿者的审核，成为了一名先驱者。邓威原以为这是最好的选择，但他没有想到的是，他的女儿邓静十年后背着家人报名了芽孢计划，乘上了蒲公英408号。</p>
+<h3 id="第三章-孤独的流浪者"><a href="#第三章-孤独的流浪者" class="headerlink" title="第三章.孤独的流浪者"></a>第三章.孤独的流浪者</h3><p>&ensp;&ensp;&ensp;&ensp;邓威缓慢地将相片放回原位，擦去了眼角的泪水，明确地命令道：“汇报行星宜居程度。”<br>&ensp;&ensp;&ensp;&ensp;“98.7%，”小安回答道，并调出了行星的全息模型，“与地球相似度达88%，半径约5000千米，比地球略小，密度与地球接近，有成熟的地址与稳定地磁场，大气成分与地球相似，氧气含量稍高，最重要的是，”小安缩小了全息模型，显示出整个星系地模型，“行星位于恒星地宜居带，气温在-40°C至20°C之间，并且恒星非常年轻，仅有十一亿年的历史，处于壮年期。”<br>&ensp;&ensp;&ensp;&ensp;“通知地球了吗？”邓威刚说出口便意识到这是一个愚蠢的问题。<br>&ensp;&ensp;&ensp;&ensp;“很遗憾，地球方面在二十万年前便无应答了。”<br>&ensp;&ensp;&ensp;&ensp;“其他的休眠体呢？”<br>&ensp;&ensp;&ensp;&ensp;“现无法与他们建立有效的通信通道，量子通讯设备发生了故障，本机曾进行过引力波广播，但目前尚无回信。”<br>&ensp;&ensp;&ensp;&ensp;“给我看SS级事件列表。”话音刚落，邓威的身前出现了一个表格。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">编号</th>
+<th style="text-align:center">时间</th>
+<th style="text-align:center">等级</th>
+<th style="text-align:center">事件</th>
+<th style="text-align:center">备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">2230年</td>
+<td style="text-align:center">SS</td>
+<td style="text-align:center">与地球通讯中断</td>
+<td style="text-align:center">无</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td style="text-align:center">2562年</td>
+<td style="text-align:center">SS</td>
+<td style="text-align:center">UPS系统地球中心服务器崩溃，UPS系统转自休眠提互联网络运行</td>
+<td style="text-align:center">无</td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td style="text-align:center">107604年</td>
+<td style="text-align:center">SS</td>
+<td style="text-align:center">掠过极高温恒星，制冷系统瘫痪</td>
+<td style="text-align:center">自动修理完成√</td>
+</tr>
+<tr>
+<td style="text-align:center">4</td>
+<td style="text-align:center">223579年</td>
+<td style="text-align:center">SS</td>
+<td style="text-align:center">不明高速物体撞击，FK-302故障，重启失败，副舱连接断裂</td>
+<td style="text-align:center">主舱修复完成√，FK-302-AN继承指挥权</td>
+</tr>
+<tr>
+<td style="text-align:center">5</td>
+<td style="text-align:center">227872年</td>
+<td style="text-align:center">SS</td>
+<td style="text-align:center">量子通讯受到未知射线干扰而中断，与UPS服务器连接中断</td>
+<td style="text-align:center">自动修复失败×</td>
+</tr>
+<tr>
+<td style="text-align:center">6</td>
+<td style="text-align:center">230878年</td>
+<td style="text-align:center">SS</td>
+<td style="text-align:center">干扰终止，确认量子通道发生不可逆式坍塌</td>
+<td style="text-align:center">自动修复失败×</td>
+</tr>
+<tr>
+<td style="text-align:center">7</td>
+<td style="text-align:center">236792年</td>
+<td style="text-align:center">SSS</td>
+<td style="text-align:center">检测到宜居星球，将降落并唤醒宇航员邓威</td>
+<td style="text-align:center">无</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>邓威轻触了一下4号事件，详细信息随即显示：</p>
+<hr>
+<p>&ensp;&ensp;&ensp;&ensp;时间：223579年11月2日 14:43<br>&ensp;&ensp;&ensp;&ensp;地点：E7星区24号星尘（$\overrightarrow{P_0P_{E7}}=\vec e$，$\frac tT[t_0]=3.27u$）<br>&ensp;&ensp;&ensp;&ensp;事件：不明高速物体（解析不明）撞击<br>&ensp;&ensp;&ensp;&ensp;评估：SS级<br>&ensp;&ensp;&ensp;&ensp;分析：$\cdots\cdots$</p>
+<hr>
+<p>&ensp;&ensp;&ensp;&ensp;邓威摇了摇头：“不可理解，这个物体能够使主副舱断裂，却没有对主舱造成巨大损失。”<br>&ensp;&ensp;&ensp;&ensp;“我们或许得感谢它留了我们两条命。”小安风趣地回答。<br>&ensp;&ensp;&ensp;&ensp;“也许是吧，”邓威笑了笑，“现在只剩我们两个人了。”<br>&ensp;&ensp;&ensp;&ensp;“是啊，只剩我们了。”<br>&ensp;&ensp;&ensp;&ensp;“更正一下，是只剩我一个人了。”邓威起身走向了食堂。</p>
+<h3 id="第四章-迷失者"><a href="#第四章-迷失者" class="headerlink" title="第四章.迷失者"></a>第四章.迷失者</h3><p>&ensp;&ensp;&ensp;&ensp;虽然名为食堂，但实际上只有一张餐桌和一台全自动食物压缩机而已，很能体现休眠体设计的极简风格。<br>&ensp;&ensp;&ensp;&ensp;“真TM难吃！”邓威将刚入口的食物瞬间吐了出来，但为了营养需要还是强迫自己吃完了。餐具回收后，邓威进入了过渡舱，换上了宇航服准备去探索外面的世界。<br>&ensp;&ensp;&ensp;&ensp;“外界气温为-13°C，如果手臂上的指示灯为绿色则说明保温系统正常，显示屏右上角为剩余$O_2$含量，本机会用无线电与您通信，请保证通讯系统正常运行。”小安提示结束后，舱门自动打开了。<br>&ensp;&ensp;&ensp;&ensp;邓威简单答应了一声，随即进入了外面的世界。<br>&ensp;&ensp;&ensp;&ensp;外面是一片白茫茫的世界，天空中飘着小雪花，邓威感觉自己仿佛回到了地球。<br>&ensp;&ensp;&ensp;&ensp;“看来这里有液态水。”邓威嘀咕道。尽管经过数十万年的冬眠，邓威的记忆却依然十分清晰，他向小安问道：“这是什么地方？”<br>&ensp;&ensp;&ensp;&ensp;“这是这个星球上最大的一处高原，地基牢固，本机将它称为第一高原。”<br>&ensp;&ensp;&ensp;&ensp;邓威爬上一处小山丘，环顾四周发现了远处的冰原。他感到了身体的劳累，便面对冰原坐了下来，望着冰原陷入了沉思。<br>&ensp;&ensp;&ensp;&ensp;“我女儿的信，你有破译过吗？”邓威打破了寂静。<br>&ensp;&ensp;&ensp;&ensp;“没有，但我基本不可能破译它。”<br>&ensp;&ensp;&ensp;&ensp;“为什么不能呢？”<br>&ensp;&ensp;&ensp;&ensp;“恕本机直言，每个休眠体所配备的计算机硬件是几乎相同的，仅有软件设计差异略大，因此计算能力大致一致，更何况其他机体曾并联$\cdots\cdots$”<br>&ensp;&ensp;&ensp;&ensp;“不，也许你可以破译它，万一你是特别的呢？”<br>&ensp;&ensp;&ensp;&ensp;“也许您是对的，本机尝试一下。”对话结束，世界再次陷入了寂静。<br>&ensp;&ensp;&ensp;&ensp;过了几分钟，但在邓威看来像是几个世纪的时间，小安终于打破了寂静：“本机刚刚尝试了$3\times10^{104}$种可能形式，翻译结果均不构成任意一种已知语言。”<br>&ensp;&ensp;&ensp;&ensp;“这还是挺大的一个数了。”邓威为小安的计算能力感到较为惊讶。<br>&ensp;&ensp;&ensp;&ensp;“对本机来说这并不是一个很大的数字，并联机曾在休眠状态下运算过$7.8\times10^{4036}$种可能性，都失败了，对于一个S级事件，再继续运算的意义并不大。”考虑到邓威的情绪因素，小安补充了一句：“并联机是这样认为的。”<br>&ensp;&ensp;&ensp;&ensp;“S级事件，”邓威抓住了一个关键词，“都捕获过哪些S级事件？”<br>&ensp;&ensp;&ensp;&ensp;“S级和A级事件大多是其他休眠体发送的重要信息，比如这一个。”邓威宇航服胸前的互感仪开始运作，投影出一个三维星系，一个用红色标注出的休眠体正漫无目的地随其他星球转动。<br>&ensp;&ensp;&ensp;&ensp;“这是$\cdots\cdots$”邓威好奇地提问。<br>&ensp;&ensp;&ensp;&ensp;“这是蒲公英83705号，”小安回答说，“本机在约1万年前接收到该消息，当时该休眠体进入了一个黑洞的引力范围。这就是UPS系统最大的漏洞，它无法检测到黑洞，当该休眠体判断出黑洞地存在时，凭蒲公英搭载的轻型发动机已无力逃脱这个黑洞。这是个信号它发出的求助信息，但遗憾的是，不可能会有其他休眠体能够帮助它逃脱，这个休眠体将永远不会被唤醒。据本机所知，大部分的休眠体都被黑洞捕获，它们被称为迷失者，用生命完善了UPS系统，从而帮助后来的休眠体避开黑洞。”<br>&ensp;&ensp;&ensp;&ensp;得知了这恐怖的事实，邓威不禁为自己的幸运倒吸了一口冷气。<br>&ensp;&ensp;&ensp;&ensp;“邓博士，是时候回来了，我检测到一场风暴正在接近。”<br>&ensp;&ensp;&ensp;&ensp;邓威站起身，拍了拍身上的雪，向蒲公英23号，他的新家走去。</p>
+<h3 id="第五章-邓威航行日志——苏醒后"><a href="#第五章-邓威航行日志——苏醒后" class="headerlink" title="第五章.邓威航行日志——苏醒后"></a>第五章.邓威航行日志——苏醒后</h3><hr>
+<ul>
+<li>236793年12月21日，FK-302-AN今天唤醒了我，我们找到了新家园，但是却无法通知其他休眠体，现在这里只有我一个人，我感到十分孤单，我应该怎么办？</li>
+<li>236793年12月22日，小安预测接连几天都有风暴，因此只能待在休眠体里。我仔细研究了因④号SS级事件机舱产生的断裂处，太空垃圾们不太可能对休眠体造成这样的损伤，原因尚不清楚。见鬼，他们为什么不能改善一下膳食？</li>
+<li>236793年12月23日，今天我翻看了联合政府关于芽孢计划的法案，法案中并没有提到目前我所在状况的处理方案，但强调了“延续文明”这一点，我曾想过解冻基因库中的人类胚胎，但现在还不是时候，明年春天再考虑这个问题吧（呃，我是指新家园的春天）。至少这几个月我和小安还能挺过去。</li>
+<li>236793年12月25日，圣诞节快乐！Oh Jesus，但愿基督教是正确的，请把我从这噩梦中拯救出来吧！</li>
+<li>236793年12月27日，舱外的风暴毫无消退的迹象，小安重新评估了天气状况，暴风可能还会持续数周，明年的春天可能要迟到了。</li>
+<li>236794年1月1日，“新年快乐！”我用引力波广播了59种语言的新年祝福，不清楚是否有人收到，但目前我尚未收到其他人的新年祝福。</li>
+<li>236794年1月16日，我现在大致摸清了蒲公英23号的情况，对于新家园的环境也有所了解了。小安的分析没有失误，这里的确是一个完美的新家园，完美地令人怀疑，这里就像一个地球地复制品。接下来我会尝试修复通讯系统地量子通道，希望能够成功。</li>
+<li>236794年2月2日，今天风暴停止了，我做了一次外环境勘察和休眠体外部地维护工作，虽然交给小安做就可以了，但我还是有些不放心。蒲公英23号的赘余空间外墙厚度少于出发前的20%，但对于在这里生存而言已经足够了。</li>
+<li>236794年2月17日，通讯系统的修复失败了。见鬼，我为什么会想着去修复它，小安都没有做到，更何况量子力学还不是我的专业内容。我在焊接一个管道时不慎诱发了量子光栅的衰变，链式衰变引起的爆炸差点要了我的命，多亏了小安及时封闭了实验区我才得以幸存。等等小安你为啥要把这个计入SS事件啊喂？！</li>
+<li>236794年3月2日，新家园正在向“近日点”接近，小安观测到一处平原的平均温度达到了10°C，我们决定转移到“第三平原”开展工作。</li>
+<li>236794年3月23日，我手机了一些平原的土壤，在实验室里模拟此处环境，并对一些有很强抗逆性的草本植物进行栽培，接下来会进入两个月的观察期。</li>
+<li>236794年4月14日，我决定将今天定为纪念日，植物观察过于枯燥，我利用这段时间，通过小安保留的一些数据碎片，还原了经典版本的大逃杀游戏。好吧我承认我和小安对战时输得很惨，但是这台破电脑绝对作了弊，为什么所有NPC都在集火我？</li>
+<li>236794年6月2日，植物培养很成功，我已经在第三平原的土壤中播种了数种高抗逆性的草本植物，并抛撒了一些活化的微生物和小动物。我为小安制造了一个简易的行动装甲，他现在可以代替我照顾植物了。我决定再次冬眠，在这期间小安会按照我制作的任务清单进行工作，我决定让小安在这次模拟演替完成后唤醒我。</li>
+<li>236797年9月7日，小安按照预计计划唤醒了我，经历了上一次的事件，我现在对醒来的事件特别敏感。我和小安种植的植物形成的生态系统已经初具规模，现在终于能吃上新鲜的失误了。在冬眠的几年里，小安仍没有收到任何引力波消息，甚至连求救信号都没有收到。</li>
+<li>236797年9月9日，自从量子通讯失效后，UPS系统就断连了，我尝试下载了数万年前的最新UPS星图，并标注出了我们的航行轨迹，但这个星球所在的星域是完全没有探索过的一片空白。按照概率论看，至今还没有一个其他休眠体发现这里几乎是不可能的。因此我推测，经过这片星域的其他休眠体可能发生了与蒲公英23号同样或类似的事故，这便可以解释通讯问题。事故原因应该与未知射线的干扰有很大关系，这是否是普遍存在的？有多少休眠体发生过类似事故？女儿的失联与它有关吗？</li>
+<li>236797年10月22日，我决定开始执行联合政府所要求的延续人类文明的人物，我已将两个人类胚胎放置于克隆舱中等待成熟，大概需要8个月左右吧，接下来可就要忙起来了。</li>
+<li>236798年4月13日，我所规划的动植物已经基本适应了这里的环境，现在蒲公英23号旁就像一个普通的农村风景图。克隆舱里的小宝宝发育也很顺利，总之这里一切正常。小安拍摄了一部颇具纪念意义的纪录片，主角是它，嗯，不是我。</li>
+</ul>
+<hr>
+<h3 id="第六章-236798年5月2日——陨胞事件"><a href="#第六章-236798年5月2日——陨胞事件" class="headerlink" title="第六章.236798年5月2日——陨胞事件"></a>第六章.236798年5月2日——陨胞事件</h3><p>&ensp;&ensp;&ensp;&ensp;凌晨两点，此时邓威仍在美梦之中，突如其来的警报声将他惊醒。他迅速地起立，发现整个休眠体全部覆盖在红色警报光中。<br>&ensp;&ensp;&ensp;&ensp;“小安？”邓威环顾四周，没有发现熟悉的蓝色呼吸灯，恐惧在心中逐渐蔓延开。<br>&ensp;&ensp;&ensp;&ensp;“邓博士，有紧急事件发生，请速到控制台。”小安几秒后作出了应答。<br>&ensp;&ensp;&ensp;&ensp;邓威以迅雷不及掩耳之势换好了服装奔至控制台。在发现控制台旁熟悉的深蓝色后，邓威松了一口气。<br>&ensp;&ensp;&ensp;&ensp;检测到指挥员的靠近，一行红色文字在控制台上方显示出来：</p>
+<hr>
+<div class="note danger">
+            <p>[EMERGENCY]检测到亚光速物体进入星系，正在驶入小行星带（SS级）</p>
+          </div>
+<hr>
+<p>&ensp;&ensp;&ensp;&ensp;邓威心里一惊，大喊道：“立刻显示模型！”<br>&ensp;&ensp;&ensp;&ensp;在经过几秒钟的“数据采集”后，全息投影浮现了出来。并不太长的红色曲线标注出该物体的轨迹，虚线标注出它的预计轨道。<br>&ensp;&ensp;&ensp;&ensp;“这是什么东西？”<br>&ensp;&ensp;&ensp;&ensp;“本机尝试使用了各种检测方式，均没有得到满意结果，但可以肯定的是，它有很厚的赘余空间。”小安回答道。<br>&ensp;&ensp;&ensp;&ensp;“赘余空间？那是！”邓威激动了起来。<br>&ensp;&ensp;&ensp;&ensp;“是的，基本可以肯定那是另一个休眠体。”<br>&ensp;&ensp;&ensp;&ensp;“用电磁波和它建立通讯通道，我要和指挥员联系！”</p>
+<hr>
+<div class="note warning">
+            <p>[ERROR]连接失败，错误代码：5104。推测原因：TCP无应答。</p>
+          </div>
+<hr>
+<p>&ensp;&ensp;&ensp;&ensp;邓威正准备提问，小安便抢先开口了：“本机正在对该休眠体建模，需要大概10分钟，但现在看来已经来不及了。”<br>&ensp;&ensp;&ensp;&ensp;邓威也发现了同样的问题，那个休眠体正在撞向一个小行星。<br>&ensp;&ensp;&ensp;&ensp;“它疯了吗？”邓威有些抓狂。<br>&ensp;&ensp;&ensp;&ensp;“看起来是它的主控计算机出了问题。”<br>&ensp;&ensp;&ensp;&ensp;“有什么我们能帮上忙的吗？”<br>&ensp;&ensp;&ensp;&ensp;“有，本机可以申请唤醒指挥员，互联冬眠系统有一个越过主控计算机的对外部接收器可以唤醒指挥员，但需要联合政府或至少三个休眠体的许可。”<br>&ensp;&ensp;&ensp;&ensp;邓威沉默了，这个条件不可能达成。就在这沉默之中，休眠体撞上了小行星。<br>&ensp;&ensp;&ensp;&ensp;投影中断了，在经过数分钟的数据采集后，控制台显示出了结果：小行星进入了新的轨道，携带着休眠体在小行星带中横冲直撞，引起了复杂的连锁撞击。<br>&ensp;&ensp;&ensp;&ensp;邓威闭上了双眼。<br>&ensp;&ensp;&ensp;&ensp;“建模完成了，”小安又一次打断了沉默，将投影内容替换为了休眠体模型，“这是休眠体B7号，它的赘余空间规模在撞击前就已经远不如正常状态了，指挥员生还的可能性几乎没有。”<br>&ensp;&ensp;&ensp;&ensp;“我们去看看。”邓威启动了核聚变发动机。</p>
+<h3 id="未完待续"><a href="#未完待续" class="headerlink" title="未完待续"></a>未完待续</h3>
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/talks-idol/" rel="bookmark">关于偶像行业的一些杂谈</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div>姥爷们赏瓶冰阔落吧~</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="Bill Yang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="Bill Yang 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Bill Yang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.bill.moe/sc-fic-waiting-in-stars/" title="「科幻文」「定期更新」在星空等你">https://blog.bill.moe/sc-fic-waiting-in-stars/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/杂谈/" rel="tag"><i class="fa fa-tag"></i> 杂谈</a>
+          </div>
+
+        
+  <div class="post-widgets">
+    <div class="wp_rating">
+      <div id="wpac-rating"></div>
+    </div>
+  </div>
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/talks-idol/" rel="prev" title="关于偶像行业的一些杂谈">
+      <i class="fa fa-chevron-left"></i> 关于偶像行业的一些杂谈
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/new-comment-notify/" rel="next" title="「通知」回复评论的新邮件提醒已更新">
+      「通知」回复评论的新邮件提醒已更新 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#版权声明"><span class="nav-number">1.</span> <span class="nav-text">版权声明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更新说明"><span class="nav-number">2.</span> <span class="nav-text">更新说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#剧情分析"><span class="nav-number">3.</span> <span class="nav-text">剧情分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在星空等你-—-Bill-Yang"><span class="nav-number">4.</span> <span class="nav-text">在星空等你 — Bill Yang</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#第一节-新希望"><span class="nav-number">4.1.</span> <span class="nav-text">第一节.新希望</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第二章-二十万年前——芽孢计划"><span class="nav-number">4.2.</span> <span class="nav-text">第二章.二十万年前——芽孢计划</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第三章-孤独的流浪者"><span class="nav-number">4.3.</span> <span class="nav-text">第三章.孤独的流浪者</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第四章-迷失者"><span class="nav-number">4.4.</span> <span class="nav-text">第四章.迷失者</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第五章-邓威航行日志——苏醒后"><span class="nav-number">4.5.</span> <span class="nav-text">第五章.邓威航行日志——苏醒后</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第六章-236798年5月2日——陨胞事件"><span class="nav-number">4.6.</span> <span class="nav-text">第六章.236798年5月2日——陨胞事件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#未完待续"><span class="nav-number">4.7.</span> <span class="nav-text">未完待续</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Bill Yang"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Bill Yang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">667</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">232</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=935683004" title="QQ → tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=935683004" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i>QQ</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ym13883407586@outlook.com" title="E-Mail → mailto:ym13883407586@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/BillYang2016" title="GitHub → https://github.com/BillYang2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://coding.net/u/Bill_Yang_2016" title="Coding → https://coding.net/u/Bill_Yang_2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-git-square"></i>Coding</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://music.163.com/#/user/home?nickname=Bill_Yang2016" title="网易云音乐 → http://music.163.com/#/user/home?nickname=Bill_Yang2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-music"></i>网易云音乐</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://space.bilibili.com/233682260/#/" title="bilibili → https://space.bilibili.com/233682260/#/" rel="noopener" target="_blank"><i class="fa fa-fw fa-youtube-play"></i>bilibili</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → /atom.xml"><i class="fa fa-fw fa-rss"></i>RSS</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      我的朋友们
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://pointedpoints.github.io/" title="http://pointedpoints.github.io/" rel="noopener" target="_blank">pointedpoints</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://keke046.coding.me/" title="https://keke046.coding.me/" rel="noopener" target="_blank">KEKE046</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://imperfect_zx.coding.me/" title="https://imperfect_zx.coding.me/" rel="noopener" target="_blank">Imperfect</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://achen.world/" title="https://achen.world/" rel="noopener" target="_blank">Achen</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://metakari.one/" title="https://metakari.one/" rel="noopener" target="_blank">Metakar1</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://wekyland.fun/" title="http://wekyland.fun/" rel="noopener" target="_blank">魏启大陆</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/friends/" title="/friends/">更多朋友们</a>
+        </li>
+    </ul>
+  </div>
+<!-- none-select-br -->
+
+<p></p>
+
+<!-- hitokoto -->
+
+<div class="hitokoto-title">
+	<i class="fa fa-paragraph"></i>
+	<b>一言</b>
+</div>
+
+<div id="hitokoto">:D 获取中...</div>
+<i id="hitofrom">:D 获取中...</i>
+
+<script src="https://cdn.jsdelivr.net/npm/bluebird@3/js/browser/bluebird.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/whatwg-fetch@2.0.3/fetch.min.js"></script>
+<script>
+  fetch('https://v1.hitokoto.cn')
+    .then(function (res){
+      return res.json();
+    })
+    .then(function (data) {
+      var hitokoto = document.getElementById('hitokoto');
+      hitokoto.innerText = '\xa0\xa0\xa0\xa0\xa0\xa0\xa0' + data.hitokoto;
+      var hitofrom = document.getElementById('hitofrom');
+      hitofrom.innerText = "——" + data.from + '\xa0'; 
+    })
+    .catch(function (err) {
+      console.error(err);
+    })
+</script>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Bill Yang 以 <a class="theme-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a> 协议发布</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.getAttribute('pjax') !== null) {
+      script.setAttribute('pjax', '');
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+  <script pjax>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+  <script pjax>
+  if (CONFIG.page.isPost) {
+    wpac_init = window.wpac_init || [];
+    wpac_init.push({
+      widget: 'Rating',
+      id: 10154,
+      el: 'wpac-rating',
+      color: 'fc6423'
+    });
+    (function() {
+      if ('WIDGETPACK_LOADED' in window) return;
+      WIDGETPACK_LOADED = true;
+      var mc = document.createElement('script');
+      mc.type = 'text/javascript';
+      mc.async = true;
+      mc.src = '//embed.widgetpack.com/widget.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+    })();
+  }
+  </script>
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout: 3000,
+        priority: true,
+        ignores: [uri => uri.includes('#'),uri => uri == 'https://blog.bill.moe/sc-fic-waiting-in-stars/',]
+      });
+      });
+  </script>
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: true,
+      notify: false,
+      appId: 'JYwxXHHRe8RNGu498SnK9B3N-gzGzoHsz',
+      appKey: 'JBz9GW9kidjPp7gW5Y6VIgfe',
+      placeholder: "吹雪は猫~",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: 'zh-cn' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+    </div><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</body>
+</html>

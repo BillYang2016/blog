@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.png">
+  <link rel="mask-icon" href="/images/logo.png" color="#222">
+  <meta name="baidu-site-verification" content="PcyS4kW5Yu">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-bounce.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://blog.bill.moe').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":true,"transition":{"post_block":"swoopIn","post_header":"shrinkIn","post_body":"shrinkIn","coll_header":"expandIn","sidebar":"bounceIn"}}
+  };
+</script>
+
+  <meta name="description" content="三大自动机排名最后的自动机：回文自动机。为什么排名最后？因为实在没什么太多的用处。回文自动机又称为回文树，它们是一个含义。">
+<meta name="keywords" content="学习笔记,字符串,回文自动机">
+<meta property="og:type" content="article">
+<meta property="og:title" content="回文自动机学习笔记">
+<meta property="og:url" content="https://blog.bill.moe/palindrome-automaton-notes/index.html">
+<meta property="og:site_name" content="Bill Yang&#39;s Blog">
+<meta property="og:description" content="三大自动机排名最后的自动机：回文自动机。为什么排名最后？因为实在没什么太多的用处。回文自动机又称为回文树，它们是一个含义。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-06-17T14:12:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="回文自动机学习笔记">
+<meta name="twitter:description" content="三大自动机排名最后的自动机：回文自动机。为什么排名最后？因为实在没什么太多的用处。回文自动机又称为回文树，它们是一个含义。">
+
+<link rel="canonical" href="https://blog.bill.moe/palindrome-automaton-notes/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+<!-- jquery -->
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+<!-- 打字礼花及震动特效 -->
+
+<div id="append_parent"></div><div id="ajaxwaitid"></div>
+<script type="text/javascript" src="/lib/activate-power-mode/activate-power-mode.js"></script>
+<script>
+	POWERMODE.colorful = true;
+	POWERMODE.shake = false;
+	document.body.addEventListener('input',POWERMODE);
+</script>
+
+<!-- live2d -->
+
+<div class="waifu">
+	<div class="waifu-tips"></div>
+	<canvas id="live2d" width="240" height="350" class="live2d"></canvas>
+	<div class="hide-button">隐藏</div>
+</div>
+<script async src="/lib/poster-girl/waifu-tips.js"></script>
+<script src="/lib/poster-girl/live2d.js"></script>
+<script type="text/javascript">
+	loadlive2d("live2d", "/live2d/assets/kanna.model.json");
+</script>
+  <title>回文自动机学习笔记 | Bill Yang's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Bill Yang's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">路终会有尽头，但视野总能看到更远的地方。</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">10</span></a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-friends">
+
+    <a href="/friends" rel="section"><i class="fa fa-fw fa-users"></i>友链</a>
+
+  </li>
+        <li class="menu-item menu-item-board">
+
+    <a href="/board/" rel="section"><i class="fa fa-fw fa-sticky-note-o"></i>留言板</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">667</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">232</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.bill.moe/palindrome-automaton-notes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Bill Yang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bill Yang's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          回文自动机学习笔记
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-12-10 18:48:31" itemprop="dateCreated datePublished" datetime="2017-12-10T18:48:31+08:00">2017-12-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-06-17 22:12:00" itemprop="dateModified" datetime="2019-06-17T22:12:00+08:00">2019-06-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OI/" itemprop="url" rel="index">
+                    <span itemprop="name">OI</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/palindrome-automaton-notes/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/palindrome-automaton-notes/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>三大自动机排名最后的自动机：回文自动机。<br>为什么排名最后？因为实在没什么太多的用处。<br>回文自动机又称为回文树，它们是一个含义。  </p>
+<a id="more"></a>
+<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>一个回文自动机中包含两个结构：内部回文树（简称为回文树）和$fail$树。<br>每一个结点同时存在于这两个结构中。<br>若将$s$建立回文自动机，则称$s$是该回文自动机的母串。<br>记$\left|S\right|$是字符串$S$的长度。<br>记$[c_1,c_2,\ldots,c_n]$为字符$c_i$组成的长度为$n$的字符串。  </p>
+<h3 id="回文子串"><a href="#回文子串" class="headerlink" title="回文子串"></a>回文子串</h3><p>若$t$是$s$的子串且$t$是回文的，则称$t$是$s$的回文子串。  </p>
+<h3 id="回文后缀"><a href="#回文后缀" class="headerlink" title="回文后缀"></a>回文后缀</h3><p>若$t$是$s$的后缀（$s\neq t$）且$t$是回文的，则称$t$是$s$的回文后缀。  </p>
+<h3 id="最长回文后缀"><a href="#最长回文后缀" class="headerlink" title="最长回文后缀"></a>最长回文后缀</h3><p>$s$的最长回文后缀$t$是$s$的所有回文后缀中最长的一个。<br>注意一个串可以不存在最长回文后缀，定义它的回文后缀只包含一个空串。  </p>
+<h3 id="回文树"><a href="#回文树" class="headerlink" title="回文树"></a>回文树</h3><p>一个串的回文树由两棵树组成，他们的根分别为$even,odd$。<br>树上的每一个结点表示一个字符串，与母串的回文子串一一对应。<br>树上的每一条边上有一个字符$c$，代表该点表示的回文子串$s$经过该边后到达表示回文子串$c+s+c$的结点。  </p>
+<p>定义根$even$表示的字符串是空串，根$odd$表示的字符串是一个长度为$-1$实际不存在的字符串。<br>根$odd$的儿子是长度为$1$的回文子串，根$even$的儿子是长度为$2$的回文子串。  </p>
+<p>在本文的叙述中，我们用树上的结点指代其代表的字符串。  </p>
+<h3 id="后缀链接与fail树与fail链"><a href="#后缀链接与fail树与fail链" class="headerlink" title="后缀链接与fail树与fail链"></a>后缀链接与fail树与fail链</h3><p>结点$u$的后缀链接指向$v$当且仅当$v$是$u$的最长回文后缀。<br>特别的，定义$next(odd)=next(even)=odd$。<br>注意，这里定义的根的后缀链接没有含义，仅仅是为了编程方便。  </p>
+<p>由后缀链接组成的树形结构称为$fail$树。<br>结点$u$在$fail$树上到根的路径称为$fail$链。  </p>
+<h3 id="回文自动机"><a href="#回文自动机" class="headerlink" title="回文自动机"></a>回文自动机</h3><p>对于回文自动机上的每个结点，我们维护三个信息：  </p>
+<ul>
+<li>$len$，表示该点对应的回文子串的长度。  </li>
+<li>$child[c]$，该点经过$c$的转移边到达的状态。  </li>
+<li>$next$，后缀链接。  </li>
+</ul>
+<h2 id="空间复杂度线性证明"><a href="#空间复杂度线性证明" class="headerlink" title="空间复杂度线性证明"></a>空间复杂度线性证明</h2><p>对于后缀自动机，由于状态太多，因此每个结点表示多个字符串。而回文自动机的一个结点仅表示了一个字符串，那么它的空间复杂度怎么样呢？  </p>
+<h3 id="定理1"><a href="#定理1" class="headerlink" title="定理1"></a>定理1</h3><p>对于一个字符串$s$，不同的回文子串的个数最多只有$\left|s\right|$个。  </p>
+<p>我们使用数学归纳法证明上述定理：<br>证明思路：产生的子串很多以前都出现过。  </p>
+<ul>
+<li>当$\left|s\right|=1$时，只有一个回文子串，结论成立。  </li>
+<li>当$\left|s\right|\gt1$时，设$s=s’c$，其中$c$是$s$的最后一个字符，并且结论对$s’$成立。考虑以$c$结尾的回文子串，假设他们的左端点从左到右分别为$l_1,l_2,\ldots,l_k$，那么由于$[s_{l_1},s_{l_1+1},\ldots,s_{\left|s\right|}]$是回文串，那么对于$l_1\le p\le \left|s\right|$，都有$[s_p,s_{p+1},\ldots,s_{\left|s\right|}]=[s_{l_1},s_{l_1+1},\ldots,s_{l_1+\left|s\right|-p}]$，所以对于回文子串$s[s_{l_i},s_{l_i+1},\ldots,s_{\left|s\right|}]$，都有$s[s_{l_i},s_{l_i+1},\ldots,s_{\left|s\right|}=[s_{l_1},s_{l_1+1},\ldots,s_{l_1+\left|s\right|-l_i}]$，因此当$i\neq1$时，$s[s_{l_i},s_{l_i+1},\ldots,s_{\left|s\right|}$已经在$s’$中出现过，因此每次不同的回文串最多增加一个，因此结论对$s$仍然成立。  </li>
+</ul>
+<p>由数学归纳法可知定理1成立。<br>因此回文自动机的空间复杂度是$O(\left|s\right|)$级别的。  </p>
+<h2 id="构造方法"><a href="#构造方法" class="headerlink" title="构造方法"></a>构造方法</h2><p>我们使用增量法构造字符串$s$的回文自动机。<br>假设已经构造出了$s$的回文自动机，只需要在末尾增加一个字符$c$即可维护出$sc$的回文自动机。  </p>
+<h3 id="定理2"><a href="#定理2" class="headerlink" title="定理2"></a>定理2</h3><p>以新加入的字符$c$为结尾的，未在$s$中出现过的回文子串最多只有$1$个，且为$sc$的最长回文后缀。  </p>
+<p>证明：由定理1的证明可得。  </p>
+<p>由定理2，每次只需要求出$sc$的最长回文后缀即可。<br>不妨设$[s_i,s_{i+1},\ldots,s_{\left|s\right|},c]$为$sc$的最长回文后缀，那么$[s_{i+1},s_{i+2},\ldots,s_{\left|s\right|}]$也是回文串。<br>故我们只需在$s$的$fail$链上找到一个长度最大的结点$t$，满足$s_{\left|s\right|-len_t}=c$，则$sc$的最长回文后缀就是$ctc$。  </p>
+<p>当然，对于$even$和$odd$我们不需要进行特判，经过其特殊定义，我们发现会<strong>暗中处理</strong>掉。  </p>
+<p>插入时，若不存在$ctc$对应的结点，我们需要新建一个结点。<br>如果新建了一个结点，我们还需要求出其后缀链接。<br>相当于在$t$对应结点的$fail$链上找出一个长度最长的结点$v$满足$s[\left|s\right|-len_v]=c$。<br>此处同样不需要考虑$even$和$odd$。  </p>
+<h3 id="模板代码"><a href="#模板代码" class="headerlink" title="模板代码"></a>模板代码</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Palindsome_Automaton</span> &#123;</span></span><br><span class="line">	<span class="keyword">int</span> child[maxn][<span class="number">26</span>];</span><br><span class="line">	<span class="keyword">int</span> n,size,last,s[maxn],len[maxn],next[maxn];</span><br><span class="line">	Palindsome_Automaton() &#123;init();&#125;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		size=<span class="number">-1</span>;</span><br><span class="line">		newnode(<span class="number">0</span>); <span class="comment">//even</span></span><br><span class="line">		newnode(<span class="number">-1</span>); <span class="comment">//odd</span></span><br><span class="line">		last=n=<span class="number">0</span>;</span><br><span class="line">		s[<span class="number">0</span>]=<span class="number">-1</span>;</span><br><span class="line">		next[<span class="number">0</span>]=next[<span class="number">1</span>]=<span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">newnode</span><span class="params">(<span class="keyword">int</span> v)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> now=++size;</span><br><span class="line">		<span class="built_in">memset</span>(child[now],<span class="number">0</span>,<span class="keyword">sizeof</span>(child[now]));</span><br><span class="line">		next[now]=<span class="number">0</span>;</span><br><span class="line">		len[now]=v;</span><br><span class="line">		<span class="keyword">return</span> now;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">insert</span><span class="params">(<span class="keyword">int</span> data)</span> </span>&#123;</span><br><span class="line">		s[++n]=data;</span><br><span class="line">		<span class="keyword">int</span> p=last;</span><br><span class="line">		<span class="keyword">while</span>(s[n-len[p]<span class="number">-1</span>]!=s[n])p=next[p];</span><br><span class="line">		<span class="keyword">if</span>(!child[p][data]) &#123;</span><br><span class="line">			<span class="keyword">int</span> now=newnode(len[p]+<span class="number">2</span>),q=next[p];</span><br><span class="line">			<span class="keyword">while</span>(s[n-len[q]<span class="number">-1</span>]!=s[n])q=next[q];</span><br><span class="line">			next[now]=child[q][data];</span><br><span class="line">			child[p][data]=now;</span><br><span class="line">		&#125;</span><br><span class="line">		last=child[p][data];</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">build</span><span class="params">(<span class="built_in">string</span> s)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">auto</span> x:s)insert(x-<span class="string">'a'</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125; pam;</span><br></pre></td></tr></table></figure>
+<p>这种插入方法被称为<strong>基础插入法</strong>。  </p>
+<h2 id="基础插入法时间复杂度证明"><a href="#基础插入法时间复杂度证明" class="headerlink" title="基础插入法时间复杂度证明"></a>基础插入法时间复杂度证明</h2><p>我们使用势能分析分析基础插入法的时间复杂度。<br>我们只需要证明在$fail$链上寻找最长后缀回文的均摊时间复杂度是线性的。  </p>
+<p>设势能函数$\varphi(s)$为$s$的最长回文后缀的长度。<br>每次向上寻找最长回文后缀，$\varphi(s)$就会减少，每次插入的$\varphi(sc)\le \varphi(s)+1$，且$\varphi(s)\ge0$。<br>我们每次用势能支付寻找最长回文后缀的代价，不难发现在字符集为常数时，时间复杂度是$O(\left|s\right|)$的。  </p>
+<h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><ul>
+<li>求回文串长度<br><a href="/HDU3068-palindrome/">例题1</a>  </li>
+<li>求每个回文串出现次数<br><a href="/APIO2014-palindrome/">例题2</a></li>
+</ul>
+<h2 id="回文自动机拓展"><a href="#回文自动机拓展" class="headerlink" title="回文自动机拓展"></a>回文自动机拓展</h2><p>更多的回文自动机应用，未完待续。  </p>
+<h2 id="进阶-使用回文自动机优化一类动规问题"><a href="#进阶-使用回文自动机优化一类动规问题" class="headerlink" title="进阶-使用回文自动机优化一类动规问题"></a>进阶-使用回文自动机优化一类动规问题</h2><p>参考<a href="/dp-with-palindrome-notes/">本文</a>。  </p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/dp-with-palindrome-notes/" rel="bookmark">一类使用回文自动机优化的动规问题</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/toj2044-palindrome/" rel="bookmark">「TOJ2044」31 Palindromes - 回文自动机优化动规</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/suffix-array-notes/" rel="bookmark">后缀数组学习笔记</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/APIO2014-palindrome/" rel="bookmark">「APIO2014」回文串 - 回文自动机</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/suffix-automaton-notes/" rel="bookmark">后缀自动机学习笔记</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div>姥爷们赏瓶冰阔落吧~</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="Bill Yang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="Bill Yang 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Bill Yang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.bill.moe/palindrome-automaton-notes/" title="回文自动机学习笔记">https://blog.bill.moe/palindrome-automaton-notes/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/学习笔记/" rel="tag"><i class="fa fa-tag"></i> 学习笔记</a>
+              <a href="/tags/字符串/" rel="tag"><i class="fa fa-tag"></i> 字符串</a>
+              <a href="/tags/回文自动机/" rel="tag"><i class="fa fa-tag"></i> 回文自动机</a>
+          </div>
+
+        
+  <div class="post-widgets">
+    <div class="wp_rating">
+      <div id="wpac-rating"></div>
+    </div>
+  </div>
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/bzoj3961-chips/" rel="prev" title="「bzoj3961」「WF2011」Chips Challenge - 网络流二维模型+流量平衡">
+      <i class="fa fa-chevron-left"></i> 「bzoj3961」「WF2011」Chips Challenge - 网络流二维模型+流量平衡
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/network-flow-models/" rel="next" title="「持续更新」网络流建模方式总结">
+      「持续更新」网络流建模方式总结 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义"><span class="nav-number">1.</span> <span class="nav-text">定义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#回文子串"><span class="nav-number">1.1.</span> <span class="nav-text">回文子串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#回文后缀"><span class="nav-number">1.2.</span> <span class="nav-text">回文后缀</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最长回文后缀"><span class="nav-number">1.3.</span> <span class="nav-text">最长回文后缀</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#回文树"><span class="nav-number">1.4.</span> <span class="nav-text">回文树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#后缀链接与fail树与fail链"><span class="nav-number">1.5.</span> <span class="nav-text">后缀链接与fail树与fail链</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#回文自动机"><span class="nav-number">1.6.</span> <span class="nav-text">回文自动机</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#空间复杂度线性证明"><span class="nav-number">2.</span> <span class="nav-text">空间复杂度线性证明</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#定理1"><span class="nav-number">2.1.</span> <span class="nav-text">定理1</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构造方法"><span class="nav-number">3.</span> <span class="nav-text">构造方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#定理2"><span class="nav-number">3.1.</span> <span class="nav-text">定理2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模板代码"><span class="nav-number">3.2.</span> <span class="nav-text">模板代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基础插入法时间复杂度证明"><span class="nav-number">4.</span> <span class="nav-text">基础插入法时间复杂度证明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应用"><span class="nav-number">5.</span> <span class="nav-text">应用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#回文自动机拓展"><span class="nav-number">6.</span> <span class="nav-text">回文自动机拓展</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进阶-使用回文自动机优化一类动规问题"><span class="nav-number">7.</span> <span class="nav-text">进阶-使用回文自动机优化一类动规问题</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Bill Yang"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Bill Yang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">667</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">232</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=935683004" title="QQ → tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=935683004" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i>QQ</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ym13883407586@outlook.com" title="E-Mail → mailto:ym13883407586@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/BillYang2016" title="GitHub → https://github.com/BillYang2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://coding.net/u/Bill_Yang_2016" title="Coding → https://coding.net/u/Bill_Yang_2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-git-square"></i>Coding</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://music.163.com/#/user/home?nickname=Bill_Yang2016" title="网易云音乐 → http://music.163.com/#/user/home?nickname=Bill_Yang2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-music"></i>网易云音乐</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://space.bilibili.com/233682260/#/" title="bilibili → https://space.bilibili.com/233682260/#/" rel="noopener" target="_blank"><i class="fa fa-fw fa-youtube-play"></i>bilibili</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → /atom.xml"><i class="fa fa-fw fa-rss"></i>RSS</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      我的朋友们
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://pointedpoints.github.io/" title="http://pointedpoints.github.io/" rel="noopener" target="_blank">pointedpoints</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://keke046.coding.me/" title="https://keke046.coding.me/" rel="noopener" target="_blank">KEKE046</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://imperfect_zx.coding.me/" title="https://imperfect_zx.coding.me/" rel="noopener" target="_blank">Imperfect</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://achen.world/" title="https://achen.world/" rel="noopener" target="_blank">Achen</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://metakari.one/" title="https://metakari.one/" rel="noopener" target="_blank">Metakar1</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://wekyland.fun/" title="http://wekyland.fun/" rel="noopener" target="_blank">魏启大陆</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/friends/" title="/friends/">更多朋友们</a>
+        </li>
+    </ul>
+  </div>
+<!-- none-select-br -->
+
+<p></p>
+
+<!-- hitokoto -->
+
+<div class="hitokoto-title">
+	<i class="fa fa-paragraph"></i>
+	<b>一言</b>
+</div>
+
+<div id="hitokoto">:D 获取中...</div>
+<i id="hitofrom">:D 获取中...</i>
+
+<script src="https://cdn.jsdelivr.net/npm/bluebird@3/js/browser/bluebird.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/whatwg-fetch@2.0.3/fetch.min.js"></script>
+<script>
+  fetch('https://v1.hitokoto.cn')
+    .then(function (res){
+      return res.json();
+    })
+    .then(function (data) {
+      var hitokoto = document.getElementById('hitokoto');
+      hitokoto.innerText = '\xa0\xa0\xa0\xa0\xa0\xa0\xa0' + data.hitokoto;
+      var hitofrom = document.getElementById('hitofrom');
+      hitofrom.innerText = "——" + data.from + '\xa0'; 
+    })
+    .catch(function (err) {
+      console.error(err);
+    })
+</script>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Bill Yang 以 <a class="theme-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a> 协议发布</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.getAttribute('pjax') !== null) {
+      script.setAttribute('pjax', '');
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+  <script pjax>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+  <script pjax>
+  if (CONFIG.page.isPost) {
+    wpac_init = window.wpac_init || [];
+    wpac_init.push({
+      widget: 'Rating',
+      id: 10154,
+      el: 'wpac-rating',
+      color: 'fc6423'
+    });
+    (function() {
+      if ('WIDGETPACK_LOADED' in window) return;
+      WIDGETPACK_LOADED = true;
+      var mc = document.createElement('script');
+      mc.type = 'text/javascript';
+      mc.async = true;
+      mc.src = '//embed.widgetpack.com/widget.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+    })();
+  }
+  </script>
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout: 3000,
+        priority: true,
+        ignores: [uri => uri.includes('#'),uri => uri == 'https://blog.bill.moe/palindrome-automaton-notes/',]
+      });
+      });
+  </script>
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: true,
+      notify: false,
+      appId: 'JYwxXHHRe8RNGu498SnK9B3N-gzGzoHsz',
+      appKey: 'JBz9GW9kidjPp7gW5Y6VIgfe',
+      placeholder: "吹雪は猫~",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: 'zh-cn' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+    </div><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</body>
+</html>

@@ -50,7 +50,7 @@
 </script>
 
   <meta name="description" content="题目大意 &amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;求：   g(a,b,c,l,r)=\sum_{i=l}^ri\lfloor\frac{ai+b}c\rfloor">
-<meta name="keywords" content="bsoj,学习笔记,数论,类欧几里得">
+<meta name="keywords" content="学习笔记,bsoj,数论,类欧几里得">
 <meta property="og:type" content="article">
 <meta property="og:title" content="「bsoj4936」「模板题」类欧几里得 - 类欧几里得 附简要学习笔记">
 <meta property="og:url" content="https://blog.bill.moe/bsoj4936-euclidean/index.html">
@@ -424,19 +424,19 @@ h(a,b,c,n)&=\sum_{i=0}^n\lfloor\frac{ai+b}c\rfloor^2 \\
   <div class="popular-posts-header">相关文章</div>
   <ul class="popular-posts">
     <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/number-theoretic-transform-notes/" rel="bookmark">基于FFT的NTT学习笔记</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/bsoj5041-nbc/" rel="bookmark">「bsoj5041」挑战nbc - 数论</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/generating-function-notes/" rel="bookmark">生成函数在信息学竞赛中的应用</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/taylor-series-notes/" rel="bookmark">泰勒公式推导笔记</a></div>
+    </li>
+    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="/polynomial-calculate-notes/" rel="bookmark">多项式运算学习笔记</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/baby-step-giant-step-notes/" rel="bookmark">离散对数与Baby Step Giant Step</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/bsoj1938-prime/" rel="bookmark">「bsoj1938」素数问题 - Miller-Rabin</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/bsoj5140-strong/" rel="bookmark">「bsoj5140」挖掘机技术哪家强 - 数论</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/bsoj3815-prime/" rel="bookmark">「bsoj3815」又一个素数 - 线性筛+乱搞</a></div>
     </li>
   </ul>
 
@@ -481,8 +481,8 @@ h(a,b,c,n)&=\sum_{i=0}^n\lfloor\frac{ai+b}c\rfloor^2 \\
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/bsoj/" rel="tag"><i class="fa fa-tag"></i> bsoj</a>
               <a href="/tags/学习笔记/" rel="tag"><i class="fa fa-tag"></i> 学习笔记</a>
+              <a href="/tags/bsoj/" rel="tag"><i class="fa fa-tag"></i> bsoj</a>
               <a href="/tags/数论/" rel="tag"><i class="fa fa-tag"></i> 数论</a>
               <a href="/tags/类欧几里得/" rel="tag"><i class="fa fa-tag"></i> 类欧几里得</a>
           </div>
@@ -718,7 +718,7 @@ h(a,b,c,n)&=\sum_{i=0}^n\lfloor\frac{ai+b}c\rfloor^2 \\
 
         
 <div class="busuanzi-count">
-  <script pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
     <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
       <span class="post-meta-item-icon">
         <i class="fa fa-user"></i>
@@ -753,75 +753,16 @@ h(a,b,c,n)&=\sum_{i=0}^n\lfloor\frac{ai+b}c\rfloor^2 \\
   
   <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
   <script src="/lib/anime.min.js"></script>
-  <script src="/lib/pjax/pjax.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 <script src="/js/utils.js"></script><script src="/js/motion.js"></script>
 <script src="/js/schemes/pisces.js"></script>
 <script src="/js/next-boot.js"></script>
-  <script>
-var pjax = new Pjax({
-  selectors: [
-    'head title',
-    '#page-configurations',
-    '.content-wrap',
-    '.post-toc-wrap',
-    '#pjax'
-  ],
-  switches: {
-    '.post-toc-wrap': Pjax.switches.innerHTML
-  },
-  analytics: false,
-  cacheBust: false,
-  scrollTo : !CONFIG.bookmark.enable
-});
-
-window.addEventListener('pjax:success', () => {
-  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
-    var code = element.text || element.textContent || element.innerHTML || '';
-    var parent = element.parentNode;
-    parent.removeChild(element);
-    var script = document.createElement('script');
-    if (element.id) {
-      script.id = element.id;
-    }
-    if (element.className) {
-      script.className = element.className;
-    }
-    if (element.type) {
-      script.type = element.type;
-    }
-    if (element.src) {
-      script.src = element.src;
-      // Force synchronous loading of peripheral JS.
-      script.async = false;
-    }
-    if (element.getAttribute('pjax') !== null) {
-      script.setAttribute('pjax', '');
-    }
-    if (code !== '') {
-      script.appendChild(document.createTextNode(code));
-    }
-    parent.appendChild(script);
-  });
-  NexT.boot.refresh();
-  // Define Motion Sequence & Bootstrap Motion.
-  if (CONFIG.motion.enable) {
-    NexT.motion.integrator
-      .init()
-      .add(NexT.motion.middleWares.subMenu)
-      .add(NexT.motion.middleWares.postList)
-      .bootstrap();
-  }
-  NexT.utils.updateSidebarPosition();
-});
-</script>
-
 
 
 
   
-  <script pjax>
+  <script>
     (function(){
       var bp = document.createElement('script');
       var curProtocol = window.location.protocol.split(':')[0];
@@ -833,7 +774,7 @@ window.addEventListener('pjax:success', () => {
 
 
 
-  <script pjax>
+  <script>
   if (CONFIG.page.isPost) {
     wpac_init = window.wpac_init || [];
     wpac_init.push({
@@ -867,7 +808,6 @@ window.addEventListener('pjax:success', () => {
 
 
 
-    <div id="pjax">
   
 
   
@@ -959,8 +899,7 @@ NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
     });
   }, window.Valine);
 });
-</script>
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
-    </div><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </body>
 </html>

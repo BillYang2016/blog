@@ -50,7 +50,7 @@
 </script>
 
   <meta name="description" content="题目大意 &amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;一个长度为$n$的序列$a$，设其排过序之后为$b$，其中位数定义为$b[n/2]$，其中$a,b$从$0$开始标号,除法取下整。&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;给你一个长度为$n$的序列$s$。&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;回答$Q$个这样的询问：$s$的左端点在$[a,b]$之间,右端点在$[c,d]$">
-<meta name="keywords" content="二分,bzoj,主席树,可持久化">
+<meta name="keywords" content="二分,主席树,可持久化,bzoj">
 <meta property="og:type" content="article">
 <meta property="og:title" content="「bzoj2653」middle(陈立杰) - 二分+主席树">
 <meta property="og:url" content="https://blog.bill.moe/bzoj2653-middle/index.html">
@@ -350,16 +350,16 @@
   <div class="popular-posts-header">相关文章</div>
   <ul class="popular-posts">
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/bzoj3551-peaks/" rel="bookmark">「bzoj3551」Peaks加强版 - Kruskal重构树+主席树</a></div>
+      <div class="popular-posts-title"><a href="/bzoj3489-rmqproblem/" rel="bookmark">「bzoj3489」A simple rmq problem - K-D树/主席树套主席树</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/bzoj3489-rmqproblem/" rel="bookmark">「bzoj3489」A simple rmq problem - K-D树/主席树套主席树</a></div>
+      <div class="popular-posts-title"><a href="/bzoj3551-peaks/" rel="bookmark">「bzoj3551」Peaks加强版 - Kruskal重构树+主席树</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="/bzoj3744-Gtysequence/" rel="bookmark">「bzoj3744」Gty的妹子序列 - 分块+树状数组（+主席树）</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/bzoj4103-xor/" rel="bookmark">「bzoj4103」「THUSC2015」异或运算 - 可持久化trie树</a></div>
+      <div class="popular-posts-title"><a href="/cdqzD10T1-rehearsal/" rel="bookmark">「cdqzD10T1」大型演习 - CDQ分治+主席树维护单调栈</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="/bzoj3218-a-b/" rel="bookmark">「bzoj3218」a + b Problem - 主席树优化网络流建边</a></div>
@@ -408,9 +408,9 @@
           
           <div class="post-tags">
               <a href="/tags/二分/" rel="tag"><i class="fa fa-tag"></i> 二分</a>
-              <a href="/tags/bzoj/" rel="tag"><i class="fa fa-tag"></i> bzoj</a>
               <a href="/tags/主席树/" rel="tag"><i class="fa fa-tag"></i> 主席树</a>
               <a href="/tags/可持久化/" rel="tag"><i class="fa fa-tag"></i> 可持久化</a>
+              <a href="/tags/bzoj/" rel="tag"><i class="fa fa-tag"></i> bzoj</a>
           </div>
 
         
@@ -644,7 +644,7 @@
 
         
 <div class="busuanzi-count">
-  <script pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
     <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
       <span class="post-meta-item-icon">
         <i class="fa fa-user"></i>
@@ -679,75 +679,16 @@
   
   <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
   <script src="/lib/anime.min.js"></script>
-  <script src="/lib/pjax/pjax.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 <script src="/js/utils.js"></script><script src="/js/motion.js"></script>
 <script src="/js/schemes/pisces.js"></script>
 <script src="/js/next-boot.js"></script>
-  <script>
-var pjax = new Pjax({
-  selectors: [
-    'head title',
-    '#page-configurations',
-    '.content-wrap',
-    '.post-toc-wrap',
-    '#pjax'
-  ],
-  switches: {
-    '.post-toc-wrap': Pjax.switches.innerHTML
-  },
-  analytics: false,
-  cacheBust: false,
-  scrollTo : !CONFIG.bookmark.enable
-});
-
-window.addEventListener('pjax:success', () => {
-  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
-    var code = element.text || element.textContent || element.innerHTML || '';
-    var parent = element.parentNode;
-    parent.removeChild(element);
-    var script = document.createElement('script');
-    if (element.id) {
-      script.id = element.id;
-    }
-    if (element.className) {
-      script.className = element.className;
-    }
-    if (element.type) {
-      script.type = element.type;
-    }
-    if (element.src) {
-      script.src = element.src;
-      // Force synchronous loading of peripheral JS.
-      script.async = false;
-    }
-    if (element.getAttribute('pjax') !== null) {
-      script.setAttribute('pjax', '');
-    }
-    if (code !== '') {
-      script.appendChild(document.createTextNode(code));
-    }
-    parent.appendChild(script);
-  });
-  NexT.boot.refresh();
-  // Define Motion Sequence & Bootstrap Motion.
-  if (CONFIG.motion.enable) {
-    NexT.motion.integrator
-      .init()
-      .add(NexT.motion.middleWares.subMenu)
-      .add(NexT.motion.middleWares.postList)
-      .bootstrap();
-  }
-  NexT.utils.updateSidebarPosition();
-});
-</script>
-
 
 
 
   
-  <script pjax>
+  <script>
     (function(){
       var bp = document.createElement('script');
       var curProtocol = window.location.protocol.split(':')[0];
@@ -759,7 +700,7 @@ window.addEventListener('pjax:success', () => {
 
 
 
-  <script pjax>
+  <script>
   if (CONFIG.page.isPost) {
     wpac_init = window.wpac_init || [];
     wpac_init.push({
@@ -793,7 +734,6 @@ window.addEventListener('pjax:success', () => {
 
 
 
-    <div id="pjax">
   
 
   
@@ -885,8 +825,7 @@ NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
     });
   }, window.Valine);
 });
-</script>
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
-    </div><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </body>
 </html>

@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.png">
+  <link rel="mask-icon" href="/images/logo.png" color="#222">
+  <meta name="google-site-verification" content="ghOTm3Im1Awef9otcmhxaBXZs5PlL-aApB3Zeo2qVrg">
+  <meta name="baidu-site-verification" content="PcyS4kW5Yu">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-bounce.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://blog.bill.moe').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},
+    path: 'search.xml',
+    motion: {"enable":true,"async":true,"transition":{"post_block":"swoopIn","post_header":"shrinkIn","post_body":"shrinkIn","coll_header":"expandIn","sidebar":"bounceIn"}}
+  };
+</script>
+
+  <meta name="description" content="前言有关于自然底数$e$的概念我们是在学习基本初等函数时了解的，可惜的是，高中教材并没有给我们详细的阐述有关$e$的概念与优美的性质，大家普遍只知道它是一个无理数。于是我们常常听到这样的话：“常用底数不常用，自然底数不自然。”那么为什么$10$被称为常用底数，$e$被称为自然底数呢？不要急，请容我娓娓道来。">
+<meta name="keywords" content="科普">
+<meta property="og:type" content="article">
+<meta property="og:title" content="「有趣的数学」神奇的自然底数$e$">
+<meta property="og:url" content="https://blog.bill.moe/magical-e/index.html">
+<meta property="og:site_name" content="Bill Yang&#39;s Blog">
+<meta property="og:description" content="前言有关于自然底数$e$的概念我们是在学习基本初等函数时了解的，可惜的是，高中教材并没有给我们详细的阐述有关$e$的概念与优美的性质，大家普遍只知道它是一个无理数。于是我们常常听到这样的话：“常用底数不常用，自然底数不自然。”那么为什么$10$被称为常用底数，$e$被称为自然底数呢？不要急，请容我娓娓道来。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://blog.bill.moe/magical-e/1.png">
+<meta property="og:updated_time" content="2019-12-03T12:06:24.641Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="「有趣的数学」神奇的自然底数$e$">
+<meta name="twitter:description" content="前言有关于自然底数$e$的概念我们是在学习基本初等函数时了解的，可惜的是，高中教材并没有给我们详细的阐述有关$e$的概念与优美的性质，大家普遍只知道它是一个无理数。于是我们常常听到这样的话：“常用底数不常用，自然底数不自然。”那么为什么$10$被称为常用底数，$e$被称为自然底数呢？不要急，请容我娓娓道来。">
+<meta name="twitter:image" content="https://blog.bill.moe/magical-e/1.png">
+
+<link rel="canonical" href="https://blog.bill.moe/magical-e/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+<!-- jquery -->
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+<!-- 打字礼花及震动特效 -->
+
+<div id="append_parent"></div><div id="ajaxwaitid"></div>
+<script type="text/javascript" src="/lib/activate-power-mode/activate-power-mode.js"></script>
+<script>
+	POWERMODE.colorful = true;
+	POWERMODE.shake = false;
+	document.body.addEventListener('input',POWERMODE);
+</script>
+
+<!-- live2d -->
+
+<div class="waifu">
+	<div class="waifu-tips"></div>
+	<canvas id="live2d" width="240" height="350" class="live2d"></canvas>
+	<div class="hide-button">隐藏</div>
+</div>
+<script async src="/lib/poster-girl/waifu-tips.js"></script>
+<script src="/lib/poster-girl/live2d.js"></script>
+<script type="text/javascript">
+	loadlive2d("live2d", "/live2d/assets/kanna.model.json");
+</script>
+  <title>「有趣的数学」神奇的自然底数$e$ | Bill Yang's Blog</title>
+  
+    <script>
+      function sendPageView() {
+        if (CONFIG.hostname !== location.hostname) return;
+        var uid = localStorage.getItem('uid') || (Math.random() + '.' + Math.random());
+        localStorage.setItem('uid', uid);
+        navigator.sendBeacon('https://www.google-analytics.com/collect', new URLSearchParams({
+          v  : 1,
+          tid: 'UA-157912381-1',
+          cid: uid,
+          t  : 'pageview',
+          dp : encodeURIComponent(location.pathname)
+        }));
+      }
+      document.addEventListener('pjax:complete', sendPageView);
+      sendPageView();
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?d538e1e81ada366563b03354efffd84c";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Bill Yang's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">路终会有尽头，但视野总能看到更远的地方。</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">10</span></a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-friends">
+
+    <a href="/friends" rel="section"><i class="fa fa-fw fa-users"></i>友链</a>
+
+  </li>
+        <li class="menu-item menu-item-board">
+
+    <a href="/board/" rel="section"><i class="fa fa-fw fa-sticky-note-o"></i>留言板</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">672</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">234</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.bill.moe/magical-e/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Bill Yang">
+      <meta itemprop="description" content="这辈子都不可能更新的">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bill Yang's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          「有趣的数学」神奇的自然底数$e$
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-09-04 10:34:53" itemprop="dateCreated datePublished" datetime="2019-09-04T10:34:53+08:00">2019-09-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-12-03 20:06:24" itemprop="dateModified" datetime="2019-12-03T20:06:24+08:00">2019-12-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/科普/" itemprop="url" rel="index">
+                    <span itemprop="name">科普</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/magical-e/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/magical-e/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>有关于自然底数$e$的概念我们是在学习基本初等函数时了解的，可惜的是，高中教材并没有给我们详细的阐述有关$e$的概念与优美的性质，大家普遍只知道它是一个无理数。<br>于是我们常常听到这样的话：“常用底数不常用，自然底数不自然。”<br>那么为什么$10$被称为常用底数，$e$被称为自然底数呢？<br>不要急，请容我娓娓道来。<br><a id="more"></a></p>
+<h2 id="对数的发明"><a href="#对数的发明" class="headerlink" title="对数的发明"></a>对数的发明</h2><blockquote>
+<p>16、17世纪之交，天文学极速发展，但由于天文学数字总是非常大，计算起来很不方便，因此人们迫切的想要找到一种简化数字计算的方法。<br>天文学家约翰·纳皮尔为了简化运算发明了对数，最初的定义是通过运动学阐述的，后来与朋友布里格斯商定，使$1$的对数为$0$，$10$的对数为$1$，这样就得到了以$10$为底的常用对数。</p>
+</blockquote>
+<p>我们发现，之所以称$10$为常用底数正是因为它被广泛运用到天文学中。</p>
+<p>值得一提的是，我们都知道对数与指数是互逆关系，但对数比指数的发明更早，直到18世纪欧拉才发现了它们的互逆关系，这也成为了数学史上的佳话。</p>
+<h2 id="e-的发现"><a href="#e-的发现" class="headerlink" title="$e$的发现"></a>$e$的发现</h2><p>我们介绍了对数的发明，那么自然底数是如何被发现的呢？神奇的是，自然底数的发现却与对数没有关系。<br>在17世纪末，瑞士数学家伯努利注意到了一个有趣的现象：当$x$越大时，$\Big(1+\frac1x\Big)^x$将会越接近某个固定的数：</p>
+<script type="math/tex; mode=display">\Big(1+\frac1{100}\Big)^{100}\approx 2.70481</script><script type="math/tex; mode=display">\Big(1+\frac1{1000}\Big)^{1000}\approx 2.71692</script><script type="math/tex; mode=display">\Big(1+\frac1{10000}\Big)^{10000}\approx 2.71815</script><p>18世纪欧拉（没错又是欧拉）仔细研究了这个问题，并第一次使用字母$e$来表示当$x$无穷大时$\Big(1+\frac1x\Big)^x$的值，即：</p>
+<script type="math/tex; mode=display">\lim_{x\rightarrow\infty}\Big(1+\frac1x\Big)^x=e</script><p>欧拉不仅求出了$e\approx2.718$，还证明了$e$是无理数。<br>那么$e$究竟有什么神奇的性质呢？</p>
+<h2 id="神奇的-e"><a href="#神奇的-e" class="headerlink" title="神奇的$e$"></a>神奇的$e$</h2><h3 id="导数"><a href="#导数" class="headerlink" title="导数"></a>导数</h3><p>在高二我们会学习到指数函数的导数。</p>
+<script type="math/tex; mode=display">(e^x)'=e^x</script><p>即$e^x$的导数是他的本身。<br>正因为有这样的性质，故指数函数在我们现实世界中具有重要作用。<br>当我们涉及到一个量的变化与自身大小相关的问题时，就往往需要引入指数函数或对数函数。</p>
+<h3 id="连续复利公式"><a href="#连续复利公式" class="headerlink" title="连续复利公式"></a>连续复利公式</h3><p>假设有一家银行，年利率是$5\%$，并且每时每刻都在结算利息。<br>如果我们存入$1w$元，下一年我们就可以获得$500$元的利息，但这并不是能让我们获得最大收益的方法。<br>我们可以半年后取出利息，再把本金和利息重新作为本金计算，这样我们下半年可以获得$(1w+250)\times2.5\%=256.25$元的利息，也就是说我们最后的总利息是$506.25$元。<br>如果我们一个季度取出一次利息，那么获得的利息会更多。<br>随着我们逐渐缩短我们存取的间隔，利益会越来越大，当我们将存取的间隔缩短到无穷小时，获得的利益最大，此时就是连续复利。<br>可惜的是，我们并不能通过这样的方式赚到很多的钱，因为缩短间隔过程中利息的增多是收敛的，而连续复利就是它们的极限。<br>那么我们究竟能赚到多少钱呢？<br>设本金是$p_0$，年利率是$i$，每年的结算期数是$m$（每年存取的次数）。</p>
+<script type="math/tex; mode=display">p_{nm}=p_0(1+\frac im)^{mn}</script><p>当$m\rightarrow\infty$时：</p>
+<script type="math/tex; mode=display">p_n=\lim_{m\rightarrow\infty}p_0(1+\frac im)^{mn}=p_0\lim_{m\rightarrow\infty}[(1+\frac im)^{\frac mi}]^{ni}=p_0e^{ni}</script><p>上述公式即是连续复利公式。<br>当年利率是$5\%$，我们通过连续复利可以得到的利息约为$512.7$元，可见增加的利益也并不可观。</p>
+<h3 id="e-x-的泰勒展开"><a href="#e-x-的泰勒展开" class="headerlink" title="$e^x$的泰勒展开"></a>$e^x$的泰勒展开</h3><p>对$e^x$<a href="/taylor-series-notes/">泰勒展开</a>，得到：</p>
+<script type="math/tex; mode=display">e^x=\sum_{i=0}^{\infty}\frac{x^i}{i!}</script><p>这个公式又被称为麦克劳林公式。</p>
+<h3 id="复分析下的欧拉公式"><a href="#复分析下的欧拉公式" class="headerlink" title="复分析下的欧拉公式"></a>复分析下的欧拉公式</h3><p>我们先来看看欧拉恒等式：</p>
+<script type="math/tex; mode=display">e^{i\pi}+1=0</script><p>它是数学里最令人着迷的公式之一，它将数学里最重要的几个常数联系到了一起：两个超越数：自然底数$e$，圆周率$π$，两个单位：虚数单位$i$和自然数的单位$1$，以及数学里常见的$0$。因此，数学家们评价它是“上帝创造的公式，我们只能看它而不能理解它。”<br>欧拉恒等式是复分析下的欧拉公式的一个特例，欧拉公式如下：</p>
+<script type="math/tex; mode=display">e^{ix}=\cos x+i\sin x</script><p>当代入$x=\pi$时即得到欧拉恒等式。<br>我们在<a href="/fast-fourier-transform-notes/">傅里叶变换</a>中提到过这一个欧拉公式，它使我们可以通过函数的方式来描述一个复数。<br>现在要介绍的是欧拉公式的推导：<br>我们将麦克劳林公式中的$x$替换为$ix$，即可得到：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+e^x&=1+ix+\frac{(ix)^2}{2!}+\frac{(ix)^3}{3!}+\frac{(ix)^4}{4!}+\cdots \\
+&=1+ix-\frac{x^2}{2!}-\frac{ix^3}{3!}+\frac{x^4}{4!}+\cdots
+\end{aligned}</script><p>我们把不含$i$的放一边，含$i$的放在另一边，则可以得到：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+e^x&=(1-\frac{x^2}{2!}+\frac{x^4}{4!}-\frac{x^6}{6!}+\cdots)+i(x-\frac{x^3}{3!}+\frac{x^5}{5!}-\cdots) \\
+&=\cos x+i\sin x
+\end{aligned}</script><h3 id="杨辉三角（摘自-Matrix67-的博客）"><a href="#杨辉三角（摘自-Matrix67-的博客）" class="headerlink" title="杨辉三角（摘自 Matrix67 的博客）"></a>杨辉三角（摘自 Matrix67 的博客）</h3><p>你相信吗，杨辉三角里竟然也有自然底数 e 的身影。2012 年， Harlan Brothers 发现了杨辉三角中的一个有趣的事实。不妨把杨辉三角第$n$行的所有数之积记作$s_n$，那么随着$n$的增加，$\frac{s_ns_{n+2}}{s_{n+1}^2}$会越来越接近$e\approx 2.718$。事实上，我们有：</p>
+<script type="math/tex; mode=display">\lim_{n\rightarrow\infty}\frac{s_ns_{n+2}}{s_{n+1}^2}=e</script><p>这是为什么呢？ John Baez 在<a href="http://johncarlosbaez.wordpress.com/2014/02/12/triangular-numbers/" target="_blank" rel="noopener">这个网页</a>上给出了一个漂亮的解释。</p>
+<p><img src="/magical-e/1.png" alt></p>
+<p>首先，让杨辉三角 (A) 里面的每个数都除以它左下角的那个数，于是得到了图 (B) 所示的三角形数阵。你会发现，这个数阵里有一个很明显的模式，即第$n$行的所有数分母都是$n$，分子则分别是$n,n-1,\ldots,2,1$。这并不是巧合。这是因为：</p>
+<script type="math/tex; mode=display">\frac{C_m^k}{C_{m+1}^k}=\frac{\frac{m!}{k!(m-k)!}}{\frac{(m+1)!}{k!(m-k+1)!}}=\frac{m-k+1}{m+1}</script><p>接下来，让图 (B) 里的所有数都除以它右下角的那个数，于是得到了图 (C) 所示的三角形数阵。容易看出，这个数阵第$n$行的所有$n$个数应该都是$\frac{n+1}{n}=1+\frac1n$ ，它们乘起来等于$(1+\frac1n)^n$。随着$n$的增加，这个数会越来越接近$e$。最后，让我们追溯一下图 (C) 中每个数的来源。图 (C) 中第$n$行的每个数都等于图 (B) 中第$n$行的某个数除以第$n+1$行的某个数，进而等于图 (A) 中第$n$行的某个数除以第$n+1$行的某个数的结果，除以第$n+1$行的某个数除以第$n+2$行的某个数的结果。因此，图 (C) 中第$n$行的所有数乘起来，结果正是$\frac{s_ns_{n+2}}{s_{n+1}^2}$。</p>
+<p>我们称$e$为自然底数，正是因为它有这些神奇的性质，就像是自然创造出来的一个神奇常数。<br>也正是如此，$e$被广泛运用到数学和信息学之中，欢迎读者补充以上内容。</p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/code-standard/" rel="bookmark">Bill Yang 代码规范</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div>姥爷们赏瓶冰阔落吧~</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="Bill Yang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="Bill Yang 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Bill Yang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.bill.moe/magical-e/" title="「有趣的数学」神奇的自然底数$e$">https://blog.bill.moe/magical-e/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/科普/" rel="tag"><i class="fa fa-tag"></i> 科普</a>
+          </div>
+
+        
+  <div class="post-widgets">
+    <div class="wp_rating">
+      <div id="wpac-rating"></div>
+    </div>
+  </div>
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/HongKongAirline/" rel="prev" title="近期香港机场相关个人评论">
+      <i class="fa fa-chevron-left"></i> 近期香港机场相关个人评论
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/code-standard/" rel="next" title="Bill Yang 代码规范">
+      Bill Yang 代码规范 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对数的发明"><span class="nav-number">2.</span> <span class="nav-text">对数的发明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#e-的发现"><span class="nav-number">3.</span> <span class="nav-text">$e$的发现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#神奇的-e"><span class="nav-number">4.</span> <span class="nav-text">神奇的$e$</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#导数"><span class="nav-number">4.1.</span> <span class="nav-text">导数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#连续复利公式"><span class="nav-number">4.2.</span> <span class="nav-text">连续复利公式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#e-x-的泰勒展开"><span class="nav-number">4.3.</span> <span class="nav-text">$e^x$的泰勒展开</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#复分析下的欧拉公式"><span class="nav-number">4.4.</span> <span class="nav-text">复分析下的欧拉公式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#杨辉三角（摘自-Matrix67-的博客）"><span class="nav-number">4.5.</span> <span class="nav-text">杨辉三角（摘自 Matrix67 的博客）</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Bill Yang"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Bill Yang</p>
+  <div class="site-description" itemprop="description">这辈子都不可能更新的</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">672</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">234</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=935683004" title="QQ → tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=935683004" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i>QQ</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ym13883407586@outlook.com" title="E-Mail → mailto:ym13883407586@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/BillYang2016" title="GitHub → https://github.com/BillYang2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://coding.net/u/Bill_Yang_2016" title="Coding → https://coding.net/u/Bill_Yang_2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-git-square"></i>Coding</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://music.163.com/#/user/home?nickname=Bill_Yang2016" title="网易云音乐 → http://music.163.com/#/user/home?nickname=Bill_Yang2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-music"></i>网易云音乐</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://space.bilibili.com/233682260/#/" title="bilibili → https://space.bilibili.com/233682260/#/" rel="noopener" target="_blank"><i class="fa fa-fw fa-youtube-play"></i>bilibili</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → /atom.xml"><i class="fa fa-fw fa-rss"></i>RSS</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      我的朋友们
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://pointedpoints.github.io/" title="http://pointedpoints.github.io/" rel="noopener" target="_blank">pointedpoints</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://keke046.coding.me/" title="https://keke046.coding.me/" rel="noopener" target="_blank">KEKE046</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://imperfect_zx.coding.me/" title="https://imperfect_zx.coding.me/" rel="noopener" target="_blank">Imperfect</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://achen.world/" title="https://achen.world/" rel="noopener" target="_blank">Achen</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://metakari.one/" title="https://metakari.one/" rel="noopener" target="_blank">Metakar1</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://39.106.98.75/" title="http://39.106.98.75/" rel="noopener" target="_blank">魏启大陆</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/friends/" title="/friends/">更多朋友们</a>
+        </li>
+    </ul>
+  </div>
+<!-- none-select-br -->
+
+<p></p>
+
+<!-- hitokoto -->
+
+<div class="hitokoto-title">
+	<i class="fa fa-paragraph"></i>
+	<b>一言</b>
+</div>
+
+<div id="hitokoto">:D 获取中...</div>
+<i id="hitofrom">:D 获取中...</i>
+
+<script src="https://cdn.jsdelivr.net/npm/bluebird@3/js/browser/bluebird.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/whatwg-fetch@2.0.3/fetch.min.js"></script>
+<script>
+  fetch('https://v1.hitokoto.cn')
+    .then(function (res){
+      return res.json();
+    })
+    .then(function (data) {
+      var hitokoto = document.getElementById('hitokoto');
+      hitokoto.innerText = '\xa0\xa0\xa0\xa0\xa0\xa0\xa0' + data.hitokoto;
+      var hitofrom = document.getElementById('hitofrom');
+      hitofrom.innerText = "——" + data.from + '\xa0'; 
+    })
+    .catch(function (err) {
+      console.error(err);
+    })
+</script>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Bill Yang 以 <a class="theme-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a> 协议发布</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+  <script>
+  if (CONFIG.page.isPost) {
+    wpac_init = window.wpac_init || [];
+    wpac_init.push({
+      widget: 'Rating',
+      id: 10154,
+      el: 'wpac-rating',
+      color: 'fc6423'
+    });
+    (function() {
+      if ('WIDGETPACK_LOADED' in window) return;
+      WIDGETPACK_LOADED = true;
+      var mc = document.createElement('script');
+      mc.type = 'text/javascript';
+      mc.async = true;
+      mc.src = '//embed.widgetpack.com/widget.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+    })();
+  }
+  </script>
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout: 3000,
+        priority: true,
+        ignores: [uri => uri.includes('#'),uri => uri == 'https://blog.bill.moe/magical-e/',]
+      });
+      });
+  </script>
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: true,
+      notify: false,
+      appId: 'JYwxXHHRe8RNGu498SnK9B3N-gzGzoHsz',
+      appKey: 'JBz9GW9kidjPp7gW5Y6VIgfe',
+      placeholder: "吹雪は猫~",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: 'zh-cn' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

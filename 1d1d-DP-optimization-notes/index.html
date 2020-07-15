@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.png">
+  <link rel="mask-icon" href="/images/logo.png" color="#222">
+  <meta name="google-site-verification" content="ghOTm3Im1Awef9otcmhxaBXZs5PlL-aApB3Zeo2qVrg">
+  <meta name="baidu-site-verification" content="PcyS4kW5Yu">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-bounce.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://blog.bill.moe').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},
+    path: 'search.xml',
+    motion: {"enable":true,"async":true,"transition":{"post_block":"swoopIn","post_header":"shrinkIn","post_body":"shrinkIn","coll_header":"expandIn","sidebar":"bounceIn"}}
+  };
+</script>
+
+  <meta name="description" content="声明原文传送门阅读请注意，编写原文时本人尚年轻，因此原文有数处错误且难以理解，请读者加以注意。一直不准备补的这个坑，我终于回来补了。原来只是单纯介绍斜率优化，现在把类似的优化一并总结了。">
+<meta name="keywords" content="斜率优化,学习笔记,决策单调性,单调队列">
+<meta property="og:type" content="article">
+<meta property="og:title" content="1D&#x2F;1D动态规划优化学习笔记">
+<meta property="og:url" content="https://blog.bill.moe/1d1d-DP-optimization-notes/index.html">
+<meta property="og:site_name" content="Bill Yang&#39;s Blog">
+<meta property="og:description" content="声明原文传送门阅读请注意，编写原文时本人尚年轻，因此原文有数处错误且难以理解，请读者加以注意。一直不准备补的这个坑，我终于回来补了。原来只是单纯介绍斜率优化，现在把类似的优化一并总结了。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://blog.bill.moe/1d1d-DP-optimization-notes/1.1.jpg">
+<meta property="og:image" content="https://blog.bill.moe/1d1d-DP-optimization-notes/2.1.png">
+<meta property="og:image" content="https://blog.bill.moe/1d1d-DP-optimization-notes/2.2.png">
+<meta property="og:updated_time" content="2019-07-30T10:34:08.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1D&#x2F;1D动态规划优化学习笔记">
+<meta name="twitter:description" content="声明原文传送门阅读请注意，编写原文时本人尚年轻，因此原文有数处错误且难以理解，请读者加以注意。一直不准备补的这个坑，我终于回来补了。原来只是单纯介绍斜率优化，现在把类似的优化一并总结了。">
+<meta name="twitter:image" content="https://blog.bill.moe/1d1d-DP-optimization-notes/1.1.jpg">
+
+<link rel="canonical" href="https://blog.bill.moe/1d1d-DP-optimization-notes/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+<!-- jquery -->
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+<!-- 打字礼花及震动特效 -->
+
+<div id="append_parent"></div><div id="ajaxwaitid"></div>
+<script type="text/javascript" src="/lib/activate-power-mode/activate-power-mode.js"></script>
+<script>
+	POWERMODE.colorful = true;
+	POWERMODE.shake = false;
+	document.body.addEventListener('input',POWERMODE);
+</script>
+
+<!-- live2d -->
+
+<div class="waifu">
+	<div class="waifu-tips"></div>
+	<canvas id="live2d" width="240" height="350" class="live2d"></canvas>
+	<div class="hide-button">隐藏</div>
+</div>
+<script async src="/lib/poster-girl/waifu-tips.js"></script>
+<script src="/lib/poster-girl/live2d.js"></script>
+<script type="text/javascript">
+	loadlive2d("live2d", "/live2d/assets/kanna.model.json");
+</script>
+  <title>1D/1D动态规划优化学习笔记 | Bill Yang's Blog</title>
+  
+    <script>
+      function sendPageView() {
+        if (CONFIG.hostname !== location.hostname) return;
+        var uid = localStorage.getItem('uid') || (Math.random() + '.' + Math.random());
+        localStorage.setItem('uid', uid);
+        navigator.sendBeacon('https://www.google-analytics.com/collect', new URLSearchParams({
+          v  : 1,
+          tid: 'UA-157912381-1',
+          cid: uid,
+          t  : 'pageview',
+          dp : encodeURIComponent(location.pathname)
+        }));
+      }
+      document.addEventListener('pjax:complete', sendPageView);
+      sendPageView();
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?d538e1e81ada366563b03354efffd84c";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Bill Yang's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">路终会有尽头，但视野总能看到更远的地方。</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">10</span></a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-friends">
+
+    <a href="/friends" rel="section"><i class="fa fa-fw fa-users"></i>友链</a>
+
+  </li>
+        <li class="menu-item menu-item-board">
+
+    <a href="/board/" rel="section"><i class="fa fa-fw fa-sticky-note-o"></i>留言板</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">672</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">234</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.bill.moe/1d1d-DP-optimization-notes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Bill Yang">
+      <meta itemprop="description" content="这辈子都不可能更新的">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bill Yang's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          1D/1D动态规划优化学习笔记
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-07-09 15:26:11" itemprop="dateCreated datePublished" datetime="2019-07-09T15:26:11+08:00">2019-07-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-07-30 18:34:08" itemprop="dateModified" datetime="2019-07-30T18:34:08+08:00">2019-07-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OI/" itemprop="url" rel="index">
+                    <span itemprop="name">OI</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/1d1d-DP-optimization-notes/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/1d1d-DP-optimization-notes/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h2><p><a href="https://blog.csdn.net/bill_yang_2016/article/details/54667902" target="_blank" rel="noopener">原文传送门</a><br>阅读请注意，编写原文时本人尚年轻，因此原文有数处错误且难以理解，请读者加以注意。<br>一直不准备补的这个坑，我终于回来补了。<br>原来只是单纯介绍斜率优化，现在把类似的优化一并总结了。</p>
+<a id="more"></a>
+<h2 id="1D-1D动态规划"><a href="#1D-1D动态规划" class="headerlink" title="1D/1D动态规划"></a>1D/1D动态规划</h2><p>所谓1D/1D动态规划，指的是状态数为$O(n)$，每一个状态决策量为$O(n)$的动态规划方程，直接求解的时间复杂度是$O(n^2)$。但是，绝大多数的方程通过合理的组织与优化都是可以直接优化到$O(n\log n)$乃至$O(n)$的时间复杂度的。<br>优化方法包括：</p>
+<ul>
+<li>单调队列优化至$O(n)$</li>
+<li>斜率优化至$O(n\log n)$或$O(n)$</li>
+<li>决策单调性优化至$O(n\log n)$</li>
+</ul>
+<p>接下来我们一一介绍。</p>
+<h2 id="单调队列"><a href="#单调队列" class="headerlink" title="单调队列"></a>单调队列</h2><h3 id="算法简介"><a href="#算法简介" class="headerlink" title="算法简介"></a>算法简介</h3><p>单调队列优化Dp问题是最简单最基础的一类优化方法，新学者们会很容易理解其优化原理。</p>
+<h3 id="特征方程：-f-x-min-limits-k-b-x-x-1-g-k-w-x-，其中-b-x-随-x-不降"><a href="#特征方程：-f-x-min-limits-k-b-x-x-1-g-k-w-x-，其中-b-x-随-x-不降" class="headerlink" title="特征方程：$f(x)=\min\limits_{k=b[x]}^{x-1}\{g(k)+w[x]\}$，其中$b[x]$随$x$不降"></a>特征方程：$f(x)=\min\limits_{k=b[x]}^{x-1}\{g(k)+w[x]\}$，其中$b[x]$随$x$不降</h3><p>本方程的最小化$\min$亦可为最大化$\max$，若为最大化$\max$，后述不等符号均需改变，本文均以最小化$\min$举例。<br>方程中，$b[x]$是$x$状态的转移起始来源，即转移来源区间是$[b[x],x-1]$，$b[x]$需要满足不降的特征。<br>若满足此特征方程，则可以利用单调队列优化Dp过程，将Dp复杂度降至$O(n)$。</p>
+<h3 id="优化原理"><a href="#优化原理" class="headerlink" title="优化原理"></a>优化原理</h3><p>注意到：如果有$i$状态有两个转移来源$j,k$，其中$j\le k$而$g(k)\le g(j)$，则决策$j$是毫无用处的，因为$b[x]$单调，如果$j$可以作为合法决策，那么$k$一定可以作为合法决策，又因为$g(k)$比$g(j)$更小，因此可以认为$k$比$j$更优，那么我们便可以舍去决策$j$。<br><strong>因此我们维护一个单调队列，保证决策下标$k$升序排列，那么可以注意到，在单调队列中$g(k)$同样是不降的。</strong></p>
+<h3 id="优化过程"><a href="#优化过程" class="headerlink" title="优化过程"></a>优化过程</h3><p>我们使用一个单调队列来维护决策表，对于每一个状态$f(x)$，计算过程如下：</p>
+<ol>
+<li>队首元素持续出队，知道队首元素在区间$[b[x],x-1]$中。</li>
+<li>此时队首元素$k$即为$f(x)$的最优决策。</li>
+<li>计算$g(x)$，将其插入单调队列的尾部，同时维护队列的单调性（将队尾与$x$不满足单调性的决策全部出队）</li>
+</ol>
+<p>重复执行以上步骤直到所有$f(x)$计算完成。</p>
+<h3 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h3><p>由于每一个元素只被计算了一次，并且每一个元素只入队了一次，因此时间复杂度均摊为$O(n)$。</p>
+<h3 id="例题及应用"><a href="#例题及应用" class="headerlink" title="例题及应用"></a>例题及应用</h3><h4 id="例题一-滑动窗口"><a href="#例题一-滑动窗口" class="headerlink" title="例题一.滑动窗口"></a>例题一.滑动窗口</h4><blockquote>
+<p>&ensp;&ensp;&ensp;&ensp;给你一个长度为$N$的数组，一个长为$K$的滑动的窗体从最左移至最右端，你只能见到窗口的$K$个数，每次窗体向右移动一位，如下图：<br><img src="/1d1d-DP-optimization-notes/1.1.jpg" alt><br>&ensp;&ensp;&ensp;&ensp;你的任务是找出窗体在各位置时的最大值和最小值。</p>
+</blockquote>
+<p>这是一道模板题，状态转移方程是$f(x)=\min\limits_{j=x-k+1}^{x-1}\{a[j]\}$，核心代码如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">n=Get_Int();</span><br><span class="line">m=Get_Int();</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=n; i++)a[i]=Get_Int();</span><br><span class="line"><span class="built_in">deque</span>&lt;<span class="keyword">int</span>&gt;Min;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=n; i++) &#123;</span><br><span class="line">	<span class="keyword">while</span>(!Min.empty()&amp;&amp;Min.front()&lt;=i-m)Min.pop_front(); <span class="comment">//维护队首 </span></span><br><span class="line">	ans1[i]=a[Min.front()];</span><br><span class="line">	<span class="keyword">while</span>(!Min.empty()&amp;&amp;a[Min.back()]&gt;=a[i])Min.pop_back(); <span class="comment">//维护队尾 </span></span><br><span class="line">	Min.push_back(i);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=m; i&lt;=n; i++)<span class="built_in">printf</span>(<span class="string">"%d "</span>,ans1[i]);</span><br><span class="line"><span class="built_in">putchar</span>(<span class="string">'\n'</span>);</span><br><span class="line"><span class="built_in">deque</span>&lt;<span class="keyword">int</span>&gt;Max;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=n; i++) &#123;</span><br><span class="line">	<span class="keyword">while</span>(!Max.empty()&amp;&amp;Max.front()&lt;=i-m)Max.pop_front(); <span class="comment">//维护队首 </span></span><br><span class="line">	ans2[i]=a[Max.front()]; </span><br><span class="line">	<span class="keyword">while</span>(!Max.empty()&amp;&amp;a[Max.back()]&lt;=a[i])Max.pop_back(); <span class="comment">//维护队尾 </span></span><br><span class="line">	Max.push_back(i);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=m; i&lt;=n; i++)<span class="built_in">printf</span>(<span class="string">"%d "</span>,ans2[i]);</span><br></pre></td></tr></table></figure></p>
+<h4 id="例题二-「bsoj3425」分班"><a href="#例题二-「bsoj3425」分班" class="headerlink" title="例题二.「bsoj3425」分班"></a>例题二.「bsoj3425」分班</h4><p><a href="/bsoj3425-class/">传送门</a></p>
+<h4 id="应用三-优化背包问题"><a href="#应用三-优化背包问题" class="headerlink" title="应用三.优化背包问题"></a>应用三.优化背包问题</h4><p><a href="/DP-backpack-notes/#多重背包">传送门</a></p>
+<h2 id="斜率优化"><a href="#斜率优化" class="headerlink" title="斜率优化"></a>斜率优化</h2><h3 id="算法简介-1"><a href="#算法简介-1" class="headerlink" title="算法简介"></a>算法简介</h3><p>斜率优化Dp问题入门会较为困难，因为这大概是在学习过程中OI选手第一次遇到与数学内容结合的算法。<br>但斜率优化反而是一个重要的知识点，它简单地将1D/1D动态规划优化至$O(n)$，同时斜率优化也有更困难的延申与拓展。<br>其中最简单的斜率优化形式还是单调队列，但优化原理大不相同。</p>
+<h3 id="特征方程：-f-i-min-limits-j-1-i-1-a-i-times-x-j-b-i-times-y-j"><a href="#特征方程：-f-i-min-limits-j-1-i-1-a-i-times-x-j-b-i-times-y-j" class="headerlink" title="特征方程：$f(i)=\min\limits_{j=1}^{i-1}\{a[i]\times x(j)+b[i]\times y(j)\}$"></a>特征方程：$f(i)=\min\limits_{j=1}^{i-1}\{a[i]\times x(j)+b[i]\times y(j)\}$</h3><p>其中，$x(j),y(j)$都是可以在常数时间内通过$f(j)$唯一决定的二元组。<br>这个特征方程涵盖的范围很广，但能够使用斜率优化的状态转移方程都可以转化成以上形式。</p>
+<h3 id="优化原理与过程"><a href="#优化原理与过程" class="headerlink" title="优化原理与过程"></a>优化原理与过程</h3><p>对于一个决策$j$进行考虑，即将考虑的转移是：$f(i)=a[i]\times x(j)+b[i]\times y(j)$。<br>我们使用线性规划进行转化（线性规划大概会在高二学习），我们以$x(j)$为横轴，$y(j)$为纵轴建立平面直角坐标系，这样决策$j$就可以用坐标系上的一个点表示。<br>原方程可以转化为$f(i)=\min\{a[i]\times x+b[i]\times y\}$，这类似一个直线的一般式方程，我们将其转化为斜截式方程：$y=-\frac abx+\frac{f(i)}b$，假设$b\gt0$，则目标是最小化直线的纵截距。<br>我们用一个斜率为$-\frac ab$的直线从负无穷向上平移，所碰到的第一个点即为最优决策$j$，利用这个点我们可以计算出最优的$f(i)$。<br><img src="/1d1d-DP-optimization-notes/2.1.png" alt><br>不难发现，<strong>所有可能的最优决策点必定在平面点集的凸包上</strong>，换句话说<strong>不在凸包上的点一定不是最优决策点</strong>。<br>当$b\gt0$时，我们需要维护一个右下凸包或左上凸包（根据点集的特征决定）。<br>那么现在我们的任务转化为了维护凸包。<br>根据直线斜率和数据点分布的特征，我们可以分为三种情况。</p>
+<h4 id="1-决策直线的斜率与二元组的横坐标同时满足单调性"><a href="#1-决策直线的斜率与二元组的横坐标同时满足单调性" class="headerlink" title="1.决策直线的斜率与二元组的横坐标同时满足单调性"></a>1.决策直线的斜率与二元组的横坐标同时满足单调性</h4><p>这种情况的处理非常简单，因为斜率变化是单调的，因此决策点必然在凸壳上单调移动，我们只需要维护一个单调队列和一个决策指针即可。<br>对于每一个状态$f(i)$，计算过程如下：</p>
+<ol>
+<li>决策指针（队首）后移，直到最佳决策点$j$。</li>
+<li>进行决策并计算$f(i)$。</li>
+<li>计算$x(i),y(i)$，将二元组加入队尾，同时更新凸壳（如图）。<br><img src="/1d1d-DP-optimization-notes/2.2.png" alt></li>
+</ol>
+<p>时间复杂度$O(n)$</p>
+<h4 id="2-二元组的横坐标满足单调性"><a href="#2-二元组的横坐标满足单调性" class="headerlink" title="2.二元组的横坐标满足单调性"></a>2.二元组的横坐标满足单调性</h4><p>我们使用同样的方式维护凸壳，在查询最优决策点的时候，使用二分查找找到最接近的斜率。</p>
+<p>时间复杂度为$O(n\log n)$</p>
+<h4 id="3-不满足任何限制"><a href="#3-不满足任何限制" class="headerlink" title="3.不满足任何限制"></a>3.不满足任何限制</h4><p>虽然决策点仍然在凸壳上，但是在维护凸壳时就有大麻烦了。我们需要一一验证凸性，接着需要拼接凸壳，最坏的时间复杂度$O(n)$，这相当于根本没有优化！<br>该怎么做呢？分为两种情况：</p>
+<ol>
+<li>允许离线：此时我们可以使用<a href="/cdqbinary-notes/">cdq分治</a>来较为简单地解决这个问题，时间复杂度为$O(n\log n)$。</li>
+<li>强制在线：此时我们只能使用平衡树来维护凸包了，我们以横坐标为关键字建立平衡树，查找和插入的过程均为$O(n\log n)$，在维护凸壳时，先将新数据点Splay到根结点，剩下的结点必定分居左子树与右子树。然后我们以左子树为例，后序遍历依次查找结点，直到找到一个满足凸性的结点，将这个结点Splay到根结点的左儿子，然后我们删掉这个结点的右子树即可，时间复杂度为$O(n\log n)$，但实现起来非常复杂。</li>
+</ol>
+<h3 id="例题集"><a href="#例题集" class="headerlink" title="例题集"></a>例题集</h3><ul>
+<li><a href="https://www.cnblogs.com/yimmortal/p/10175057.html" target="_blank" rel="noopener">「hdu3507」打印文章</a>（贴的是别人的博客，不要看以前我写的分析）</li>
+<li><a href="https://blog.csdn.net/bill_yang_2016/article/details/54671061" target="_blank" rel="noopener">「HNOI2008」玩具装箱</a></li>
+<li><a href="https://blog.csdn.net/bill_yang_2016/article/details/54671191" target="_blank" rel="noopener">「CEOI2004」锯木厂选址</a></li>
+<li><a href="https://blog.csdn.net/bill_yang_2016/article/details/54696338" target="_blank" rel="noopener">「ZJOI2007」仓库建设</a></li>
+<li><a href="https://blog.csdn.net/bill_yang_2016/article/details/54864284" target="_blank" rel="noopener">「USACO 2008 March Gold」土地购买</a></li>
+<li><a href="https://blog.csdn.net/bill_yang_2016/article/details/54867676" target="_blank" rel="noopener">「APIO2010」特别行动队</a></li>
+<li><a href="/APIO2014-sequence/">「APIO2014」序列分割</a></li>
+<li><a href="https://blog.csdn.net/bill_yang_2016/article/details/54868348" target="_blank" rel="noopener">「bzoj3437」小P的牧场</a></li>
+<li><a href="/SDOI2016-journey/">「SDOI2016」征途</a></li>
+</ul>
+<h2 id="决策单调性"><a href="#决策单调性" class="headerlink" title="决策单调性"></a>决策单调性</h2><h3 id="算法简介-2"><a href="#算法简介-2" class="headerlink" title="算法简介"></a>算法简介</h3><p>决策单调性可以理解为四边形不等式优化Dp的1D/1D版本。<br>可以利用决策单调性优化的动态规划的特点是：其决策的下标单调。</p>
+<h3 id="特征方程：-f-x-min-limits-i-1-x-1-f-i-w-i-x"><a href="#特征方程：-f-x-min-limits-i-1-x-1-f-i-w-i-x" class="headerlink" title="特征方程：$f(x)=\min\limits_{i=1}^{x-1}\{f(i)+w[i,x]\}$"></a>特征方程：$f(x)=\min\limits_{i=1}^{x-1}\{f(i)+w[i,x]\}$</h3><h3 id="已知结论"><a href="#已知结论" class="headerlink" title="已知结论"></a>已知结论</h3><p>如果用$k(x)$表示状态$x$取到最优值的决策，则决策单调性表述为：<br>$\forall i\le j,k(i)\le k(j)$当且仅当：$\forall i\le j,w[i,j]+w[i-1,j-1]\le w[i-1,j]+w[i,j-1]$。<br>因此满足转移代价四边形不等式，则可以利用决策单调性进行优化。<br>但是转移的代价是否满足四边形不等式，并非一个很容易判断的问题，因此推荐的姿势是：<br>在确认动态规划需要优化且不满足以上两种方式时，打表验证决策点是否单调。</p>
+<p><del>我以前的笔记似乎记录了一种较为方便的判断决策单调性是否成立的方法，这里需要等我找到笔记后来填坑。</del><br><div class="note info">
+            <p>（update 2019/07/30：找到笔记了）<br>记$G(x,i)$为状态$x$根据转移方程$f(x)$使用$i$决策转移的结果。<br>设决策点$i\lt j$，决策$j$比$i$更优（假设问题要求最小化），则$G(x,i)\ge G(x,j)$<br>将不等式解出后我们可以得到决策$j$比$i$更优的条件。</p><ol><li>若条件仅有单向限制（另一端为无穷）且不等号不会变向（单调性），则满足决策单调性。</li><li>若无解，则满足决策单调性。（决策$j$无用）</li><li>若条件是一段区间（双边限制），则不满足决策单调性。</li></ol>
+          </div></p>
+<h3 id="优化过程-1"><a href="#优化过程-1" class="headerlink" title="优化过程"></a>优化过程</h3><p>如何实现决策单调性呢？我们可以在枚举决策的时候，不从1开始，而是从$k(x-1)$开始，但这样只能减少常数，并不能降低时间复杂度。<br>另一种想法时从$k(x-1)$开始枚举决策更新$f(x)$，一旦发现决策$j$比决策$j+1$更优，就停止决策过程，选择决策$j$作为$f(x)$的最优决策。但这样是错误的，因为决策单调性并没有保证$f(j)+w[j,x]$有什么好的性质。</p>
+<p>如果我们换一个角度，思考对于一个已经计算出的状态$f(j)$，它能够更新哪些状态？这样，每一步过程中的某些决策可能不是最优的，但是当算法结束时所有状态的决策一定是最优的。<br>一开始，只有$f(1)$的函数值被计算出，所以所有状态的当前最优决策点都是<code>1</code>。<br>决策表：<code>1111111111111111111111111111111111111111111</code><br>现在由于$f(2)$的值已经确定了，$f(2)$的最优决策只能是$1$，那么我们使用决策$2$来更新这个决策表。由于决策单调性，新的决策表只能是下面这种形式：<br>决策表：<code>1111111111111222222222222222222222222222222</code><br>因此我们可以使用二分法来寻找<code>1</code>与<code>2</code>之间的转折点，因为如果在一个点$x$上，决策$2$更好，所有比$x$大的状态都是决策$2$更好；如果$x$上决策$1$更好，则所有比$x$小的状态都是决策$1$更好。<br>当决策表更新完毕后，$f(3)$即可确定，现在用<code>3</code>更新所有状态，新的决策表只能有以下两种形式：<br>决策表：<code>1111111111111222222222222222222233333333333</code><br>决策表：<code>1111111111333333333333333333333333333333333</code></p>
+<p>此时我们可以设计出整个算法流程：<br>使用一个栈维护数据，栈中的每一个元素保存一个决策可更新区间的起始位置与结束位置，这些区间肯定相互连接且依次递增。当插入一个新的决策时，从栈顶往栈底扫描栈，依次考察栈顶决策：</p>
+<ol>
+<li>如果新决策$i$比栈顶的决策$top$对于$top$起始位置更优，则弹栈，全部抛弃栈顶决策$top$，将区间继承给新决策$i$，继续扫描下一个栈顶决策。</li>
+<li>如果栈顶决策$top$对于其起始位置更优，则转折点必定在$top$所能更新的区间中，二分查找转折点，然后将新决策$i$入栈，结束更新操作。</li>
+</ol>
+<h3 id="时间复杂度-1"><a href="#时间复杂度-1" class="headerlink" title="时间复杂度"></a>时间复杂度</h3><p>由于一个决策只会入栈一次，均摊时间为$O(1)$，但是由于二分查找的存在，时间复杂度为$O(n\log n)$。</p>
+<h3 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h3><h4 id="例题一-「BZOJ2216」Lightning-Conductor"><a href="#例题一-「BZOJ2216」Lightning-Conductor" class="headerlink" title="例题一.「BZOJ2216」Lightning Conductor"></a>例题一.「BZOJ2216」Lightning Conductor</h4><blockquote>
+<p>&ensp;&ensp;&ensp;&ensp;已知一个长度为$n$的序列$a_1,a_2,\ldots,a_n$。<br>&ensp;&ensp;&ensp;&ensp;对于每个$1\le i\le n$，找到最小的非负整数$p$满足对于任意的$j$，$a_j\le a_i+p-\sqrt{\mid i-j\mid}$。</p>
+</blockquote>
+<p>模板题，满足决策单调性。<br>需要注意的是，决策单调性的代码比较严格，交换顺序或者细节更改可能会直接导致错误。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">QueNode</span> &#123;</span></span><br><span class="line">	<span class="keyword">int</span> pos,l,r; <span class="comment">//pos决策点的贡献是区间[l,r] </span></span><br><span class="line">	QueNode(<span class="keyword">int</span> p=<span class="number">0</span>,<span class="keyword">int</span> _l=<span class="number">0</span>,<span class="keyword">int</span> _r=<span class="number">0</span>):pos(p),l(_l),r(_r) &#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxn=<span class="number">1000005</span>;</span><br><span class="line"><span class="keyword">int</span> n;</span><br><span class="line"><span class="keyword">double</span> a[maxn],f[maxn],g[maxn];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">Cal</span><span class="params">(<span class="keyword">int</span> x,<span class="keyword">int</span> y)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> a[y]+<span class="built_in">sqrt</span>(x-y);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">Binary</span><span class="params">(<span class="keyword">int</span> Left,<span class="keyword">int</span> Right,<span class="keyword">int</span> x,<span class="keyword">int</span> y)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">while</span>(Left&lt;=Right) &#123;</span><br><span class="line">		<span class="keyword">int</span> mid=(Left+Right)&gt;&gt;<span class="number">1</span>;</span><br><span class="line">		<span class="keyword">if</span>(Cal(mid,x)&gt;Cal(mid,y))Right=mid<span class="number">-1</span>;</span><br><span class="line">		<span class="keyword">else</span> Left=mid+<span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> Left;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Dp</span><span class="params">(<span class="keyword">double</span>* ans)</span> </span>&#123;</span><br><span class="line">	<span class="built_in">deque</span>&lt;QueNode&gt;Q;</span><br><span class="line">	Q.push_back(QueNode(<span class="number">1</span>,<span class="number">1</span>,n));</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=n; i++) &#123;</span><br><span class="line">		<span class="keyword">while</span>(!Q.empty()&amp;&amp;Q.front().r&lt;i)Q.pop_front();</span><br><span class="line">		<span class="keyword">if</span>(!Q.empty())ans[i]=Cal(i,Q.front().pos);</span><br><span class="line">		<span class="keyword">while</span>(!Q.empty()&amp;&amp;Cal(Q.back().l,i)&gt;Cal(Q.back().l,Q.back().pos))Q.pop_back(); <span class="comment">//决策top被吃掉了</span></span><br><span class="line">		<span class="keyword">if</span>(Q.empty()) &#123;</span><br><span class="line">			<span class="keyword">if</span>(i+<span class="number">1</span>&lt;=n)Q.push_back(QueNode(i,i+<span class="number">1</span>,n));</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">int</span> pos=Binary(Q.back().l,Q.back().r,i,Q.back().pos);</span><br><span class="line">			<span class="keyword">if</span>(pos&gt;Q.back().r)<span class="keyword">continue</span>;</span><br><span class="line">			Q.back().r=pos;</span><br><span class="line">			<span class="keyword">if</span>(pos+<span class="number">1</span>&lt;=n)Q.push_back(QueNode(i,pos+<span class="number">1</span>,n));</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	n=Get_Int();</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=n; i++)a[i]=Get_Int();</span><br><span class="line">	Dp(f);</span><br><span class="line">	reverse(a+<span class="number">1</span>,a+n+<span class="number">1</span>);</span><br><span class="line">	Dp(g);</span><br><span class="line">	reverse(a+<span class="number">1</span>,a+n+<span class="number">1</span>);</span><br><span class="line">	reverse(g+<span class="number">1</span>,g+n+<span class="number">1</span>);</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=n; i++)<span class="built_in">printf</span>(<span class="string">"%d\n"</span>,max(<span class="number">0</span>,(<span class="keyword">int</span>)<span class="built_in">ceil</span>(max(f[i],g[i])-a[i])));</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="例题二-「NOI2009」诗人小G"><a href="#例题二-「NOI2009」诗人小G" class="headerlink" title="例题二.「NOI2009」诗人小G"></a>例题二.「NOI2009」诗人小G</h4><p>埋坑。</p>
+<h4 id="例题三-「NOI模拟赛3-13」珠宝jewelry"><a href="#例题三-「NOI模拟赛3-13」珠宝jewelry" class="headerlink" title="例题三.「NOI模拟赛3.13」珠宝jewelry"></a>例题三.「NOI模拟赛3.13」珠宝jewelry</h4><p><a href="/NOIsimulation-jewelry/">传送门</a></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>虽然本文介绍的是1D/1D动态规划，但其实可以将nD/mD动态规划将以转化并使用以上技巧进行优化降低时间复杂度。<br>Dp是一类难度较大的问题，考察选手全面的思维能力，对于初学者来说相当困难。如何提升Dp能力呢？除了多做题也没有什么更好的方法。<br>每做一道Dp的题目，都应该思考其是否能够优化，或者能否对题目加以改变之后进行优化，这对于提升选手的能力也有很大的帮助。<br>希望本文能够帮到各位读者，谢谢。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://wenku.baidu.com/view/681d161ca300a6c30c229f70.html" target="_blank" rel="noopener">1D1D动态规划优化初步</a></li>
+<li><a href="https://blog.csdn.net/bill_yang_2016/article/details/54667902" target="_blank" rel="noopener">斜率优化Dp详解</a></li>
+<li>Dp优化笔记手稿 by Bill_Yang</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/bsoj5043-string/" rel="bookmark">「bsoj5043」鏖战字符串 - 动态规划+斜率优化+单调队列/数据结构</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/ZJOI2015-neverland-battle-game/" rel="bookmark">「ZJOI2015」幻想乡战略游戏 - 动态点分治/点分树（附简要学习笔记）</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/bsoj2017-2-pyramid/" rel="bookmark">「巴蜀中学NOIP2017模拟D4T2」遥远的金字塔 - 斜率优化</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/SDOI2016-journey/" rel="bookmark">「SDOI2016」征途 - 动态规划+斜率优化/四边形不等式</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/SDOI2012-arrange/" rel="bookmark">「SDOI2012」任务安排 - 动态规划+斜率优化+CDQ分治维护凸包</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div>姥爷们赏瓶冰阔落吧~</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="Bill Yang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="Bill Yang 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Bill Yang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.bill.moe/1d1d-DP-optimization-notes/" title="1D/1D动态规划优化学习笔记">https://blog.bill.moe/1d1d-DP-optimization-notes/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/斜率优化/" rel="tag"><i class="fa fa-tag"></i> 斜率优化</a>
+              <a href="/tags/学习笔记/" rel="tag"><i class="fa fa-tag"></i> 学习笔记</a>
+              <a href="/tags/决策单调性/" rel="tag"><i class="fa fa-tag"></i> 决策单调性</a>
+              <a href="/tags/单调队列/" rel="tag"><i class="fa fa-tag"></i> 单调队列</a>
+          </div>
+
+        
+  <div class="post-widgets">
+    <div class="wp_rating">
+      <div id="wpac-rating"></div>
+    </div>
+  </div>
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/add-hitokoto/" rel="prev" title="为您的Hexo博客添加Hitokoto一言功能">
+      <i class="fa fa-chevron-left"></i> 为您的Hexo博客添加Hitokoto一言功能
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/cir-squ-tree-notes/" rel="next" title="圆方树学习笔记">
+      圆方树学习笔记 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#声明"><span class="nav-number">1.</span> <span class="nav-text">声明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1D-1D动态规划"><span class="nav-number">2.</span> <span class="nav-text">1D/1D动态规划</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#单调队列"><span class="nav-number">3.</span> <span class="nav-text">单调队列</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#算法简介"><span class="nav-number">3.1.</span> <span class="nav-text">算法简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#特征方程：-f-x-min-limits-k-b-x-x-1-g-k-w-x-，其中-b-x-随-x-不降"><span class="nav-number">3.2.</span> <span class="nav-text">特征方程：$f(x)=\min\limits_{k=b[x]}^{x-1}\{g(k)+w[x]\}$，其中$b[x]$随$x$不降</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优化原理"><span class="nav-number">3.3.</span> <span class="nav-text">优化原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优化过程"><span class="nav-number">3.4.</span> <span class="nav-text">优化过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#时间复杂度"><span class="nav-number">3.5.</span> <span class="nav-text">时间复杂度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#例题及应用"><span class="nav-number">3.6.</span> <span class="nav-text">例题及应用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#例题一-滑动窗口"><span class="nav-number">3.6.1.</span> <span class="nav-text">例题一.滑动窗口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#例题二-「bsoj3425」分班"><span class="nav-number">3.6.2.</span> <span class="nav-text">例题二.「bsoj3425」分班</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#应用三-优化背包问题"><span class="nav-number">3.6.3.</span> <span class="nav-text">应用三.优化背包问题</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#斜率优化"><span class="nav-number">4.</span> <span class="nav-text">斜率优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#算法简介-1"><span class="nav-number">4.1.</span> <span class="nav-text">算法简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#特征方程：-f-i-min-limits-j-1-i-1-a-i-times-x-j-b-i-times-y-j"><span class="nav-number">4.2.</span> <span class="nav-text">特征方程：$f(i)=\min\limits_{j=1}^{i-1}\{a[i]\times x(j)+b[i]\times y(j)\}$</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优化原理与过程"><span class="nav-number">4.3.</span> <span class="nav-text">优化原理与过程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-决策直线的斜率与二元组的横坐标同时满足单调性"><span class="nav-number">4.3.1.</span> <span class="nav-text">1.决策直线的斜率与二元组的横坐标同时满足单调性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-二元组的横坐标满足单调性"><span class="nav-number">4.3.2.</span> <span class="nav-text">2.二元组的横坐标满足单调性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-不满足任何限制"><span class="nav-number">4.3.3.</span> <span class="nav-text">3.不满足任何限制</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#例题集"><span class="nav-number">4.4.</span> <span class="nav-text">例题集</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#决策单调性"><span class="nav-number">5.</span> <span class="nav-text">决策单调性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#算法简介-2"><span class="nav-number">5.1.</span> <span class="nav-text">算法简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#特征方程：-f-x-min-limits-i-1-x-1-f-i-w-i-x"><span class="nav-number">5.2.</span> <span class="nav-text">特征方程：$f(x)=\min\limits_{i=1}^{x-1}\{f(i)+w[i,x]\}$</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#已知结论"><span class="nav-number">5.3.</span> <span class="nav-text">已知结论</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优化过程-1"><span class="nav-number">5.4.</span> <span class="nav-text">优化过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#时间复杂度-1"><span class="nav-number">5.5.</span> <span class="nav-text">时间复杂度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#例题"><span class="nav-number">5.6.</span> <span class="nav-text">例题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#例题一-「BZOJ2216」Lightning-Conductor"><span class="nav-number">5.6.1.</span> <span class="nav-text">例题一.「BZOJ2216」Lightning Conductor</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#例题二-「NOI2009」诗人小G"><span class="nav-number">5.6.2.</span> <span class="nav-text">例题二.「NOI2009」诗人小G</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#例题三-「NOI模拟赛3-13」珠宝jewelry"><span class="nav-number">5.6.3.</span> <span class="nav-text">例题三.「NOI模拟赛3.13」珠宝jewelry</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">7.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Bill Yang"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Bill Yang</p>
+  <div class="site-description" itemprop="description">这辈子都不可能更新的</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">672</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">234</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=935683004" title="QQ → tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=935683004" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i>QQ</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ym13883407586@outlook.com" title="E-Mail → mailto:ym13883407586@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/BillYang2016" title="GitHub → https://github.com/BillYang2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://coding.net/u/Bill_Yang_2016" title="Coding → https://coding.net/u/Bill_Yang_2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-git-square"></i>Coding</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://music.163.com/#/user/home?nickname=Bill_Yang2016" title="网易云音乐 → http://music.163.com/#/user/home?nickname=Bill_Yang2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-music"></i>网易云音乐</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://space.bilibili.com/233682260/#/" title="bilibili → https://space.bilibili.com/233682260/#/" rel="noopener" target="_blank"><i class="fa fa-fw fa-youtube-play"></i>bilibili</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → /atom.xml"><i class="fa fa-fw fa-rss"></i>RSS</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      我的朋友们
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://pointedpoints.github.io/" title="http://pointedpoints.github.io/" rel="noopener" target="_blank">pointedpoints</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://keke046.coding.me/" title="https://keke046.coding.me/" rel="noopener" target="_blank">KEKE046</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://imperfect_zx.coding.me/" title="https://imperfect_zx.coding.me/" rel="noopener" target="_blank">Imperfect</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://achen.world/" title="https://achen.world/" rel="noopener" target="_blank">Achen</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://metakari.one/" title="https://metakari.one/" rel="noopener" target="_blank">Metakar1</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://39.106.98.75/" title="http://39.106.98.75/" rel="noopener" target="_blank">魏启大陆</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/friends/" title="/friends/">更多朋友们</a>
+        </li>
+    </ul>
+  </div>
+<!-- none-select-br -->
+
+<p></p>
+
+<!-- hitokoto -->
+
+<div class="hitokoto-title">
+	<i class="fa fa-paragraph"></i>
+	<b>一言</b>
+</div>
+
+<div id="hitokoto">:D 获取中...</div>
+<i id="hitofrom">:D 获取中...</i>
+
+<script src="https://cdn.jsdelivr.net/npm/bluebird@3/js/browser/bluebird.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/whatwg-fetch@2.0.3/fetch.min.js"></script>
+<script>
+  fetch('https://v1.hitokoto.cn')
+    .then(function (res){
+      return res.json();
+    })
+    .then(function (data) {
+      var hitokoto = document.getElementById('hitokoto');
+      hitokoto.innerText = '\xa0\xa0\xa0\xa0\xa0\xa0\xa0' + data.hitokoto;
+      var hitofrom = document.getElementById('hitofrom');
+      hitofrom.innerText = "——" + data.from + '\xa0'; 
+    })
+    .catch(function (err) {
+      console.error(err);
+    })
+</script>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Bill Yang 以 <a class="theme-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a> 协议发布</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+  <script>
+  if (CONFIG.page.isPost) {
+    wpac_init = window.wpac_init || [];
+    wpac_init.push({
+      widget: 'Rating',
+      id: 10154,
+      el: 'wpac-rating',
+      color: 'fc6423'
+    });
+    (function() {
+      if ('WIDGETPACK_LOADED' in window) return;
+      WIDGETPACK_LOADED = true;
+      var mc = document.createElement('script');
+      mc.type = 'text/javascript';
+      mc.async = true;
+      mc.src = '//embed.widgetpack.com/widget.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+    })();
+  }
+  </script>
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout: 3000,
+        priority: true,
+        ignores: [uri => uri.includes('#'),uri => uri == 'https://blog.bill.moe/1d1d-DP-optimization-notes/',]
+      });
+      });
+  </script>
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: true,
+      notify: false,
+      appId: 'JYwxXHHRe8RNGu498SnK9B3N-gzGzoHsz',
+      appKey: 'JBz9GW9kidjPp7gW5Y6VIgfe',
+      placeholder: "吹雪は猫~",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: 'zh-cn' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

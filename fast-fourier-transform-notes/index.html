@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.png">
+  <link rel="mask-icon" href="/images/logo.png" color="#222">
+  <meta name="google-site-verification" content="ghOTm3Im1Awef9otcmhxaBXZs5PlL-aApB3Zeo2qVrg">
+  <meta name="baidu-site-verification" content="PcyS4kW5Yu">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-bounce.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://blog.bill.moe').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},
+    path: 'search.xml',
+    motion: {"enable":true,"async":true,"transition":{"post_block":"swoopIn","post_header":"shrinkIn","post_body":"shrinkIn","coll_header":"expandIn","sidebar":"bounceIn"}}
+  };
+</script>
+
+  <meta name="description" content="本文章基于Menci’s Blog进行补充，原文已经讲述得很清楚，有数学基础的同学可以直接看原文。快速傅里叶变换（Fast Fourier Transform，简称FFT），可以在$O(n\log n)$时间内完成离散傅里叶变换（Discrete Fourier Transform，简称DFT），是在数论中常用的加速多项式乘法的计算，常用于快速计算卷积。">
+<meta name="keywords" content="学习笔记,FFT,数论">
+<meta property="og:type" content="article">
+<meta property="og:title" content="快速傅里叶变换（FFT）与多项式乘法学习笔记">
+<meta property="og:url" content="https://blog.bill.moe/fast-fourier-transform-notes/index.html">
+<meta property="og:site_name" content="Bill Yang&#39;s Blog">
+<meta property="og:description" content="本文章基于Menci’s Blog进行补充，原文已经讲述得很清楚，有数学基础的同学可以直接看原文。快速傅里叶变换（Fast Fourier Transform，简称FFT），可以在$O(n\log n)$时间内完成离散傅里叶变换（Discrete Fourier Transform，简称DFT），是在数论中常用的加速多项式乘法的计算，常用于快速计算卷积。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://blog.bill.moe/img/FFT-1.svg">
+<meta property="og:image" content="https://blog.bill.moe/img/FFT-2.svg">
+<meta property="og:image" content="https://blog.bill.moe/img/FFT-3.jpg">
+<meta property="og:updated_time" content="2019-06-18T13:32:48.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="快速傅里叶变换（FFT）与多项式乘法学习笔记">
+<meta name="twitter:description" content="本文章基于Menci’s Blog进行补充，原文已经讲述得很清楚，有数学基础的同学可以直接看原文。快速傅里叶变换（Fast Fourier Transform，简称FFT），可以在$O(n\log n)$时间内完成离散傅里叶变换（Discrete Fourier Transform，简称DFT），是在数论中常用的加速多项式乘法的计算，常用于快速计算卷积。">
+<meta name="twitter:image" content="https://blog.bill.moe/img/FFT-1.svg">
+
+<link rel="canonical" href="https://blog.bill.moe/fast-fourier-transform-notes/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+<!-- jquery -->
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+<!-- 打字礼花及震动特效 -->
+
+<div id="append_parent"></div><div id="ajaxwaitid"></div>
+<script type="text/javascript" src="/lib/activate-power-mode/activate-power-mode.js"></script>
+<script>
+	POWERMODE.colorful = true;
+	POWERMODE.shake = false;
+	document.body.addEventListener('input',POWERMODE);
+</script>
+
+<!-- live2d -->
+
+<div class="waifu">
+	<div class="waifu-tips"></div>
+	<canvas id="live2d" width="240" height="350" class="live2d"></canvas>
+	<div class="hide-button">隐藏</div>
+</div>
+<script async src="/lib/poster-girl/waifu-tips.js"></script>
+<script src="/lib/poster-girl/live2d.js"></script>
+<script type="text/javascript">
+	loadlive2d("live2d", "/live2d/assets/kanna.model.json");
+</script>
+  <title>快速傅里叶变换（FFT）与多项式乘法学习笔记 | Bill Yang's Blog</title>
+  
+    <script>
+      function sendPageView() {
+        if (CONFIG.hostname !== location.hostname) return;
+        var uid = localStorage.getItem('uid') || (Math.random() + '.' + Math.random());
+        localStorage.setItem('uid', uid);
+        navigator.sendBeacon('https://www.google-analytics.com/collect', new URLSearchParams({
+          v  : 1,
+          tid: 'UA-157912381-1',
+          cid: uid,
+          t  : 'pageview',
+          dp : encodeURIComponent(location.pathname)
+        }));
+      }
+      document.addEventListener('pjax:complete', sendPageView);
+      sendPageView();
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?d538e1e81ada366563b03354efffd84c";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Bill Yang's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">路终会有尽头，但视野总能看到更远的地方。</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">10</span></a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-friends">
+
+    <a href="/friends" rel="section"><i class="fa fa-fw fa-users"></i>友链</a>
+
+  </li>
+        <li class="menu-item menu-item-board">
+
+    <a href="/board/" rel="section"><i class="fa fa-fw fa-sticky-note-o"></i>留言板</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">672</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">234</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.bill.moe/fast-fourier-transform-notes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Bill Yang">
+      <meta itemprop="description" content="这辈子都不可能更新的">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bill Yang's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          快速傅里叶变换（FFT）与多项式乘法学习笔记
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-01-03 16:30:22" itemprop="dateCreated datePublished" datetime="2018-01-03T16:30:22+08:00">2018-01-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-06-18 21:32:48" itemprop="dateModified" datetime="2019-06-18T21:32:48+08:00">2019-06-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OI/" itemprop="url" rel="index">
+                    <span itemprop="name">OI</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/fast-fourier-transform-notes/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/fast-fourier-transform-notes/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>本文章基于<a href="https://oi.men.ci/fft-notes/" target="_blank" rel="noopener">Menci’s Blog</a>进行补充，原文已经讲述得很清楚，有数学基础的同学可以直接看原文。<br>快速傅里叶变换（Fast Fourier Transform，简称FFT），可以在$O(n\log n)$时间内完成离散傅里叶变换（Discrete Fourier Transform，简称DFT），是在数论中常用的加速多项式乘法的计算，常用于快速计算卷积。  </p>
+<a id="more"></a>
+<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><h3 id="多项式"><a href="#多项式" class="headerlink" title="多项式"></a>多项式</h3><p>我们将一个多项式$\sum\limits_{i=0}^{n-1}a_ix^i$记为$A(x)$。  </p>
+<h4 id="多项式的次数"><a href="#多项式的次数" class="headerlink" title="多项式的次数"></a>多项式的次数</h4><p>众所周知，多项式的次数为其最高项的次数。<br>$A(x)$的次数为$n-1$。  </p>
+<h4 id="多项式的系数表示"><a href="#多项式的系数表示" class="headerlink" title="多项式的系数表示"></a>多项式的系数表示</h4><p>对于一个多项式$A(x)$，我们将其系数写作一个向量$(a_0,a_1,a_2,\ldots,a_{n-1})$。<br>根据一个$n$维的系数向量可以唯一确定一个$n-1$次的多项式。<br>称向量$(a_0,a_1,a_2,\ldots,a_{n-1})$为多项式$A(x)$的系数表示。  </p>
+<h4 id="多项式的点值表示"><a href="#多项式的点值表示" class="headerlink" title="多项式的点值表示"></a>多项式的点值表示</h4><p>将一组<strong>互不相同</strong>的$n$个$x_i$代入多项式$A(x)$，得到$n$个值$y_i$。<br>称二元组向量$(\lbrace x_0,y_0\rbrace,\lbrace x_1,y_1\rbrace,\lbrace x_2,y_2\rbrace,\ldots,\lbrace x_{n-1},y_{n-1}\rbrace)$为多项式$A(x)$的点值表示。<br>在后文中为了叙述方便，简单地将$(y_0,y_1,y_2,\ldots,y_{n-1})$也称作点值表示。  </p>
+<h4 id="求值与插值"><a href="#求值与插值" class="headerlink" title="求值与插值"></a>求值与插值</h4><blockquote>
+<p>定理：一个$n-1$次多项式在$n$个不同点的取值唯一确定了该多项式。  </p>
+</blockquote>
+<p>证明：假设命题不成立，存在两个不同的$n-1$次多项式$A(x),B(x)$，满足对于任何$i\in[0,n-1]$，有$A(x_i)=B(x_i)$。<br>令$C(x)=A(x)-B(x)$，则$C(x)$也是一个$n-1$次多项式。对于任何$i\in[0,n-1]$，有 $C(x_i)=0$。<br>即$C(x)$有$n$个根，这与代数基本定理（一个$n-1$次多项式在复数域上有且仅有$n-1$个根）相矛盾，故$C(x)$并不是一个$n-1$次多项式，原命题成立，证毕。  </p>
+<p>如果我们按照定义求一个多项式的点值表示，时间复杂度为$O(n^2)$。<br>已知多项式的点值表示，求其系数表示，可以使用<strong>插值</strong>。朴素的插值算法时间复杂度为$O(n^2)$。</p>
+<h4 id="多项式乘法"><a href="#多项式乘法" class="headerlink" title="多项式乘法"></a>多项式乘法</h4><p>我们定义两个多项式$A(x)=\sum\limits_{i=0}^{n-1}a_ix^i$与$B(x)=\sum\limits_{i=0}^{n-1}b_ix^i$相乘的结果为$C(x)$（假设两个多项式次数相同，若不同可在后面补零）。  </p>
+<script type="math/tex; mode=display">C(x)=A(x)\times B(x)=\sum_{k=0}^{2n-2}(\sum_{k=i+j}a_ib_j)x^k</script><p>两个$n-1$次多项式相乘，得到的是一个$2n-2$次多项式，时间复杂度为$O(n^2)$。</p>
+<p>如果使用两个多项式在$2n-1$个点处取得的点值表示，那么</p>
+<script type="math/tex; mode=display">{y_3}_i=(\sum_{j=0}^{2n-1}a_jx_i^j)\times(\sum_{j=0}^{2n-1}b_jx_i^j)={y_1}_i\times{y_2}_i</script><p>时间复杂度为$O(n)$。  </p>
+<p>故我们有了一个初步的想法，能否有一种工具可以快速求出一个多项式的点值表示，然后做$O(n)$的点值乘法，快速利用点值表示求出系数表示。<br>当然有这样的工具，在本篇文章中使用复数转化系数表示与点值表示。  </p>
+<h3 id="复数"><a href="#复数" class="headerlink" title="复数"></a>复数</h3><p>设$a,b$为实数，$i^2=-1$，形如$a+bi$的数称作<strong>复数</strong>，其中$i$称作<strong>虚数单位</strong>，$a$是该复数的实部，$b$是该复数的虚部。<br>复数域是已知的最大的域。  </p>
+<h4 id="复平面"><a href="#复平面" class="headerlink" title="复平面"></a>复平面</h4><p>在复平面中，$x$轴代表实数、$y$轴（除原点外的所有点）代表虚数。每一个复数$a+bi$对应复平面上一个从$(0,0)$指向$(a,b)$的向量。  </p>
+<p>该向量的长度$\sqrt{a^2+b^2}$ 叫做模长。<br>表示从$x$轴正半轴到该向量的转角的有向（以逆时针为正方向）角叫做幅角。  </p>
+<p>复数运算遵循向量运算的规则：  </p>
+<ul>
+<li>复数相加遵循平行四边形定则。  </li>
+<li>复数相乘时，<strong>模长相乘，幅角相加</strong>。  </li>
+</ul>
+<h4 id="欧拉公式"><a href="#欧拉公式" class="headerlink" title="欧拉公式"></a>欧拉公式</h4><p>根据欧拉公式有：  </p>
+<script type="math/tex; mode=display">e^{\pi i}=-1</script><script type="math/tex; mode=display">e^{2\pi i}=1</script><p><del>该公式曾经被评选为世界上最优美的公式</del>  </p>
+<h4 id="单位根"><a href="#单位根" class="headerlink" title="单位根"></a>单位根</h4><blockquote>
+<p>单位根的代数定义：$n$次单位根指$\omega^n=1$的所有复数解，其中<strong>幅角为正且最小</strong>的复数解。记作$\omega_n$。<br>单位根的几何定义：在复平面上，以原点为圆心，$1$为半径作圆，所得的圆叫做单位圆。以原点为起点，单位圆的$n$等分点为终点，作$n$个向量。设所得的<strong>幅角为正且最小</strong>的向量对应的复数为$\omega_n$，称为$n$次单位根。  </p>
+</blockquote>
+<p>根据欧拉公式，我们可以将单位根用具体复数表示出来：  </p>
+<script type="math/tex; mode=display">\omega_n=e^\frac{2\pi i}n</script><p>单位根的幅角为周角的$1\over n$。</p>
+<p>我们可以以此定义其他的复数解（向量）$\omega_n^2,\omega_n^3,\ldots,\omega_n^n$：<br>（代数定义）$\omega_n^k=(e^\frac{2\pi i}n)^k$。<br>（几何定义）单位圆上其他的向量。（可以根据代数定义与复数运算法则得到）  </p>
+<script type="math/tex; mode=display">\omega_n^k=\cos\frac{2\pi k}n+i\sin\frac{2\pi k}n</script><p><strong>不难证明：$\omega_n^0=\omega_n^n=1$。</strong>  </p>
+<p><img src="/img/FFT-1.svg" alt>  </p>
+<h4 id="单位根的性质"><a href="#单位根的性质" class="headerlink" title="单位根的性质"></a>单位根的性质</h4><blockquote>
+<p>消去引理：对于任意的正整数$n,d$和非负整数$k$，满足$\omega_{dn}^{dk}=\omega_n^k$  </p>
+</blockquote>
+<p>代数证明：  </p>
+<script type="math/tex; mode=display">\omega_{dn}^{dk}=(e^\frac{2\pi i}{dn})^{dk}=(e^\frac{2\pi i}n)^k=\omega_n^k</script><p>几何证明：<br>从几何意义上看，在复平面上，二者表示的向量终点相同。<br>更具体的，有：  </p>
+<script type="math/tex; mode=display">\cos2k\frac{2\pi}{2n}+i\sin2k\frac{2\pi}{2n}=\cos k\frac{2\pi}{n}+i\sin k\frac{2\pi}n</script><blockquote>
+<p>折半引理：若$n$是偶数，有$\omega_n^{k+\frac n2}=-\omega_n^k$  </p>
+</blockquote>
+<p>代数证明：  </p>
+<script type="math/tex; mode=display">\omega_n^{k+\frac n2}=(e^\frac{2\pi i}n)^{k+\frac n2}=(e^\frac{2\pi i}n)^k\cdot e^{\pi i}=-\omega_n^k</script><p>几何证明：  </p>
+<script type="math/tex; mode=display">\omega_n^{\frac n2}=\cos\frac n2\cdot\frac{2\pi}n+i\sin\frac n2\cdot\frac{2\pi}{n}=\cos\pi+i\sin\pi=-1</script><blockquote>
+<p>求和引理：若对于<strong>正整数</strong>$n,k$，$n\nmid k$，有$\sum\limits_{j=0}^{n-1}(\omega_n^k)^j=0$</p>
+</blockquote>
+<p>证明：<br>令$S(\omega_n^k)=\sum\limits_{j=0}^{n-1}(\omega_n^k)^j$。<br>因为$k\neq0$，公差不为$1$，根据等比数列求和公式可得：  </p>
+<script type="math/tex; mode=display">S(\omega_n^k)=\frac{(\omega_n^k)^n-1}{\omega_n^k-1}=0</script><p>因为$n\nmid k$，因此分母不为零。<br>当$k=0$时，不难发现$S(\omega_n^k)=n$。  </p>
+<h2 id="快速傅里叶变换"><a href="#快速傅里叶变换" class="headerlink" title="快速傅里叶变换"></a>快速傅里叶变换</h2><p>考虑多项式$A(x)$的表示。将$n$次单位根的$0$到$n-1$次幂带入多项式的系数表示，所得点值向量$(A(\omega_n^0),A(\omega_n^1),\ldots,A(\omega_n^{n-1}))$称为其系数向量$(a_0,a_1,\ldots,a_{n-1})$的<strong>离散傅里叶变换</strong>。</p>
+<p>按照朴素算法来求离散傅里叶变换，时间复杂度仍然为$O(n^2)$。  </p>
+<p>在下文中我们将多项式项数$n$视作$2$的整数幂，若不足在高位补零。  </p>
+<p>考虑将多项式<strong>按照系数下标的奇偶分为两部分</strong>：</p>
+<script type="math/tex; mode=display">A(x)=(a_0+a_2x^2+a_4x^4+\cdots+a_{n-2}x^{n-2})+(a_1x+a_3x^3+a_5x^5+\cdots+a_{n-1}x^{n-1})</script><p>令</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+A_1(x)&=a_0+a_2x+a_4x^2+\cdots+a_{n-2}x^{\frac n2-1} \\
+A_2(x)&=a_1+a_3x+a_5x^2+\cdots+a_{n-1}x^{\frac n2-1}
+\end{aligned}</script><p>则有</p>
+<script type="math/tex; mode=display">A(x)=A_1(x^2)+xA_2(x^2)</script><ul>
+<li><p>假设$k\lt \frac n2$，考虑$A(\omega_n^k)$：  </p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+A(\omega_n^k)&=A_1(\omega_n^{2k})+\omega_n^kA_2(\omega_n^{2k}) \\
+&=A_1(\omega_{\frac n2}^k)+\omega_n^kA_2(\omega_{\frac n2}^k) \\
+\end{aligned}</script><p>本处利用了单位根的消去引理。  </p>
+</li>
+<li><p>考虑$A(\omega_n^{k+\frac n2})$：  </p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+A(\omega_n^{k+\frac n2})&=A_1(\omega_n^{2k+n})+\omega_n^{k+\frac n2}A_2(\omega_n^{2k+n}) \\
+&=A_1(\omega_n^{2k}\times\omega_n^n)-\omega_n^kA_2(\omega_n^{2k}\times\omega_n^n) \\
+&=A_1(\omega_n^{2k})-\omega_n^kA_2(\omega_n^{2k}) \\
+&=A_1(\omega_{\frac{n}{2}}^k)-\omega_n^kA_2(\omega_{\frac n2}^k) \\
+\end{aligned}</script><p>本处利用了单位根的消去引理与折半引理。  </p>
+</li>
+</ul>
+<p>这样分类我们可以遍历所有的$k\in[0,n-1]$。  </p>
+<p>也就是说，如果已知$A_1(x)$和$A_2(x)$在$\omega_\frac n2^0,\omega_\frac n2^1,\ldots,\omega_\frac n2^{\frac n2-1}$处的点值，就可以在$O(n)$的时间内求得$A(x)$在$\omega_n^0,\omega_n^1,\ldots,\omega_n^{n-1}$处的取值。而关于$A_1(x)$和$A_2(x)$的问题都是相对于原问题规模缩小了一半的子问题，分治的边界为一个常数项$a_0$。  </p>
+<p>根据主定理，该分治算法的时间复杂度为：  </p>
+<script type="math/tex; mode=display">T(n)=2T(\frac n2)+O(n)=O(n\log n)</script><p>这就是最常用的FFT算法 —— Cooley-Tukey 算法。  </p>
+<h3 id="傅里叶逆变换"><a href="#傅里叶逆变换" class="headerlink" title="傅里叶逆变换"></a>傅里叶逆变换</h3><p>将点值表示的多项式转化为系数表示，同样可以使用快速傅里叶变换，这个过程称为<strong>傅里叶逆变换</strong>。<br>逆变换的推导是构造+化简的过程。  </p>
+<p>设$(y_0,y_1,y_2,\ldots,y_{n-1})$为$(a_0,a_1,a_2,\ldots,a_{n-1})$的离散傅里叶变换。考虑另一个向量$(c_0,c_1,c_2,\ldots,c_{n-1})$满足：  </p>
+<script type="math/tex; mode=display">c_k=\sum_{i=0}^{n-1}y_i(\omega_n^{-k})^i</script><p>即多项式$B(x)=y_0+y_1x+y_2x^2+\cdots+y_{n-1}x^{n-1}$在$\omega_n^0,\omega_n^{-1},\omega_n^{-2},\ldots,\omega_n^{-(n-1)}$处的点值表示。</p>
+<p>将上式展开，得：  </p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+c_k&=\sum_{i=0}^{n-1}y_i(\omega_n^{-k})^i \\
+&=\sum_{i=0}^{n-1}(\sum_{j=0}^{n-1}a_j(\omega_n^i)^j)(\omega_n^{-k})^i \\
+&=\sum_{i=0}^{n-1}(\sum_{j=0}^{n-1}a_j(\omega_n^j)^i)(\omega_n^{-k})^i \\
+&=\sum_{i=0}^{n-1}(\sum_{j=0}^{n-1}a_j(\omega_n^j)^i(\omega_n^{-k})^i) \\
+&=\sum_{i=0}^{n-1}\sum_{j=0}^{n-1}a_j(\omega_n^{j-k})^i \\
+&=\sum_{j=0}^{n-1}a_j(\sum_{i=0}^{n-1}(\omega_n^{j-k})^i)
+\end{aligned}</script><p>根据单位根的求和引理，我们可知$\sum\limits_{i=0}^{n-1}(\omega_n^{j-k})^i$在$j\neq k$时为$0$，但总有一次且仅有一次会出现$j=k$，当$j=k$时$\sum\limits_{i=0}^{n-1}(\omega_n^0)^i=n$。  </p>
+<p>故$c_k=na_k$。<br>因此$a_i=\frac1n c_i$。  </p>
+<p>所以在傅里叶逆变换时，只需要用单位根的倒数代替单位根，做一次类似快速傅里叶变换的过程，再将结果每个数除以$n$，即为傅里叶逆变换的结果。  </p>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>C++ 的 STL 在头文件<code>complex</code>中提供一个复数的模板实现<code>complex&lt;T&gt;</code>，其中<code>T</code>为实数类型，一般取<code>double</code>，在对精度要求较高的时候可以使用<code>long double</code>或<code>__float128</code>（不常用）。  </p>
+<p>不难证明单位根的倒数等于其共轭复数。因此在程序实现中，为了减小误差，通常使用<code>conj()</code>取得idft所需的「单位根的倒数」。</p>
+<h3 id="递归实现"><a href="#递归实现" class="headerlink" title="递归实现"></a>递归实现</h3><p>直接按照上面得到的结论来实现即可，比较直观。<br>Menci的代码：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">double</span> PI = <span class="built_in">acos</span>(<span class="number">-1</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">bool</span> inversed = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">inline</span> <span class="built_in">std</span>::<span class="keyword">complex</span>&lt;<span class="keyword">double</span>&gt; omega(<span class="keyword">const</span> <span class="keyword">int</span> n, <span class="keyword">const</span> <span class="keyword">int</span> k) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!inversed) <span class="keyword">return</span> <span class="built_in">std</span>::<span class="keyword">complex</span>&lt;<span class="keyword">double</span>&gt;(<span class="built_in">cos</span>(<span class="number">2</span> * PI / n * k), <span class="built_in">sin</span>(<span class="number">2</span> * PI / n * k));</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">return</span> <span class="built_in">std</span>::conj(<span class="built_in">std</span>::<span class="keyword">complex</span>&lt;<span class="keyword">double</span>&gt;(<span class="built_in">cos</span>(<span class="number">2</span> * PI / n * k), <span class="built_in">sin</span>(<span class="number">2</span> * PI / n * k)));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">transform</span><span class="params">(<span class="built_in">std</span>::<span class="keyword">complex</span>&lt;<span class="keyword">double</span>&gt; *a, <span class="keyword">const</span> <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (n == <span class="number">1</span>) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="built_in">std</span>::<span class="keyword">complex</span>&lt;<span class="keyword">double</span>&gt; buf[MAXN];</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">int</span> m = n / <span class="number">2</span>;</span><br><span class="line">    <span class="comment">// 按照系数奇偶划分为两半</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; m; i++) &#123;</span><br><span class="line">        buf[i] = a[i * <span class="number">2</span>];</span><br><span class="line">        buf[i + m] = a[i * <span class="number">2</span> + <span class="number">1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">std</span>::copy(buf, buf + n, a);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 分治</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="keyword">complex</span>&lt;<span class="keyword">double</span>&gt; *a1 = a, *a2 = a + m;</span><br><span class="line">    fft(a1, m);</span><br><span class="line">    fft(a2, m);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 合并两个子问题</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; m; i++) &#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="keyword">complex</span>&lt;<span class="keyword">double</span>&gt; x = omega(n, i);</span><br><span class="line">        buf[i] = a1[i] + x * a2[i];</span><br><span class="line">        buf[i + m] = a1[i] - x * a2[i];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">std</span>::copy(buf, buf + n, a);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="递归实现-1"><a href="#递归实现-1" class="headerlink" title="递归实现"></a>递归实现</h3><p>递归实现的FFT效率不高，实际中一般采用迭代实现。  </p>
+<h4 id="二进制位翻转"><a href="#二进制位翻转" class="headerlink" title="二进制位翻转"></a>二进制位翻转</h4><p>考虑FFT到达分治递归边界时，每个数所在的位置及其二进制位：<br><img src="/img/FFT-2.svg" alt><br>发现规律，<strong>分治到边界后的每个数下标的等于原下标的二进制位翻转</strong>。<br>有了这个规律，在进行二进制位反转后，就可以采用迭代的方法替代分治了（后面将讲的蝴蝶操作）。  </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> k=log2(n);</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;n; i++) &#123; <span class="comment">//二进制位翻转</span></span><br><span class="line">	<span class="keyword">int</span> t=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>; j&lt;k; j++)<span class="keyword">if</span>(i&amp;(<span class="number">1</span>&lt;&lt;j))t|=(<span class="number">1</span>&lt;&lt;(k-j<span class="number">-1</span>));</span><br><span class="line">	<span class="keyword">if</span>(i&lt;t)swap(a[i],a[t]); <span class="comment">//避免多次翻转</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="蝴蝶操作"><a href="#蝴蝶操作" class="headerlink" title="蝴蝶操作"></a>蝴蝶操作</h4><p>考虑合并两个子问题的过程，假设$A_1(\omega_\frac n2^k)$和$A_2(\omega_\frac n2^k)$分别储存在$a(k)$和$a(\frac n2+k)$中，$A(\omega_n^k)$和$A(\omega_n^{k+\frac n2})$将要被存放在$b(k)$和$b(\frac n2+k)$中，合并的单位操作可表示为：  </p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+b(k)&\leftarrow a(k)+\omega_n^k\times a(\frac n2+k) \\
+b(\frac n2+k)&\leftarrow a(k)-\omega_n^k\times a(\frac n2+k) \\
+\end{aligned}</script><p>考虑加入一个临时变量$t$，使得这个过程可以在原地完成，不需要另一个数组$b$，也就是说，将$A(\omega_n^k)$和$A(\omega_n^{k+\frac n2})$存放在$a(k)$和$a(\frac n2+k)$中，覆盖原来的值。  </p>
+<p>因为每个位置只被调用一次，且在被覆盖的值刚好被调用，因此不会出错。  </p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+t&\leftarrow\omega_n^k\times a(\frac n2+k) \\
+a(\frac n2+k)&\leftarrow a(k)-t \\
+a(k)&\leftarrow a(k)+t \\
+\end{aligned}</script><p>这一过程被称为<strong>蝴蝶操作</strong>。<br>为什么叫蝴蝶操作呢？<br>因为这张图看起来像蝴蝶。。。（我觉得不像啊）<br><img src="/img/FFT-3.jpg" alt>  </p>
+<p>有了二进制位翻转与蝴蝶操作，我们就可以枚举区间长度$l$两两合并即可。  </p>
+<h5 id="单位根-1"><a href="#单位根-1" class="headerlink" title="单位根"></a>单位根</h5><p>我们可以事先调用实部与虚部预处理单位根，在蝴蝶操作需要用到的$\omega_l^k$可以通过等式$\omega_l^k=\omega_n^{\frac nlk}$转化为预处理过的单位根（消去引理）。  </p>
+<h5 id="二进制位翻转-蝴蝶操作-代码"><a href="#二进制位翻转-蝴蝶操作-代码" class="headerlink" title="二进制位翻转+蝴蝶操作 代码"></a>二进制位翻转+蝴蝶操作 代码</h5><p>其中<code>cp</code>为<code>complex&lt;double&gt;</code>，<code>omega[i]</code>是预处理过的单位根$\omega_n^i$。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">transform</span><span class="params">(cp* a,cp* omega)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> k=log2(n);</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;n; i++) &#123; <span class="comment">//二进制位翻转</span></span><br><span class="line">		<span class="keyword">int</span> t=<span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>; j&lt;k; j++)<span class="keyword">if</span>(i&amp;(<span class="number">1</span>&lt;&lt;j))t|=(<span class="number">1</span>&lt;&lt;(k-j<span class="number">-1</span>));</span><br><span class="line">		<span class="keyword">if</span>(i&lt;t)swap(a[i],a[t]); <span class="comment">//避免翻转两次</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> len=<span class="number">2</span>; len&lt;=n; len*=<span class="number">2</span>) &#123;</span><br><span class="line">		<span class="keyword">int</span> mid=len&gt;&gt;<span class="number">1</span>;</span><br><span class="line">		<span class="keyword">for</span>(cp* p=a; p!=a+n; p+=len)</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;mid; i++) &#123;</span><br><span class="line">				cp t=omega[n/len*i]*p[mid+i];</span><br><span class="line">				p[mid+i]=p[i]-t;</span><br><span class="line">				p[i]+=t;</span><br><span class="line">			&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="模板"><a href="#模板" class="headerlink" title="模板"></a>模板</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iomanip&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;complex&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdlib&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;climits&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;complex&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;queue&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> cp complex<span class="meta-string">&lt;double&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">const</span> <span class="keyword">int</span> <span class="title">Get_Int</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> num=<span class="number">0</span>,bj=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">char</span> x=getchar();</span><br><span class="line">	<span class="keyword">while</span>(x&lt;<span class="string">'0'</span>||x&gt;<span class="string">'9'</span>) &#123;</span><br><span class="line">		<span class="keyword">if</span>(x==<span class="string">'-'</span>)bj=<span class="number">-1</span>;</span><br><span class="line">		x=getchar();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">while</span>(x&gt;=<span class="string">'0'</span>&amp;&amp;x&lt;=<span class="string">'9'</span>) &#123;</span><br><span class="line">		num=num*<span class="number">10</span>+x-<span class="string">'0'</span>;</span><br><span class="line">		x=getchar();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> num*bj;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxn=<span class="number">131072</span>+<span class="number">5</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">double</span> pi=<span class="built_in">acos</span>(<span class="number">-1</span>);</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">FastFourierTransform</span> &#123;</span></span><br><span class="line">	<span class="keyword">int</span> n,rev[maxn];</span><br><span class="line">	cp omega[maxn],iomega[maxn];</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>-&gt;n=n;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;n; i++) &#123;</span><br><span class="line">			omega[i]=cp(<span class="built_in">cos</span>(<span class="number">2</span>*pi/n*i),<span class="built_in">sin</span>(<span class="number">2</span>*pi/n*i));</span><br><span class="line">			iomega[i]=conj(omega[i]); <span class="comment">//共轭复数</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">int</span> k=log2(n);</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;n; i++) &#123; <span class="comment">//二进制位翻转</span></span><br><span class="line">			<span class="keyword">int</span> t=<span class="number">0</span>;</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>; j&lt;k; j++)<span class="keyword">if</span>(i&amp;(<span class="number">1</span>&lt;&lt;j))t|=(<span class="number">1</span>&lt;&lt;(k-j<span class="number">-1</span>));</span><br><span class="line">			rev[i]=t;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">transform</span><span class="params">(cp* a,cp* omega)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;n; i++)<span class="keyword">if</span>(i&lt;rev[i])swap(a[i],a[rev[i]]); <span class="comment">//避免翻转两次</span></span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> len=<span class="number">2</span>; len&lt;=n; len*=<span class="number">2</span>) &#123;</span><br><span class="line">			<span class="keyword">int</span> mid=len&gt;&gt;<span class="number">1</span>;</span><br><span class="line">			<span class="keyword">for</span>(cp* p=a; p!=a+n; p+=len)</span><br><span class="line">				<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;mid; i++) &#123;</span><br><span class="line">					cp t=omega[n/len*i]*p[mid+i];</span><br><span class="line">					p[mid+i]=p[i]-t;</span><br><span class="line">					p[i]+=t;</span><br><span class="line">				&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">dft</span><span class="params">(cp* a)</span> </span>&#123;</span><br><span class="line">		transform(a,omega);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">idft</span><span class="params">(cp* a)</span> </span>&#123;</span><br><span class="line">		transform(a,iomega);</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;n; i++)a[i]/=n;</span><br><span class="line">	&#125;</span><br><span class="line">&#125; fft;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Multiply</span><span class="params">(<span class="keyword">const</span> <span class="keyword">int</span>* a1,<span class="keyword">const</span> <span class="keyword">int</span> n1,<span class="keyword">const</span> <span class="keyword">int</span>* a2,<span class="keyword">const</span> <span class="keyword">int</span> n2,<span class="keyword">int</span>* ans)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> n=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">while</span>(n&lt;n1+n2)n&lt;&lt;=<span class="number">1</span>; <span class="comment">//化成整数</span></span><br><span class="line">	<span class="keyword">static</span> cp c1[maxn],c2[maxn];</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;n1; i++)c1[i].real(a1[i]);</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;n2; i++)c2[i].real(a2[i]);</span><br><span class="line">	fft.init(n);</span><br><span class="line">	fft.dft(c1);</span><br><span class="line">	fft.dft(c2);</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;n; i++)c1[i]*=c2[i];</span><br><span class="line">	fft.idft(c1);</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;n1+n2<span class="number">-1</span>; i++)ans[i]=round(c1[i].real());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="一些卡常技巧"><a href="#一些卡常技巧" class="headerlink" title="一些卡常技巧"></a>一些卡常技巧</h2><p>2018/2/26 根据经验update  </p>
+<ol>
+<li>少使用<code>Multiply()</code>封装，根据情况FFT。  </li>
+<li>当每次init后FFT次数很少，可以不预处理$\omega$，改为每次重新计算。（时间效率提高$10\%\sim 20\%$）  </li>
+<li>手写<code>complex&lt;double&gt;</code>类。（时间效率提高约$20\%$）  </li>
+<li>可以构造共轭复数使得卷积时只需要一次dft，但相对的精度误差会变大。（时间效率提供约$20\%\sim 30\%$）<br>修改上述模板代码：  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">idft</span><span class="params">(cp* a)</span> </span>&#123;</span><br><span class="line">	transform(a,iomega);</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;n; i++)a[i]=cp(a[i].real()/(n&lt;&lt;<span class="number">2</span>),a[i].imag()/n);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Multiply</span><span class="params">(<span class="keyword">const</span> <span class="keyword">int</span>* a1,<span class="keyword">const</span> <span class="keyword">int</span> n1,<span class="keyword">const</span> <span class="keyword">int</span>* a2,<span class="keyword">const</span> <span class="keyword">int</span> n2,<span class="keyword">int</span>* ans)</span> </span>&#123;<span class="keyword">int</span> n=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">while</span>(n&lt;n1+n2)n&lt;&lt;=<span class="number">1</span>; <span class="comment">//化成整数</span></span><br><span class="line">	<span class="keyword">static</span> cp c[maxn];</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;max(n1,n2); i++)c[i].real(a1[i]+a2[i],a1[i]-a2[i]);</span><br><span class="line">	fft.init(n);</span><br><span class="line">	fft.dft(c);</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;n; i++)c[i]*=c[i];</span><br><span class="line">	fft.idft(c);</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;n1+n2<span class="number">-1</span>; i++)ans[i]=round(c[i].real());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><ul>
+<li>因为FFT使用到了多次单位根折半引理，因此我们需要在高位补上足够的$0$使得项数成为$2$的整数幂。  </li>
+<li>使用FFT时可能面临精度问题，根据题目模数的分解选择使用FFT还是<a href="/number-theoretic-transform-notes/">NTT</a>。  </li>
+<li>若使用FFT/NTT计算高精度乘法，注意去掉高位的$0$。  </li>
+</ul>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://oi.men.ci/fft-notes/" target="_blank" rel="noopener">FFT 学习笔记 - Menci</a>  </li>
+<li>数学选讲.pptx - 成都七中培训day7</li>
+<li>快速傅里叶变换.pptx - liuguangzhe</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/polynomial-calculate-notes/" rel="bookmark">多项式运算学习笔记</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/number-theoretic-transform-notes/" rel="bookmark">基于FFT的NTT学习笔记</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/lucas-theorem-notes/" rel="bookmark">Lucas定理学习笔记</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/taylor-series-notes/" rel="bookmark">泰勒公式推导笔记</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/bzoj3160-nopath/" rel="bookmark">「bzoj3160」万径人踪灭 - 生成函数+Manacher/回文自动机</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div>姥爷们赏瓶冰阔落吧~</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="Bill Yang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="Bill Yang 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Bill Yang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.bill.moe/fast-fourier-transform-notes/" title="快速傅里叶变换（FFT）与多项式乘法学习笔记">https://blog.bill.moe/fast-fourier-transform-notes/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/学习笔记/" rel="tag"><i class="fa fa-tag"></i> 学习笔记</a>
+              <a href="/tags/FFT/" rel="tag"><i class="fa fa-tag"></i> FFT</a>
+              <a href="/tags/数论/" rel="tag"><i class="fa fa-tag"></i> 数论</a>
+          </div>
+
+        
+  <div class="post-widgets">
+    <div class="wp_rating">
+      <div id="wpac-rating"></div>
+    </div>
+  </div>
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/cdqzD10T1-rehearsal/" rel="prev" title="「cdqzD10T1」大型演习 - CDQ分治+主席树维护单调栈">
+      <i class="fa fa-chevron-left"></i> 「cdqzD10T1」大型演习 - CDQ分治+主席树维护单调栈
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/number-theoretic-transform-notes/" rel="next" title="基于FFT的NTT学习笔记">
+      基于FFT的NTT学习笔记 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义"><span class="nav-number">1.</span> <span class="nav-text">定义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#多项式"><span class="nav-number">1.1.</span> <span class="nav-text">多项式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#多项式的次数"><span class="nav-number">1.1.1.</span> <span class="nav-text">多项式的次数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多项式的系数表示"><span class="nav-number">1.1.2.</span> <span class="nav-text">多项式的系数表示</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多项式的点值表示"><span class="nav-number">1.1.3.</span> <span class="nav-text">多项式的点值表示</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#求值与插值"><span class="nav-number">1.1.4.</span> <span class="nav-text">求值与插值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多项式乘法"><span class="nav-number">1.1.5.</span> <span class="nav-text">多项式乘法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#复数"><span class="nav-number">1.2.</span> <span class="nav-text">复数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#复平面"><span class="nav-number">1.2.1.</span> <span class="nav-text">复平面</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#欧拉公式"><span class="nav-number">1.2.2.</span> <span class="nav-text">欧拉公式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#单位根"><span class="nav-number">1.2.3.</span> <span class="nav-text">单位根</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#单位根的性质"><span class="nav-number">1.2.4.</span> <span class="nav-text">单位根的性质</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#快速傅里叶变换"><span class="nav-number">2.</span> <span class="nav-text">快速傅里叶变换</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#傅里叶逆变换"><span class="nav-number">2.1.</span> <span class="nav-text">傅里叶逆变换</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现"><span class="nav-number">3.</span> <span class="nav-text">实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#递归实现"><span class="nav-number">3.1.</span> <span class="nav-text">递归实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#递归实现-1"><span class="nav-number">3.2.</span> <span class="nav-text">递归实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#二进制位翻转"><span class="nav-number">3.2.1.</span> <span class="nav-text">二进制位翻转</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#蝴蝶操作"><span class="nav-number">3.2.2.</span> <span class="nav-text">蝴蝶操作</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#单位根-1"><span class="nav-number">3.2.2.1.</span> <span class="nav-text">单位根</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#二进制位翻转-蝴蝶操作-代码"><span class="nav-number">3.2.2.2.</span> <span class="nav-text">二进制位翻转+蝴蝶操作 代码</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模板"><span class="nav-number">4.</span> <span class="nav-text">模板</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一些卡常技巧"><span class="nav-number">5.</span> <span class="nav-text">一些卡常技巧</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注意事项"><span class="nav-number">6.</span> <span class="nav-text">注意事项</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">7.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Bill Yang"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Bill Yang</p>
+  <div class="site-description" itemprop="description">这辈子都不可能更新的</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">672</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">234</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=935683004" title="QQ → tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=935683004" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i>QQ</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ym13883407586@outlook.com" title="E-Mail → mailto:ym13883407586@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/BillYang2016" title="GitHub → https://github.com/BillYang2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://coding.net/u/Bill_Yang_2016" title="Coding → https://coding.net/u/Bill_Yang_2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-git-square"></i>Coding</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://music.163.com/#/user/home?nickname=Bill_Yang2016" title="网易云音乐 → http://music.163.com/#/user/home?nickname=Bill_Yang2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-music"></i>网易云音乐</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://space.bilibili.com/233682260/#/" title="bilibili → https://space.bilibili.com/233682260/#/" rel="noopener" target="_blank"><i class="fa fa-fw fa-youtube-play"></i>bilibili</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → /atom.xml"><i class="fa fa-fw fa-rss"></i>RSS</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      我的朋友们
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://pointedpoints.github.io/" title="http://pointedpoints.github.io/" rel="noopener" target="_blank">pointedpoints</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://keke046.coding.me/" title="https://keke046.coding.me/" rel="noopener" target="_blank">KEKE046</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://imperfect_zx.coding.me/" title="https://imperfect_zx.coding.me/" rel="noopener" target="_blank">Imperfect</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://achen.world/" title="https://achen.world/" rel="noopener" target="_blank">Achen</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://metakari.one/" title="https://metakari.one/" rel="noopener" target="_blank">Metakar1</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://39.106.98.75/" title="http://39.106.98.75/" rel="noopener" target="_blank">魏启大陆</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/friends/" title="/friends/">更多朋友们</a>
+        </li>
+    </ul>
+  </div>
+<!-- none-select-br -->
+
+<p></p>
+
+<!-- hitokoto -->
+
+<div class="hitokoto-title">
+	<i class="fa fa-paragraph"></i>
+	<b>一言</b>
+</div>
+
+<div id="hitokoto">:D 获取中...</div>
+<i id="hitofrom">:D 获取中...</i>
+
+<script src="https://cdn.jsdelivr.net/npm/bluebird@3/js/browser/bluebird.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/whatwg-fetch@2.0.3/fetch.min.js"></script>
+<script>
+  fetch('https://v1.hitokoto.cn')
+    .then(function (res){
+      return res.json();
+    })
+    .then(function (data) {
+      var hitokoto = document.getElementById('hitokoto');
+      hitokoto.innerText = '\xa0\xa0\xa0\xa0\xa0\xa0\xa0' + data.hitokoto;
+      var hitofrom = document.getElementById('hitofrom');
+      hitofrom.innerText = "——" + data.from + '\xa0'; 
+    })
+    .catch(function (err) {
+      console.error(err);
+    })
+</script>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Bill Yang 以 <a class="theme-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a> 协议发布</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+  <script>
+  if (CONFIG.page.isPost) {
+    wpac_init = window.wpac_init || [];
+    wpac_init.push({
+      widget: 'Rating',
+      id: 10154,
+      el: 'wpac-rating',
+      color: 'fc6423'
+    });
+    (function() {
+      if ('WIDGETPACK_LOADED' in window) return;
+      WIDGETPACK_LOADED = true;
+      var mc = document.createElement('script');
+      mc.type = 'text/javascript';
+      mc.async = true;
+      mc.src = '//embed.widgetpack.com/widget.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+    })();
+  }
+  </script>
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout: 3000,
+        priority: true,
+        ignores: [uri => uri.includes('#'),uri => uri == 'https://blog.bill.moe/fast-fourier-transform-notes/',]
+      });
+      });
+  </script>
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: true,
+      notify: false,
+      appId: 'JYwxXHHRe8RNGu498SnK9B3N-gzGzoHsz',
+      appKey: 'JBz9GW9kidjPp7gW5Y6VIgfe',
+      placeholder: "吹雪は猫~",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: 'zh-cn' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

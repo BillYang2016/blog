@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.png">
+  <link rel="mask-icon" href="/images/logo.png" color="#222">
+  <meta name="google-site-verification" content="ghOTm3Im1Awef9otcmhxaBXZs5PlL-aApB3Zeo2qVrg">
+  <meta name="baidu-site-verification" content="PcyS4kW5Yu">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-bounce.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://blog.bill.moe').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},
+    path: 'search.xml',
+    motion: {"enable":true,"async":true,"transition":{"post_block":"swoopIn","post_header":"shrinkIn","post_body":"shrinkIn","coll_header":"expandIn","sidebar":"bounceIn"}}
+  };
+</script>
+
+  <meta name="description" content="本文主要讲述了一类回文子串划分问题的高效率解法，基于$3$年前adamant的一篇文章讨论。   阅读本文需要有回文自动机的基础。本文中记$s^T$为字符串$s$的翻转串，$\left|s\right|$为字符串$s$的长度。">
+<meta name="keywords" content="动态规划,学习笔记,字符串,回文自动机">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一类使用回文自动机优化的动规问题">
+<meta property="og:url" content="https://blog.bill.moe/dp-with-palindrome-notes/index.html">
+<meta property="og:site_name" content="Bill Yang&#39;s Blog">
+<meta property="og:description" content="本文主要讲述了一类回文子串划分问题的高效率解法，基于$3$年前adamant的一篇文章讨论。   阅读本文需要有回文自动机的基础。本文中记$s^T$为字符串$s$的翻转串，$\left|s\right|$为字符串$s$的长度。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://blog.bill.moe/img/dp-with-palindrome-1.svg">
+<meta property="og:image" content="https://blog.bill.moe/img/dp-with-palindrome-2.svg">
+<meta property="og:image" content="https://blog.bill.moe/img/dp-with-palindrome-3.svg">
+<meta property="og:image" content="https://blog.bill.moe/img/dp-with-palindrome-4.svg">
+<meta property="og:image" content="https://blog.bill.moe/img/dp-with-palindrome-5.svg">
+<meta property="og:image" content="https://blog.bill.moe/img/dp-with-palindrome-6.svg">
+<meta property="og:image" content="https://blog.bill.moe/img/dp-with-palindrome-7.svg">
+<meta property="og:image" content="https://blog.bill.moe/img/dp-with-palindrome-8.svg">
+<meta property="og:updated_time" content="2019-06-18T02:30:14.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="一类使用回文自动机优化的动规问题">
+<meta name="twitter:description" content="本文主要讲述了一类回文子串划分问题的高效率解法，基于$3$年前adamant的一篇文章讨论。   阅读本文需要有回文自动机的基础。本文中记$s^T$为字符串$s$的翻转串，$\left|s\right|$为字符串$s$的长度。">
+<meta name="twitter:image" content="https://blog.bill.moe/img/dp-with-palindrome-1.svg">
+
+<link rel="canonical" href="https://blog.bill.moe/dp-with-palindrome-notes/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+<!-- jquery -->
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+<!-- 打字礼花及震动特效 -->
+
+<div id="append_parent"></div><div id="ajaxwaitid"></div>
+<script type="text/javascript" src="/lib/activate-power-mode/activate-power-mode.js"></script>
+<script>
+	POWERMODE.colorful = true;
+	POWERMODE.shake = false;
+	document.body.addEventListener('input',POWERMODE);
+</script>
+
+<!-- live2d -->
+
+<div class="waifu">
+	<div class="waifu-tips"></div>
+	<canvas id="live2d" width="240" height="350" class="live2d"></canvas>
+	<div class="hide-button">隐藏</div>
+</div>
+<script async src="/lib/poster-girl/waifu-tips.js"></script>
+<script src="/lib/poster-girl/live2d.js"></script>
+<script type="text/javascript">
+	loadlive2d("live2d", "/live2d/assets/kanna.model.json");
+</script>
+  <title>一类使用回文自动机优化的动规问题 | Bill Yang's Blog</title>
+  
+    <script>
+      function sendPageView() {
+        if (CONFIG.hostname !== location.hostname) return;
+        var uid = localStorage.getItem('uid') || (Math.random() + '.' + Math.random());
+        localStorage.setItem('uid', uid);
+        navigator.sendBeacon('https://www.google-analytics.com/collect', new URLSearchParams({
+          v  : 1,
+          tid: 'UA-157912381-1',
+          cid: uid,
+          t  : 'pageview',
+          dp : encodeURIComponent(location.pathname)
+        }));
+      }
+      document.addEventListener('pjax:complete', sendPageView);
+      sendPageView();
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?d538e1e81ada366563b03354efffd84c";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Bill Yang's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">路终会有尽头，但视野总能看到更远的地方。</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">10</span></a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-friends">
+
+    <a href="/friends" rel="section"><i class="fa fa-fw fa-users"></i>友链</a>
+
+  </li>
+        <li class="menu-item menu-item-board">
+
+    <a href="/board/" rel="section"><i class="fa fa-fw fa-sticky-note-o"></i>留言板</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">672</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">234</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.bill.moe/dp-with-palindrome-notes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Bill Yang">
+      <meta itemprop="description" content="这辈子都不可能更新的">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bill Yang's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          一类使用回文自动机优化的动规问题
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-02-18 18:54:02" itemprop="dateCreated datePublished" datetime="2018-02-18T18:54:02+08:00">2018-02-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-06-18 10:30:14" itemprop="dateModified" datetime="2019-06-18T10:30:14+08:00">2019-06-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OI/" itemprop="url" rel="index">
+                    <span itemprop="name">OI</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/dp-with-palindrome-notes/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/dp-with-palindrome-notes/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>本文主要讲述了一类回文子串划分问题的高效率解法，基于$3$年前<a href="http://codeforces.com/profile/adamant" target="_blank" rel="noopener">adamant</a>的<a href="http://codeforces.com/blog/entry/19193" target="_blank" rel="noopener">一篇文章</a>讨论。  </p>
+<p>阅读本文需要有<a href="/palindrome-automaton-notes/">回文自动机</a>的基础。<br>本文中记$s^T$为字符串$s$的翻转串，$\left|s\right|$为字符串$s$的长度。  </p>
+<a id="more"></a>
+<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><blockquote>
+<p>给定一个长度为$n$的字符串，将其中若干个位置断开，要求每个分割出来的串都满足回文，询问最少需要断开几次。<br>$n\le10^5$</p>
+</blockquote>
+<h2 id="暴力"><a href="#暴力" class="headerlink" title="暴力"></a>暴力</h2><p>可以使用Manacher或Hash，设$f(i)$为对于前缀$1\rightarrow i$的答案，不难设计出一个$O(n^2)$的动规。  </p>
+<h2 id="加入回文自动机"><a href="#加入回文自动机" class="headerlink" title="加入回文自动机"></a>加入回文自动机</h2><p>既然本文称作一类使用回文自动机优化的动规问题，那么考虑使用回文自动机呢？<br>对于每一个前缀，处理好其回文自动机，接下来在$last$的$fail$链进行转移即可。<br>这样的转移仍然是$O(n^2)$的，在数据随机的情况下可以做到$O(n\alpha+n\log n)$。  </p>
+<h2 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h2><p>考虑什么情况可以优化，举个栗子来进行说明：  </p>
+<p>假设当前的串为$s=abdbdbdbd$。考虑$f(\left|S\right|)$，可以将$s$拆分为$ab+dbdbdbd,abdb+dbdbd,abdbdb+dbd,abdbdbdb+d$，故对于$f(\left|S\right|)$合法的转移有：$f(\left|ab\right|)+1,f(\left|abdb\right|)+1,f(\left|abdbdb\right|)+1,f(\left|abdbdbdb\right|)+1$，取个最小值即可得到$f(\left|S\right|)$。  </p>
+<p>再考虑$f(\left|abdbdbd\right|)$，其合法转移为：$f(\left|ab\right|)+1,f(\left|abdb\right|)+1,f(\left|abdbdb\right|)+1$，与$f(\left|S\right|)$的合法转移进行对比，发现仅多出了转移$f(\left|abdbdbdb\right|)+1$，原因是拆分的回文串回文形式类似，这就是优化原理。  </p>
+<p>更形式化地：<br>在回文自动机上记录$diff(x)=len(x)-len(next(x))$，$snext(x)=y$表示$x$的$fail$链上距离$x$最近的$y$满足$diff(y)\neq diff(x)$。<br>这两个属性都很好计算：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">diff[now]=len[now]-len[next[now]];</span><br><span class="line">snext[now]=diff[now]==diff[next[now]]?snext[next[now]]:next[now];</span><br></pre></td></tr></table></figure></p>
+<p>记$series(x)$表示$x\rightarrow snext(x)$的链（包含$x$，不含$snext(x)$），称作系列。  </p>
+<p><img src="/img/dp-with-palindrome-1.svg" alt><br>如图，蓝色数字表示$diff$，红色字符串表示结点对应回文串，相同颜色结点表示处于同一$series$中。  </p>
+<p>不难发现，对于同一$series$中的转移可以在$O(n)$时间内完成。<br>方法如下：<br>记当前前缀为$i$，转移中回文自动机结点为$v$，若$next(v)\in series(v)$，则从$next(v)$处继承前面的转移。然后计算出新的转移所在位置$i-(len[snext[v]]+diff[v])$，加入当前系列的转移，计算答案。<br>不断地让$v$在$fail$链上跳跃，即可考虑到所有转移。  </p>
+<p>代码如下：（使用<code>series[]</code>记录系列的转移最优值）<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=n; i++) &#123;</span><br><span class="line">	insert(s[i]-<span class="string">'a'</span>);</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> v=last; len[v]&gt;<span class="number">0</span>; v=snext[v]) &#123;</span><br><span class="line">		series[v]=f[i-(len[snext[v]]+diff[v])];</span><br><span class="line">		<span class="keyword">if</span>(diff[v]==diff[next[v]])series[v]=min(series[v],series[next[v]]);</span><br><span class="line">		f[i]=min(f[i],series[v]+<span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>设$snext$指针所构成的树高为$T(n)$，显然时间复杂度为$O(nT(n))$。<br>下面我们证明$T(n)\le \log n$，也就是说该算法时间复杂度为$O(n\log n)$。  </p>
+<h3 id="树高证明"><a href="#树高证明" class="headerlink" title="树高证明"></a>树高证明</h3><p>原<a href="http://codeforces.com/blog/entry/19193" target="_blank" rel="noopener">文章</a>中给出过一个<a href="https://arxiv.org/pdf/1506.04862v1.pdf" target="_blank" rel="noopener">证明</a>。<br>当然，因为我英语太渣了，看不懂（<del>根本找不到证明的位置</del>），因此在Cydiater的帮助下作出了如下证明：  </p>
+<p>给出一个结论：<br>对于一个结点$v$，若$2diff(v)\lt len(v)$，则其一定不是某个系列的上端点。<br>根据这个结论，系列上端点均满足$diff(v)\ge\frac{len(v)}2$，因此每次跳跃长度至少减少一半，则树高$\le\log n$。  </p>
+<p>现在我们转而证明上述结论。<br>假设回文自动机上有一个结点$v$，其满足$2diff(v)\lt len(v)$，记其对应回文串为$s$，$v$与$next(v)$的差异为字符串$A$。<br>根据条件，有$diff(v)\lt len-diff(v)$，故其$next(v)$包含$A^T$，则划分$s$为如下几部分：<br><img src="/img/dp-with-palindrome-2.svg" alt><br>考虑$s$的最长回文后缀，也就是$next(v)$表示的字符串，根据其对称轴，可以发现左侧必须有两个$A$串：<br><img src="/img/dp-with-palindrome-3.svg" alt><br>若$s$除去左侧的两个$A$串依然是一个回文串，则$diff(v)=diff(next(v))$，即$v$一定不是某个系列的上端点。<br>故现在转而证明$s$除去左侧的两个$A$串得到的串（记为$s-2A$）依然是一个回文串。 </p>
+<ul>
+<li>若$\left|C\right|\gt \left|A\right|$，即$\left|s\right|\gt4\left|A\right|$：<br>根据$s$的对称轴，又可以发现右侧也有两个$A^T$串。<br><img src="/img/dp-with-palindrome-4.svg" alt><br>以此类推，根据$s$与其最长回文后缀的两条对称轴构成的对称关系，问题可以归纳到$\left|C\right|\le \left|A\right|$的情况，若在$\left|C\right|\le \left|A\right|$时满足结论，则$\left|C\right|\gt \left|A\right|$时依然满足。  </li>
+<li>若$\left|C\right|\le \left|A\right|$且$\left|s\right|\ge 3\left|A\right|$，即$3\left|A\right|\le s\le4\left|A\right|$：<br>依然根据$s$的最长回文后缀的对称轴，将$A^T$对称到左边，得到下图：<br><img src="/img/dp-with-palindrome-5.svg" alt><br>根据$s$的对称轴，将$B$与$B^T$对称到左边，得到：<br><img src="/img/dp-with-palindrome-6.svg" alt><br>因此$A=BB^TDD^T$，代入到右侧的$A^T$可以得到：$S-2A=BB^TA^T=BB^TDD^TBB^T$，显然是一个回文串。  </li>
+<li>若$2diff(v)&lt;len(v)$且$\left|s\right|\lt 3\left|A\right|$，即$2\left|A\right|\lt\left|s\right|\lt 3\left|A\right|$：<br><img src="/img/dp-with-palindrome-7.svg" alt><br>将$B$与$B^T$通过$s$最长回文后缀的对称轴对称到右边：<br><img src="/img/dp-with-palindrome-8.svg" alt><br>因此$A^T=DD^TBB^T$，故$A=BB^TDD^T$，因此：<br>$S-2A=BB^T$，显然是一个回文串。  </li>
+</ul>
+<p>Q.E.D</p>
+<h2 id="相关例题"><a href="#相关例题" class="headerlink" title="相关例题"></a>相关例题</h2><p>三道模板题，最后一道需要点转化技巧  </p>
+<ul>
+<li><a href="http://acm.timus.ru/problem.aspx?space=1&amp;num=2058" target="_blank" rel="noopener">TOJ2058</a>  </li>
+<li><a href="http://acm.timus.ru/problem.aspx?space=1&amp;num=2044" target="_blank" rel="noopener">TOJ2044</a> / <a href="/toj2044-palindrome/">题解</a>  </li>
+<li><a href="http://codeforces.com/contest/932/problem/G" target="_blank" rel="noopener">CF #932 G</a> / <a href="/Codeforces-round463/">题解</a>  </li>
+</ul>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="http://codeforces.com/blog/entry/19193" target="_blank" rel="noopener">A bit more about palindromes - adamant</a>  </li>
+<li><a href="https://cydiater.me/2018/02/16/%E4%B8%80%E7%B1%BB%E5%9B%9E%E6%96%87%E5%AD%90%E4%B8%B2%E5%88%92%E5%88%86%E9%97%AE%E9%A2%98%E7%9A%84%E9%80%9A%E7%94%A8%E8%A7%A3%E6%B3%95/" target="_blank" rel="noopener">一类回文子串划分问题的通用解法 - Cydiater</a>  </li>
+</ul>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/HNMTC2015_1-string/" rel="bookmark">「HNMTC2015_#1」字符串合成 - 回文自动机+动态规划</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/toj2044-palindrome/" rel="bookmark">「TOJ2044」31 Palindromes - 回文自动机优化动规</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/palindrome-automaton-notes/" rel="bookmark">回文自动机学习笔记</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/manacher-algorithm-notes/" rel="bookmark">Manacher算法笔记</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/APIO2014-palindrome/" rel="bookmark">「APIO2014」回文串 - 回文自动机</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div>姥爷们赏瓶冰阔落吧~</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="Bill Yang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="Bill Yang 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Bill Yang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.bill.moe/dp-with-palindrome-notes/" title="一类使用回文自动机优化的动规问题">https://blog.bill.moe/dp-with-palindrome-notes/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/动态规划/" rel="tag"><i class="fa fa-tag"></i> 动态规划</a>
+              <a href="/tags/学习笔记/" rel="tag"><i class="fa fa-tag"></i> 学习笔记</a>
+              <a href="/tags/字符串/" rel="tag"><i class="fa fa-tag"></i> 字符串</a>
+              <a href="/tags/回文自动机/" rel="tag"><i class="fa fa-tag"></i> 回文自动机</a>
+          </div>
+
+        
+  <div class="post-widgets">
+    <div class="wp_rating">
+      <div id="wpac-rating"></div>
+    </div>
+  </div>
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/Codeforces-round463/" rel="prev" title="Codeforces Round 463 题解（全解锁）">
+      <i class="fa fa-chevron-left"></i> Codeforces Round 463 题解（全解锁）
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/toj2044-palindrome/" rel="next" title="「TOJ2044」31 Palindromes - 回文自动机优化动规">
+      「TOJ2044」31 Palindromes - 回文自动机优化动规 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#问题描述"><span class="nav-number">1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#暴力"><span class="nav-number">2.</span> <span class="nav-text">暴力</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#加入回文自动机"><span class="nav-number">3.</span> <span class="nav-text">加入回文自动机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#优化"><span class="nav-number">4.</span> <span class="nav-text">优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#树高证明"><span class="nav-number">4.1.</span> <span class="nav-text">树高证明</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相关例题"><span class="nav-number">5.</span> <span class="nav-text">相关例题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">6.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Bill Yang"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Bill Yang</p>
+  <div class="site-description" itemprop="description">这辈子都不可能更新的</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">672</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">234</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=935683004" title="QQ → tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=935683004" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i>QQ</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ym13883407586@outlook.com" title="E-Mail → mailto:ym13883407586@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/BillYang2016" title="GitHub → https://github.com/BillYang2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://coding.net/u/Bill_Yang_2016" title="Coding → https://coding.net/u/Bill_Yang_2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-git-square"></i>Coding</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://music.163.com/#/user/home?nickname=Bill_Yang2016" title="网易云音乐 → http://music.163.com/#/user/home?nickname=Bill_Yang2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-music"></i>网易云音乐</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://space.bilibili.com/233682260/#/" title="bilibili → https://space.bilibili.com/233682260/#/" rel="noopener" target="_blank"><i class="fa fa-fw fa-youtube-play"></i>bilibili</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → /atom.xml"><i class="fa fa-fw fa-rss"></i>RSS</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      我的朋友们
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://pointedpoints.github.io/" title="http://pointedpoints.github.io/" rel="noopener" target="_blank">pointedpoints</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://keke046.coding.me/" title="https://keke046.coding.me/" rel="noopener" target="_blank">KEKE046</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://imperfect_zx.coding.me/" title="https://imperfect_zx.coding.me/" rel="noopener" target="_blank">Imperfect</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://achen.world/" title="https://achen.world/" rel="noopener" target="_blank">Achen</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://metakari.one/" title="https://metakari.one/" rel="noopener" target="_blank">Metakar1</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://39.106.98.75/" title="http://39.106.98.75/" rel="noopener" target="_blank">魏启大陆</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/friends/" title="/friends/">更多朋友们</a>
+        </li>
+    </ul>
+  </div>
+<!-- none-select-br -->
+
+<p></p>
+
+<!-- hitokoto -->
+
+<div class="hitokoto-title">
+	<i class="fa fa-paragraph"></i>
+	<b>一言</b>
+</div>
+
+<div id="hitokoto">:D 获取中...</div>
+<i id="hitofrom">:D 获取中...</i>
+
+<script src="https://cdn.jsdelivr.net/npm/bluebird@3/js/browser/bluebird.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/whatwg-fetch@2.0.3/fetch.min.js"></script>
+<script>
+  fetch('https://v1.hitokoto.cn')
+    .then(function (res){
+      return res.json();
+    })
+    .then(function (data) {
+      var hitokoto = document.getElementById('hitokoto');
+      hitokoto.innerText = '\xa0\xa0\xa0\xa0\xa0\xa0\xa0' + data.hitokoto;
+      var hitofrom = document.getElementById('hitofrom');
+      hitofrom.innerText = "——" + data.from + '\xa0'; 
+    })
+    .catch(function (err) {
+      console.error(err);
+    })
+</script>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Bill Yang 以 <a class="theme-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a> 协议发布</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+  <script>
+  if (CONFIG.page.isPost) {
+    wpac_init = window.wpac_init || [];
+    wpac_init.push({
+      widget: 'Rating',
+      id: 10154,
+      el: 'wpac-rating',
+      color: 'fc6423'
+    });
+    (function() {
+      if ('WIDGETPACK_LOADED' in window) return;
+      WIDGETPACK_LOADED = true;
+      var mc = document.createElement('script');
+      mc.type = 'text/javascript';
+      mc.async = true;
+      mc.src = '//embed.widgetpack.com/widget.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+    })();
+  }
+  </script>
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout: 3000,
+        priority: true,
+        ignores: [uri => uri.includes('#'),uri => uri == 'https://blog.bill.moe/dp-with-palindrome-notes/',]
+      });
+      });
+  </script>
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: true,
+      notify: false,
+      appId: 'JYwxXHHRe8RNGu498SnK9B3N-gzGzoHsz',
+      appKey: 'JBz9GW9kidjPp7gW5Y6VIgfe',
+      placeholder: "吹雪は猫~",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: 'zh-cn' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

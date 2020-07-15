@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.png">
+  <link rel="mask-icon" href="/images/logo.png" color="#222">
+  <meta name="google-site-verification" content="ghOTm3Im1Awef9otcmhxaBXZs5PlL-aApB3Zeo2qVrg">
+  <meta name="baidu-site-verification" content="PcyS4kW5Yu">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-bounce.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://blog.bill.moe').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},
+    path: 'search.xml',
+    motion: {"enable":true,"async":true,"transition":{"post_block":"swoopIn","post_header":"shrinkIn","post_body":"shrinkIn","coll_header":"expandIn","sidebar":"bounceIn"}}
+  };
+</script>
+
+  <meta name="description" content="题目大意 &amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;小明有一套玩具卡片。这套卡片中，有$n$张是数字卡片，这$n$张数字卡片上分别写有一个正整数$1,2,\ldots,n$；还有若干张符号卡片，每张符号卡片上写有符号$\underline +,\underline -,\underline{*},\underline(,\underline)$之一。&amp;ensp;&amp;ensp;&amp;ensp;&amp;en">
+<meta name="keywords" content="斯特林数,数学,数论,递推">
+<meta property="og:type" content="article">
+<meta property="og:title" content="「FCS NOI 2018 day1」残缺的算式 - 表达式运算+递推+第一类Stirling数">
+<meta property="og:url" content="https://blog.bill.moe/FCS-NOI2018-day1-equ/index.html">
+<meta property="og:site_name" content="Bill Yang&#39;s Blog">
+<meta property="og:description" content="题目大意 &amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;小明有一套玩具卡片。这套卡片中，有$n$张是数字卡片，这$n$张数字卡片上分别写有一个正整数$1,2,\ldots,n$；还有若干张符号卡片，每张符号卡片上写有符号$\underline +,\underline -,\underline{*},\underline(,\underline)$之一。&amp;ensp;&amp;ensp;&amp;ensp;&amp;en">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-06-10T01:10:56.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="「FCS NOI 2018 day1」残缺的算式 - 表达式运算+递推+第一类Stirling数">
+<meta name="twitter:description" content="题目大意 &amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;小明有一套玩具卡片。这套卡片中，有$n$张是数字卡片，这$n$张数字卡片上分别写有一个正整数$1,2,\ldots,n$；还有若干张符号卡片，每张符号卡片上写有符号$\underline +,\underline -,\underline{*},\underline(,\underline)$之一。&amp;ensp;&amp;ensp;&amp;ensp;&amp;en">
+
+<link rel="canonical" href="https://blog.bill.moe/FCS-NOI2018-day1-equ/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+<!-- jquery -->
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+<!-- 打字礼花及震动特效 -->
+
+<div id="append_parent"></div><div id="ajaxwaitid"></div>
+<script type="text/javascript" src="/lib/activate-power-mode/activate-power-mode.js"></script>
+<script>
+	POWERMODE.colorful = true;
+	POWERMODE.shake = false;
+	document.body.addEventListener('input',POWERMODE);
+</script>
+
+<!-- live2d -->
+
+<div class="waifu">
+	<div class="waifu-tips"></div>
+	<canvas id="live2d" width="240" height="350" class="live2d"></canvas>
+	<div class="hide-button">隐藏</div>
+</div>
+<script async src="/lib/poster-girl/waifu-tips.js"></script>
+<script src="/lib/poster-girl/live2d.js"></script>
+<script type="text/javascript">
+	loadlive2d("live2d", "/live2d/assets/kanna.model.json");
+</script>
+  <title>「FCS NOI 2018 day1」残缺的算式 - 表达式运算+递推+第一类Stirling数 | Bill Yang's Blog</title>
+  
+    <script>
+      function sendPageView() {
+        if (CONFIG.hostname !== location.hostname) return;
+        var uid = localStorage.getItem('uid') || (Math.random() + '.' + Math.random());
+        localStorage.setItem('uid', uid);
+        navigator.sendBeacon('https://www.google-analytics.com/collect', new URLSearchParams({
+          v  : 1,
+          tid: 'UA-157912381-1',
+          cid: uid,
+          t  : 'pageview',
+          dp : encodeURIComponent(location.pathname)
+        }));
+      }
+      document.addEventListener('pjax:complete', sendPageView);
+      sendPageView();
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?d538e1e81ada366563b03354efffd84c";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Bill Yang's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">路终会有尽头，但视野总能看到更远的地方。</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">10</span></a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-friends">
+
+    <a href="/friends" rel="section"><i class="fa fa-fw fa-users"></i>友链</a>
+
+  </li>
+        <li class="menu-item menu-item-board">
+
+    <a href="/board/" rel="section"><i class="fa fa-fw fa-sticky-note-o"></i>留言板</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">672</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">234</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.bill.moe/FCS-NOI2018-day1-equ/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Bill Yang">
+      <meta itemprop="description" content="这辈子都不可能更新的">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bill Yang's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          「FCS NOI 2018 day1」残缺的算式 - 表达式运算+递推+第一类Stirling数
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-03-16 08:36:40" itemprop="dateCreated datePublished" datetime="2018-03-16T08:36:40+08:00">2018-03-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-06-10 09:10:56" itemprop="dateModified" datetime="2019-06-10T09:10:56+08:00">2019-06-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OI/" itemprop="url" rel="index">
+                    <span itemprop="name">OI</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/FCS-NOI2018-day1-equ/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/FCS-NOI2018-day1-equ/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="题目大意"><a href="#题目大意" class="headerlink" title="题目大意"></a>题目大意</h2><blockquote>
+<p>&ensp;&ensp;&ensp;&ensp;小明有一套玩具卡片。这套卡片中，有$n$张是数字卡片，这$n$张数字卡片上分别写有一个正整数$1,2,\ldots,n$；还有若干张符号卡片，每张符号卡片上写有符号$\underline +,\underline -,\underline{*},\underline(,\underline)$之一。<br>&ensp;&ensp;&ensp;&ensp;小明最喜欢用这套卡片来摆算式，然后计算它的结果。当然，摆算式时不必用完所有的卡片。<br>&ensp;&ensp;&ensp;&ensp;一天，小明摆好了一个算式。然而，准备计算前，一个熊孩子把算式中的数字卡片全部取走了，只剩下符号卡片和原来数字卡片所在的空位。也就是说，现在的算式可能是这样的：<code>(_+_*_)*(_*_-_)+_</code>（这里<code>_</code>代表原来放有数字卡片的空位）。<br>&ensp;&ensp;&ensp;&ensp;无奈小明已不记得原来每个位置填的数字卡片上的数分别是多少，他只能假设每<br>种可能的算式作为原算式的概率相等。现在，小明想知道，原算式的结果的期望值是多少？<br>&ensp;&ensp;&ensp;&ensp;形式化地，设有$m$种可能的算式，它们的运算结果分别为$s_1,s_2,\ldots,s_m$，那么原算式的结果的期望值$E$为</p>
+<script type="math/tex; mode=display">E=\frac 1m\sum_{i=1}^ms_i</script></blockquote>
+<a id="more"></a>
+<hr>
+<h2 id="题目分析"><a href="#题目分析" class="headerlink" title="题目分析"></a>题目分析</h2><p>尝试把表达式展开：  </p>
+<script type="math/tex; mode=display">(x_1+x_2x_3)(x_4x_5−x_6)=x_1x_4x_5−x_1x_6+x_2x_3x_4x_5−x_2x_6</script><p>由期望的线性性质：  </p>
+<script type="math/tex; mode=display">E((x_1+x_2x_3)(x_4x_5−x_6))=E(x_1x_4x_5)−E(x_1x_6)+E(x_2x_3x_4x_5)−E(x_2x_6)</script><p>即可以计算每一项的期望<br>实际上次数一样的$x_1x_2\cdots x_k$项期望也是一样的，所以只要处理出$c_k$表示所有$k$次项的系数和。<br>$c$系数可以使用表达式处理进行求解。<br>例如使用表达式树，表达式栈。<br>标解给出了一种简洁的表达式栈的写法，只要系统栈不爆，这样就很好写。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> &amp;x,<span class="keyword">int</span> v)</span> </span>&#123;x+=v;<span class="keyword">if</span>(x&gt;=mod)x-=mod;&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">poly</span> &#123;</span></span><br><span class="line">	<span class="keyword">int</span> m,*c;</span><br><span class="line">	poly(<span class="keyword">int</span> m=<span class="number">0</span>):m(m) &#123;c=<span class="keyword">new</span> <span class="keyword">int</span>[m+<span class="number">1</span>];&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function">poly <span class="title">operate</span><span class="params">(<span class="keyword">const</span> poly &amp;a,<span class="keyword">char</span> opt,<span class="keyword">const</span> poly &amp;b)</span> </span>&#123;</span><br><span class="line">	poly x=poly(opt==<span class="string">'*'</span>?a.m+b.m:max(a.m,b.m));</span><br><span class="line">	<span class="keyword">if</span>(opt==<span class="string">'*'</span>) &#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;=x.m; i++)x.c[i]=<span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;=a.m; i++)</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>; j&lt;=b.m; j++)</span><br><span class="line">				add(x.c[i+j],<span class="number">1l</span>l*a.c[i]*b.c[j]%mod);</span><br><span class="line">	&#125; <span class="keyword">else</span> <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;=x.m; i++)x.c[i]=((i&lt;=a.m?a.c[i]:<span class="number">0</span>)+(i&lt;=b.m?((b.c[i]*(opt==<span class="string">'+'</span>?<span class="number">1</span>:<span class="number">-1</span>))+mod)%mod:<span class="number">0</span>))%mod;</span><br><span class="line">	<span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">poly <span class="title">split</span><span class="params">(<span class="keyword">char</span> *&amp;s)</span></span>;</span><br><span class="line"><span class="function">poly <span class="title">block</span><span class="params">(<span class="keyword">char</span> *&amp;s)</span> </span>&#123;</span><br><span class="line">	poly x;</span><br><span class="line">	<span class="keyword">if</span>(*s==<span class="string">'_'</span>)x=poly(<span class="number">1</span>),x.c[<span class="number">0</span>]=<span class="number">0</span>,x.c[<span class="number">1</span>]=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">else</span> x=split(++s);</span><br><span class="line">	s++;</span><br><span class="line">	<span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">poly <span class="title">mul</span><span class="params">(<span class="keyword">char</span> *&amp;s)</span> </span>&#123;</span><br><span class="line">	poly x=block(s);</span><br><span class="line">	<span class="keyword">while</span>(*s==<span class="string">'*'</span>)x=operate(x,<span class="string">'*'</span>,block(++s));</span><br><span class="line">	<span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">poly <span class="title">split</span><span class="params">(<span class="keyword">char</span> *&amp;s)</span> </span>&#123;</span><br><span class="line">	poly x=mul(s);</span><br><span class="line">	<span class="keyword">while</span>(*s==<span class="string">'+'</span>||*s==<span class="string">'-'</span>) &#123;<span class="keyword">char</span> o=*s;x=operate(x,o,mul(++s));&#125;</span><br><span class="line">	<span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>简单解释一下代码。<br><code>operate</code>函数对$a,b$两个表达式进行运算，计算新的$c$。<br><code>split</code>函数用同层的$+,-$号分割表达式，并计算$c$。<br><code>mul</code>函数用乘号分割<code>split</code>后的表达式，并计算$c$。<br><code>block</code>函数的意思是找出一个同层的表达式块，如第一个位置是<code>_</code>，就返回<code>_</code>，如第一个位置是$($，返回括号内的表达式块。  </p>
+<h3 id="算法一"><a href="#算法一" class="headerlink" title="算法一"></a>算法一</h3><p>现在我们得到了系数$c$，只需要计算$i$个数选$j$的积的期望即可。<br>设$f(i,j)$表示从$1,2\ldots,i$中选$j$个数的乘积之和。  </p>
+<script type="math/tex; mode=display">f(i,j)=f(i-1,j)+i\cdot f(i-1,j-1)</script><p>然后再除掉分母即可得到期望。<br>时间复杂度$O(\left|S\right|n)$，可以拿到$80$分，代码见下。  </p>
+<h3 id="算法二"><a href="#算法二" class="headerlink" title="算法二"></a>算法二</h3><p>怎么优化算法一呢？<br>算法一的瓶颈在于$n$。<br>现在引入三个定理：  </p>
+<h4 id="定理一"><a href="#定理一" class="headerlink" title="定理一"></a>定理一</h4><blockquote>
+<script type="math/tex; mode=display">n\binom nx=(x+1)\binom n{x+1}+x\binom nx</script></blockquote>
+<p>证明：<br>由于$\binom nx=\frac{x+1}{n+1}\binom{n+1}{x+1}$，<br>又由于$\binom nx=\binom{n-1}x+\binom{n-1}{x-1}$（Pascal公式），<br>因此：  </p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\binom nx&=\binom{n-1}x+\binom{n-1}{x-1} \\
+&=\frac{x+1}n\binom n{x+1}+\frac xn\binom nx
+\end{aligned}</script><p>故$n\binom nx=(x+1)\binom n{x+1}+x\binom nx$，Q.E.D。  </p>
+<h4 id="定理二"><a href="#定理二" class="headerlink" title="定理二"></a>定理二</h4><blockquote>
+<script type="math/tex; mode=display">f(i,k)=\sum_{j=1}^ij\cdot f(j-1,k-1)</script></blockquote>
+<p>证明：<br>由</p>
+<script type="math/tex; mode=display">f(i,j)=f(i-1,j)+i\cdot f(i-1,j-1)</script><p>易知。  </p>
+<h4 id="定理三"><a href="#定理三" class="headerlink" title="定理三"></a>定理三</h4><blockquote>
+<script type="math/tex; mode=display">\sum_{i=1}^n\binom ix=\binom {n+1}{x+1}</script></blockquote>
+<p>在<a href="/bzoj2886-path/">这里</a>证过了。  </p>
+<p>有了这三个定理，现在我们来找规律。  </p>
+<script type="math/tex; mode=display">f(i,1)=\sum_{j=1}^ij=\binom {i+1}2</script><script type="math/tex; mode=display">
+\begin{aligned}
+f(i,2)&=\sum_{j=1}^ij\cdot f(j-1,i)\quad\text{（定理二）} \\
+&=\sum_{j=1}^ij\binom j2 \\
+&=\sum_{j=1}^i3\binom j3+2\binom j2\quad\text{（定理一）} \\
+&=3\binom{i+1}4+2\binom{i+1}3\quad\text{（定理三）} \\
+\end{aligned}</script><p>感受一下这个规律。<br>通过三个定理的迭代，可以在组合数的上标不变的情况下对组合数下标进行递推。<br>$f(i,j)$具有$\sum\limits_{k=0}^{2j}\alpha_{j,k}\binom{i+1}k$的形式，其中$\alpha_j,k$为常系数。<br>为什么是$2j$呢？观察上述规律，每次下标加了$2$，还要注意低位没了，系数要清零。<br>同时注意，$\alpha_{j,\underline k}$与$\binom {i+1}{\underline k}$对应。<br>此时我们可以将$f(i,j)$视作一个多项式。  </p>
+<p>代入$f(i,j)$的递推式（定理二）：  </p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+f(i,j)&=\sum_{k=0}^{2j}\alpha_{j,k}\binom{i+1}k \\
+&=\sum_{t=1}^it\cdot f(t-1,j-1) \\
+&=\sum_{t=1}^it\sum_{k=0}^{2j-2}\alpha_{j-1,k}\binom tk \\
+&=\sum_{k=0}^{2j-2}\sum_{t=1}^it\cdot\alpha_{j-1,k}\binom tk \\
+&=\sum_{k=0}^{2j-2}\sum_{i=1}^i\alpha_{j-1,k}\cdot t\binom tk \\
+&=\sum_{k=0}^{2j-2}\alpha_{j-1,k}\sum_{i=1}^i((k+1)\binom t{k+1}+k\binom tk)\quad\text{（定理一）} \\
+&=\sum_{k=0}^{2j-2}\alpha_{j-1,k}((k+1)\binom{i+1}{k+2}+k\binom{i+1}{k+1})\quad\text{（定理三）}
+\end{aligned}</script><p>由上面的对应关系可知：<br>$\binom{i+1}{\underline{k+2}}$与$\alpha_{j,\underline{k+2}}$对应，$\binom{i+1}{\underline{k+1}}$与$\alpha_{j,\underline{k+1}}$对应。<br>即：<br>上个多项式第$k$项乘上$k+1$得到当前第$k+2$项，乘上$k$得到当前第$k+1$项。  </p>
+<script type="math/tex; mode=display">k\xrightarrow{k+1}k+2,k\xrightarrow{k}k+1</script><p>因此得到$\alpha_{j-1,\ldots}$到$\alpha_{j,\ldots}$的转移：  </p>
+<script type="math/tex; mode=display">\alpha_{j,k}=(k-1)(\alpha_{j,k-1}+\alpha_{j,k-2})</script><p>即$f(i,j-1)$到$f(i,j)$的变化，与第一维$i$无关。  </p>
+<p>令$i=n$，即可得到$f(n,j)$的多项式。<br>可以在$O(\left|S\right|)$的时间内计算$f(n,j)$的值。<br>可以在$O(\left|S\right|)$的时间内递推得到所有$f(n,j)$。<br>套入表达式的系数即可快速计算答案，时间复杂度$O(\left|S\right|^2)$。<br>下面的满分代码用的就是这种算法。  </p>
+<h3 id="算法三"><a href="#算法三" class="headerlink" title="算法三"></a>算法三</h3><p>$f(i,k)$是一个$2k$次多项式，可以用拉格朗日插值法$O(k^2)$求出。  </p>
+<h3 id="算法四"><a href="#算法四" class="headerlink" title="算法四"></a>算法四</h3><p>$f(i,j)$实际上是第一类斯特林数$i$行倒数$j$个数，可以用FFT计算，时间复杂度$O(k\log k)$。  </p>
+<hr>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><p>$80$分：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxn=<span class="number">5005</span>,mod=<span class="number">1e9</span>+<span class="number">7</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> &amp;x,<span class="keyword">int</span> v)</span> </span>&#123;x+=v;<span class="keyword">if</span>(x&gt;=mod)x-=mod;&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">poly</span> &#123;</span></span><br><span class="line">	<span class="keyword">int</span> m,*c;</span><br><span class="line">	poly(<span class="keyword">int</span> m=<span class="number">0</span>):m(m) &#123;c=<span class="keyword">new</span> <span class="keyword">int</span>[m+<span class="number">1</span>];&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function">poly <span class="title">operate</span><span class="params">(<span class="keyword">const</span> poly &amp;a,<span class="keyword">char</span> opt,<span class="keyword">const</span> poly &amp;b)</span> </span>&#123;</span><br><span class="line">	poly x=poly(opt==<span class="string">'*'</span>?a.m+b.m:max(a.m,b.m));</span><br><span class="line">	<span class="keyword">if</span>(opt==<span class="string">'*'</span>) &#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;=x.m; i++)x.c[i]=<span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;=a.m; i++)</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>; j&lt;=b.m; j++)</span><br><span class="line">				add(x.c[i+j],<span class="number">1l</span>l*a.c[i]*b.c[j]%mod);</span><br><span class="line">	&#125; <span class="keyword">else</span> <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;=x.m; i++)x.c[i]=((i&lt;=a.m?a.c[i]:<span class="number">0</span>)+(i&lt;=b.m?((b.c[i]*(opt==<span class="string">'+'</span>?<span class="number">1</span>:<span class="number">-1</span>))+mod)%mod:<span class="number">0</span>))%mod;</span><br><span class="line">	<span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">poly <span class="title">split</span><span class="params">(<span class="keyword">char</span> *&amp;s)</span></span>;</span><br><span class="line"><span class="function">poly <span class="title">block</span><span class="params">(<span class="keyword">char</span> *&amp;s)</span> </span>&#123;</span><br><span class="line">	poly x;</span><br><span class="line">	<span class="keyword">if</span>(*s==<span class="string">'_'</span>)x=poly(<span class="number">1</span>),x.c[<span class="number">0</span>]=<span class="number">0</span>,x.c[<span class="number">1</span>]=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">else</span> x=split(++s);</span><br><span class="line">	s++;</span><br><span class="line">	<span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">poly <span class="title">mul</span><span class="params">(<span class="keyword">char</span> *&amp;s)</span> </span>&#123;</span><br><span class="line">	poly x=block(s);</span><br><span class="line">	<span class="keyword">while</span>(*s==<span class="string">'*'</span>)x=operate(x,<span class="string">'*'</span>,block(++s));</span><br><span class="line">	<span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">poly <span class="title">split</span><span class="params">(<span class="keyword">char</span> *&amp;s)</span> </span>&#123;</span><br><span class="line">	poly x=mul(s);</span><br><span class="line">	<span class="keyword">while</span>(*s==<span class="string">'+'</span>||*s==<span class="string">'-'</span>) &#123;<span class="keyword">char</span> o=*s;x=operate(x,o,mul(++s));&#125;</span><br><span class="line">	<span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> n,C[maxn][maxn],f[maxn][maxn],ans=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">char</span> s[<span class="number">10005</span>];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">Quick_Pow</span><span class="params">(<span class="keyword">int</span> a,<span class="keyword">int</span> b)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> ans=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span>(; b; b&gt;&gt;=<span class="number">1</span>,a=<span class="number">1l</span>l*a*a%mod)<span class="keyword">if</span>(b&amp;<span class="number">1</span>)ans=<span class="number">1l</span>l*ans*a%mod;</span><br><span class="line">	<span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">"%d%s"</span>,&amp;n,s);</span><br><span class="line">	<span class="keyword">char</span> *p=s;</span><br><span class="line">	poly a=split(p);</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=n; i++) &#123;</span><br><span class="line">		C[i][<span class="number">0</span>]=C[i][i]=<span class="number">1</span>;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">1</span>; j&lt;i; j++)C[i][j]=(C[i<span class="number">-1</span>][j]+C[i<span class="number">-1</span>][j<span class="number">-1</span>])%mod;</span><br><span class="line">	&#125;</span><br><span class="line">	f[<span class="number">1</span>][<span class="number">1</span>]=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=n; i++)f[i][<span class="number">0</span>]=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">2</span>; i&lt;=n; i++)</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">1</span>; j&lt;=i; j++)</span><br><span class="line">			f[i][j]=(<span class="number">1l</span>l*f[i<span class="number">-1</span>][j<span class="number">-1</span>]*i%mod+f[i<span class="number">-1</span>][j])%mod;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;=a.m; i++)<span class="keyword">if</span>(a.c[i])add(ans,<span class="number">1l</span>l*a.c[i]*f[n][i]%mod*Quick_Pow(C[n][i],mod<span class="number">-2</span>)%mod);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"%d\n"</span>,(ans+mod)%mod);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>$100$分（算法二）：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxn=<span class="number">20005</span>,mod=<span class="number">1e9</span>+<span class="number">7</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> &amp;x,<span class="keyword">int</span> v)</span> </span>&#123;x+=v;<span class="keyword">if</span>(x&gt;=mod)x-=mod;&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">poly</span> &#123;</span></span><br><span class="line">	<span class="keyword">int</span> m,*c;</span><br><span class="line">	poly(<span class="keyword">int</span> m=<span class="number">0</span>):m(m) &#123;c=<span class="keyword">new</span> <span class="keyword">int</span>[m+<span class="number">1</span>];&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function">poly <span class="title">operate</span><span class="params">(<span class="keyword">const</span> poly &amp;a,<span class="keyword">char</span> opt,<span class="keyword">const</span> poly &amp;b)</span> </span>&#123;</span><br><span class="line">	poly x=poly(opt==<span class="string">'*'</span>?a.m+b.m:max(a.m,b.m));</span><br><span class="line">	<span class="keyword">if</span>(opt==<span class="string">'*'</span>) &#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;=x.m; i++)x.c[i]=<span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;=a.m; i++)</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>; j&lt;=b.m; j++)</span><br><span class="line">				add(x.c[i+j],<span class="number">1l</span>l*a.c[i]*b.c[j]%mod);</span><br><span class="line">	&#125; <span class="keyword">else</span> <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;=x.m; i++)x.c[i]=((i&lt;=a.m?a.c[i]:<span class="number">0</span>)+(i&lt;=b.m?((b.c[i]*(opt==<span class="string">'+'</span>?<span class="number">1</span>:<span class="number">-1</span>))+mod)%mod:<span class="number">0</span>))%mod;</span><br><span class="line">	<span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">poly <span class="title">split</span><span class="params">(<span class="keyword">char</span> *&amp;s)</span></span>;</span><br><span class="line"><span class="function">poly <span class="title">block</span><span class="params">(<span class="keyword">char</span> *&amp;s)</span> </span>&#123;</span><br><span class="line">	poly x;</span><br><span class="line">	<span class="keyword">if</span>(*s==<span class="string">'_'</span>)x=poly(<span class="number">1</span>),x.c[<span class="number">0</span>]=<span class="number">0</span>,x.c[<span class="number">1</span>]=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">else</span> x=split(++s);</span><br><span class="line">	s++;</span><br><span class="line">	<span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">poly <span class="title">mul</span><span class="params">(<span class="keyword">char</span> *&amp;s)</span> </span>&#123;</span><br><span class="line">	poly x=block(s);</span><br><span class="line">	<span class="keyword">while</span>(*s==<span class="string">'*'</span>)x=operate(x,<span class="string">'*'</span>,block(++s));</span><br><span class="line">	<span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">poly <span class="title">split</span><span class="params">(<span class="keyword">char</span> *&amp;s)</span> </span>&#123;</span><br><span class="line">	poly x=mul(s);</span><br><span class="line">	<span class="keyword">while</span>(*s==<span class="string">'+'</span>||*s==<span class="string">'-'</span>) &#123;<span class="keyword">char</span> o=*s;x=operate(x,o,mul(++s));&#125;</span><br><span class="line">	<span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> n,len=<span class="number">0</span>,a[maxn],inv[maxn];</span><br><span class="line"><span class="keyword">char</span> s[maxn];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">Quick_Pow</span><span class="params">(<span class="keyword">int</span> a,<span class="keyword">int</span> b)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> ans=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span>(; b; b&gt;&gt;=<span class="number">1</span>,a=<span class="number">1l</span>l*a*a%mod)<span class="keyword">if</span>(b&amp;<span class="number">1</span>)ans=<span class="number">1l</span>l*ans*a%mod;</span><br><span class="line">	<span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">Cal</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> C=<span class="number">1</span>,ans=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;=len; i++) &#123;</span><br><span class="line">		add(ans,<span class="number">1l</span>l*C*a[i]%mod);</span><br><span class="line">		C=<span class="number">1l</span>l*C*(n+<span class="number">1</span>-i)%mod*inv[i+<span class="number">1</span>]%mod;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">"%d%s"</span>,&amp;n,s);</span><br><span class="line">	<span class="keyword">char</span> *p=s;</span><br><span class="line">	poly po=split(p);</span><br><span class="line">	inv[<span class="number">1</span>]=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">2</span>; i&lt;=<span class="number">2</span>*po.m+<span class="number">4</span>; i++)inv[i]=mod<span class="number">-1l</span>l*mod/i*inv[mod%i]%mod;</span><br><span class="line">	<span class="keyword">int</span> C=<span class="number">1</span>,ans=<span class="number">0</span>;</span><br><span class="line">	a[<span class="number">0</span>]=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;=po.m; i++) &#123;</span><br><span class="line">		add(ans,<span class="number">1l</span>l*po.c[i]*Cal()%mod*Quick_Pow(C,mod<span class="number">-2</span>)%mod);</span><br><span class="line">		C=<span class="number">1l</span>l*C*(n-i)%mod*inv[i+<span class="number">1</span>]%mod;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=(len+=<span class="number">2</span>); i&gt;=<span class="number">2</span>; i--)a[i]=<span class="number">1l</span>l*(a[i<span class="number">-1</span>]+a[i<span class="number">-2</span>])*(i<span class="number">-1</span>)%mod;a[<span class="number">0</span>]=a[<span class="number">1</span>]=<span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"%d\n"</span>,(ans+mod)%mod);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/cdqzD12T1-matrix/" rel="bookmark">「cdqzD12T1」矩阵染色 - 数学+解方程+分类讨论</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/nk2015-7-boring/" rel="bookmark">「2015四校联考-nodgd」无聊的计算 - 数论</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/bzoj3837-filary/" rel="bookmark">「bzoj3837」「Pa2013」Filary - 随机化$+\gcd$</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/SDOI2013-necklace/" rel="bookmark">「SDOI2013」项链 - 莫比乌斯反演+Polya计数+欧拉函数+数列通项</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/Codeforces-round460-div2-E-Equation/" rel="bookmark">「Codeforces Round 460 div2」E. Congruence Equation - 数论+费马小定理+循环节</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div>姥爷们赏瓶冰阔落吧~</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="Bill Yang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="Bill Yang 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Bill Yang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.bill.moe/FCS-NOI2018-day1-equ/" title="「FCS NOI 2018 day1」残缺的算式 - 表达式运算+递推+第一类Stirling数">https://blog.bill.moe/FCS-NOI2018-day1-equ/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/斯特林数/" rel="tag"><i class="fa fa-tag"></i> 斯特林数</a>
+              <a href="/tags/数学/" rel="tag"><i class="fa fa-tag"></i> 数学</a>
+              <a href="/tags/数论/" rel="tag"><i class="fa fa-tag"></i> 数论</a>
+              <a href="/tags/递推/" rel="tag"><i class="fa fa-tag"></i> 递推</a>
+          </div>
+
+        
+  <div class="post-widgets">
+    <div class="wp_rating">
+      <div id="wpac-rating"></div>
+    </div>
+  </div>
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/FCS-NOI2018-day1-factor/" rel="prev" title="「FCS NOI 2018 day1」最大真因数 - 分段打表">
+      <i class="fa fa-chevron-left"></i> 「FCS NOI 2018 day1」最大真因数 - 分段打表
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/manacher-algorithm-notes/" rel="next" title="Manacher算法笔记">
+      Manacher算法笔记 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#题目大意"><span class="nav-number">1.</span> <span class="nav-text">题目大意</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#题目分析"><span class="nav-number">2.</span> <span class="nav-text">题目分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#算法一"><span class="nav-number">2.1.</span> <span class="nav-text">算法一</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#算法二"><span class="nav-number">2.2.</span> <span class="nav-text">算法二</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#定理一"><span class="nav-number">2.2.1.</span> <span class="nav-text">定理一</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#定理二"><span class="nav-number">2.2.2.</span> <span class="nav-text">定理二</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#定理三"><span class="nav-number">2.2.3.</span> <span class="nav-text">定理三</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#算法三"><span class="nav-number">2.3.</span> <span class="nav-text">算法三</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#算法四"><span class="nav-number">2.4.</span> <span class="nav-text">算法四</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码"><span class="nav-number">3.</span> <span class="nav-text">代码</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Bill Yang"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Bill Yang</p>
+  <div class="site-description" itemprop="description">这辈子都不可能更新的</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">672</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">234</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=935683004" title="QQ → tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=935683004" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i>QQ</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ym13883407586@outlook.com" title="E-Mail → mailto:ym13883407586@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/BillYang2016" title="GitHub → https://github.com/BillYang2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://coding.net/u/Bill_Yang_2016" title="Coding → https://coding.net/u/Bill_Yang_2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-git-square"></i>Coding</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://music.163.com/#/user/home?nickname=Bill_Yang2016" title="网易云音乐 → http://music.163.com/#/user/home?nickname=Bill_Yang2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-music"></i>网易云音乐</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://space.bilibili.com/233682260/#/" title="bilibili → https://space.bilibili.com/233682260/#/" rel="noopener" target="_blank"><i class="fa fa-fw fa-youtube-play"></i>bilibili</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → /atom.xml"><i class="fa fa-fw fa-rss"></i>RSS</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      我的朋友们
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://pointedpoints.github.io/" title="http://pointedpoints.github.io/" rel="noopener" target="_blank">pointedpoints</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://keke046.coding.me/" title="https://keke046.coding.me/" rel="noopener" target="_blank">KEKE046</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://imperfect_zx.coding.me/" title="https://imperfect_zx.coding.me/" rel="noopener" target="_blank">Imperfect</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://achen.world/" title="https://achen.world/" rel="noopener" target="_blank">Achen</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://metakari.one/" title="https://metakari.one/" rel="noopener" target="_blank">Metakar1</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://39.106.98.75/" title="http://39.106.98.75/" rel="noopener" target="_blank">魏启大陆</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/friends/" title="/friends/">更多朋友们</a>
+        </li>
+    </ul>
+  </div>
+<!-- none-select-br -->
+
+<p></p>
+
+<!-- hitokoto -->
+
+<div class="hitokoto-title">
+	<i class="fa fa-paragraph"></i>
+	<b>一言</b>
+</div>
+
+<div id="hitokoto">:D 获取中...</div>
+<i id="hitofrom">:D 获取中...</i>
+
+<script src="https://cdn.jsdelivr.net/npm/bluebird@3/js/browser/bluebird.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/whatwg-fetch@2.0.3/fetch.min.js"></script>
+<script>
+  fetch('https://v1.hitokoto.cn')
+    .then(function (res){
+      return res.json();
+    })
+    .then(function (data) {
+      var hitokoto = document.getElementById('hitokoto');
+      hitokoto.innerText = '\xa0\xa0\xa0\xa0\xa0\xa0\xa0' + data.hitokoto;
+      var hitofrom = document.getElementById('hitofrom');
+      hitofrom.innerText = "——" + data.from + '\xa0'; 
+    })
+    .catch(function (err) {
+      console.error(err);
+    })
+</script>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Bill Yang 以 <a class="theme-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a> 协议发布</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+  <script>
+  if (CONFIG.page.isPost) {
+    wpac_init = window.wpac_init || [];
+    wpac_init.push({
+      widget: 'Rating',
+      id: 10154,
+      el: 'wpac-rating',
+      color: 'fc6423'
+    });
+    (function() {
+      if ('WIDGETPACK_LOADED' in window) return;
+      WIDGETPACK_LOADED = true;
+      var mc = document.createElement('script');
+      mc.type = 'text/javascript';
+      mc.async = true;
+      mc.src = '//embed.widgetpack.com/widget.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+    })();
+  }
+  </script>
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout: 3000,
+        priority: true,
+        ignores: [uri => uri.includes('#'),uri => uri == 'https://blog.bill.moe/FCS-NOI2018-day1-equ/',]
+      });
+      });
+  </script>
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: true,
+      notify: false,
+      appId: 'JYwxXHHRe8RNGu498SnK9B3N-gzGzoHsz',
+      appKey: 'JBz9GW9kidjPp7gW5Y6VIgfe',
+      placeholder: "吹雪は猫~",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: 'zh-cn' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

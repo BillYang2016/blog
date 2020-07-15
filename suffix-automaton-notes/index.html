@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.png">
+  <link rel="mask-icon" href="/images/logo.png" color="#222">
+  <meta name="google-site-verification" content="ghOTm3Im1Awef9otcmhxaBXZs5PlL-aApB3Zeo2qVrg">
+  <meta name="baidu-site-verification" content="PcyS4kW5Yu">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-bounce.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://blog.bill.moe').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},
+    path: 'search.xml',
+    motion: {"enable":true,"async":true,"transition":{"post_block":"swoopIn","post_header":"shrinkIn","post_body":"shrinkIn","coll_header":"expandIn","sidebar":"bounceIn"}}
+  };
+</script>
+
+  <meta name="description" content="在后缀家族（后缀树、后缀数组、后缀自动机、后缀平衡树、后缀仙人掌、后缀神域）中，后缀自动机可谓是应用最广的数据结构。   本篇文章基于Menci’s Blog并纠错、拓展与总结。">
+<meta name="keywords" content="学习笔记,字符串,后缀自动机">
+<meta property="og:type" content="article">
+<meta property="og:title" content="后缀自动机学习笔记">
+<meta property="og:url" content="https://blog.bill.moe/suffix-automaton-notes/index.html">
+<meta property="og:site_name" content="Bill Yang&#39;s Blog">
+<meta property="og:description" content="在后缀家族（后缀树、后缀数组、后缀自动机、后缀平衡树、后缀仙人掌、后缀神域）中，后缀自动机可谓是应用最广的数据结构。   本篇文章基于Menci’s Blog并纠错、拓展与总结。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://blog.bill.moe/img/SAM1.png">
+<meta property="og:image" content="https://blog.bill.moe/img/SAM2.png">
+<meta property="og:image" content="https://blog.bill.moe/img/SAM3.svg">
+<meta property="og:image" content="https://blog.bill.moe/img/SAM4.svg">
+<meta property="og:image" content="https://blog.bill.moe/img/SAM5.svg">
+<meta property="og:image" content="https://blog.bill.moe/img/SAM6.svg">
+<meta property="og:image" content="https://blog.bill.moe/img/SAM7.png">
+<meta property="og:image" content="https://blog.bill.moe/img/SAM8.png">
+<meta property="og:updated_time" content="2019-06-10T02:32:52.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="后缀自动机学习笔记">
+<meta name="twitter:description" content="在后缀家族（后缀树、后缀数组、后缀自动机、后缀平衡树、后缀仙人掌、后缀神域）中，后缀自动机可谓是应用最广的数据结构。   本篇文章基于Menci’s Blog并纠错、拓展与总结。">
+<meta name="twitter:image" content="https://blog.bill.moe/img/SAM1.png">
+
+<link rel="canonical" href="https://blog.bill.moe/suffix-automaton-notes/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+<!-- jquery -->
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+<!-- 打字礼花及震动特效 -->
+
+<div id="append_parent"></div><div id="ajaxwaitid"></div>
+<script type="text/javascript" src="/lib/activate-power-mode/activate-power-mode.js"></script>
+<script>
+	POWERMODE.colorful = true;
+	POWERMODE.shake = false;
+	document.body.addEventListener('input',POWERMODE);
+</script>
+
+<!-- live2d -->
+
+<div class="waifu">
+	<div class="waifu-tips"></div>
+	<canvas id="live2d" width="240" height="350" class="live2d"></canvas>
+	<div class="hide-button">隐藏</div>
+</div>
+<script async src="/lib/poster-girl/waifu-tips.js"></script>
+<script src="/lib/poster-girl/live2d.js"></script>
+<script type="text/javascript">
+	loadlive2d("live2d", "/live2d/assets/kanna.model.json");
+</script>
+  <title>后缀自动机学习笔记 | Bill Yang's Blog</title>
+  
+    <script>
+      function sendPageView() {
+        if (CONFIG.hostname !== location.hostname) return;
+        var uid = localStorage.getItem('uid') || (Math.random() + '.' + Math.random());
+        localStorage.setItem('uid', uid);
+        navigator.sendBeacon('https://www.google-analytics.com/collect', new URLSearchParams({
+          v  : 1,
+          tid: 'UA-157912381-1',
+          cid: uid,
+          t  : 'pageview',
+          dp : encodeURIComponent(location.pathname)
+        }));
+      }
+      document.addEventListener('pjax:complete', sendPageView);
+      sendPageView();
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?d538e1e81ada366563b03354efffd84c";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Bill Yang's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">路终会有尽头，但视野总能看到更远的地方。</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">10</span></a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-friends">
+
+    <a href="/friends" rel="section"><i class="fa fa-fw fa-users"></i>友链</a>
+
+  </li>
+        <li class="menu-item menu-item-board">
+
+    <a href="/board/" rel="section"><i class="fa fa-fw fa-sticky-note-o"></i>留言板</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">672</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">234</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.bill.moe/suffix-automaton-notes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Bill Yang">
+      <meta itemprop="description" content="这辈子都不可能更新的">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bill Yang's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          后缀自动机学习笔记
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-12-07 10:19:01" itemprop="dateCreated datePublished" datetime="2017-12-07T10:19:01+08:00">2017-12-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-06-10 10:32:52" itemprop="dateModified" datetime="2019-06-10T10:32:52+08:00">2019-06-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OI/" itemprop="url" rel="index">
+                    <span itemprop="name">OI</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/suffix-automaton-notes/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/suffix-automaton-notes/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>在后缀家族（后缀树、<strong>后缀数组</strong>、<strong>后缀自动机</strong>、<strong>后缀平衡树</strong>、后缀仙人掌、后缀神域）中，后缀自动机可谓是应用最广的数据结构。  </p>
+<p>本篇文章基于<a href="https://oi.men.ci/suffix-automaton-notes/" target="_blank" rel="noopener">Menci’s Blog</a>并纠错、拓展与总结。  </p>
+<a id="more"></a>
+<h2 id="定义（们）："><a href="#定义（们）：" class="headerlink" title="定义（们）："></a>定义（们）：</h2><p>后缀自动机（SAM）包含两部分：有向无环单词图（DAWG）和前缀树。<br>SAM的每一个结点同时存在于这两个结构中。<br>我们对$S$构造SAM，称$S$是SAM的母串。<br>记$\left|S\right|$是字符串$S$的长度。  </p>
+<h3 id="DAWG"><a href="#DAWG" class="headerlink" title="DAWG"></a>DAWG</h3><p>DAWG是一个DAG图。<br>除起始结点外，每个结点代表的含义是能从起始结点到达它的<strong>所有子串</strong>。<br>结点间通过转移边相连，每条转移边上有一个字符。<br>从起始结点沿着转移边走，每条路径对应一个子串。（多条路径可能到达同一个结点）。<br>SAM可接受所有子串，若要使其仅能接受后缀则可通过打标记解决。  </p>
+<h3 id="结点"><a href="#结点" class="headerlink" title="结点"></a>结点</h3><p>每个结点所表示的所有字符串，一定是母串某个前缀的<strong>若干个</strong>（不是所有）长度只相差$1$的后缀（前缀+后缀=子串）。<br>结点$v$所表示的长度最小的子串、最大子串记作$min(v),max(v)$。<br>结点$v$所表示的最长子串$max(v)$在母串中所有出现的结束位置集合为$end$-$pos(v)$。<br>有<strong>性质</strong>：任意两个点的$end$-$pos$集合不同。（否则可合并）</p>
+<h3 id="转移边"><a href="#转移边" class="headerlink" title="转移边"></a>转移边</h3><p>$u$到$v$有一条字符为$c$的转移边，表示$u$所表示的所有子串加上$c$后得到的子串都可以用$v$表示。<br>但不一定$v$所表示的所有子串都是由$u$转移而来。  </p>
+<h3 id="后缀链接与前缀树"><a href="#后缀链接与前缀树" class="headerlink" title="后缀链接与前缀树"></a>后缀链接与前缀树</h3><p>$u$的后缀链接指向$v$，当且仅当$\left|min(u)\right|=\left|max(v)\right|+1$且$v$中的所有子串均为$u$中子串的后缀，记为$next(u)=v$。  </p>
+<p>注意<strong>这是定义而不是性质</strong>，至于为什么这样定义可以不管。<br>任意一个结点沿着后缀链接走，最终都会到达DAWG的起始结点，以后缀链接为边，所有结点构成一棵树，即前缀树。DAWG的起始结点即是前缀树的根。  </p>
+<h2 id="理解"><a href="#理解" class="headerlink" title="理解"></a>理解</h2><p>因为后缀自动机初学时难以理解，以上的定义不易深刻理解，因此在将后缀自动机的性质前先引入几个形象的解释。  </p>
+<h3 id="关于结点"><a href="#关于结点" class="headerlink" title="关于结点"></a>关于结点</h3><p>一般我们的结点仅仅表示一个信息，但思考一下如果这样，后缀自动机就需要$O(n^2)$的空间，难以接受。因此我们需要将不必分开的信息合并在一起，故每个结点就代表了多个信息。  </p>
+<p>每个结点表示的信息不会冲突（比如$end$-$pos$不可能不同），否则需要将它们拆开（这个后面再讲）。<br>这样的空间量是$O(n)$的，后面再证明。  </p>
+<h3 id="关于DAWG"><a href="#关于DAWG" class="headerlink" title="关于DAWG"></a>关于DAWG</h3><p>DAWG并不是后缀自动机上最重要的结构，它仅仅用有向图表示出所有存在的子串。  </p>
+<h3 id="关于后缀链接与前缀树的祖先后代关系"><a href="#关于后缀链接与前缀树的祖先后代关系" class="headerlink" title="关于后缀链接与前缀树的祖先后代关系"></a>关于后缀链接与前缀树的祖先后代关系</h3><p>每个结点代表了一些串，这些串的部分后缀是相同的。<br>结点$u$在前缀树上到根的路径构成了所有长度递减后缀公共的串。<br>其中每个结点$u$包含一些串（$min(u)\rightarrow max(u)$）。<br>因此到根的路径上包含长度为$[1,\left|max(u)\right|]$的所有子串。  </p>
+<p>前缀树是后缀自动机最重要的结构，它有重要的性质，后缀自动机的大部分应用都是在前缀树上完成的。</p>
+<h3 id="作图"><a href="#作图" class="headerlink" title="作图"></a>作图</h3><p>这是一个极为简单的SAM：<br>母串为$ABC$。<br><img src="/img/SAM1.png" alt><br>图中的黑色边是转移边，构成DAWG。<br>图中的红色边是后缀链接，构成前缀树。<br>图中的蓝色串为每个结点代表的所有子串。<br>不难发现这样的SAM是仅可接受母串所有子串并满足要求的。  </p>
+<p>这是一个较为复杂的SAM：<br>母串为$ABBD$。<br><img src="/img/SAM2.png" alt><br>不难发现这样的SAM是仅可接受母串所有子串并满足要求的。  </p>
+<p>暂不用思考其构建方法，我们后面再提到。  </p>
+<h2 id="性质"><a href="#性质" class="headerlink" title="性质"></a>性质</h2><h3 id="性质一"><a href="#性质一" class="headerlink" title="性质一"></a>性质一</h3><p>每个结点$u$代表的串的长度是$(\left|max(next(u))\right|,\left|max(u)\right|]$。<br>即$\left|min(u)\right|=\left|max(next(u))\right|+1$。<br>证明：<br>因为结点到根的路径包含所有公共后缀的子串，因此显然。  </p>
+<h3 id="性质二"><a href="#性质二" class="headerlink" title="性质二"></a>性质二</h3><p>每个结点$u$包含的所有串的$end$-$pos$均相同。<br>证明：<br>这不算一个性质，而算对<strong>结点定义中若干个子串的规定</strong>。  </p>
+<h3 id="性质三"><a href="#性质三" class="headerlink" title="性质三"></a>性质三</h3><p>在前缀树中，每个结点的$end$-$pos$是其后缀链接的$end$-$pos$的真子集。<br>证明：<br>后缀链接所表示的所有串是当前结点表示所有串的后缀，因此其$end$-$pos$一定包含当前结点的$end$-$pos$。<br>又因为两个结点的$end$-$pos$集合不相等，否则可合并，因此成立。  </p>
+<h3 id="性质四"><a href="#性质四" class="headerlink" title="性质四"></a>性质四</h3><p>后缀自动机的前缀树是原串的反向前缀树。<br>反向前缀树的定义是：将每个前缀的反串加入trie，并把没有分支的链合并。  </p>
+<p>那么如果我们将母串的反串建立SAM，它的前缀树即为原串的后缀树。<br>为了还原后缀树，我们可以求一下每个结点$u$对应的$max(u)$字符串，父子减一下即可得到边上的字符串。  </p>
+<p>将后缀树Dfs一遍即可得到后缀数组。  </p>
+<p>这就是后缀树和后缀数组的线性构造方法。  </p>
+<h3 id="性质五"><a href="#性质五" class="headerlink" title="性质五"></a>性质五</h3><p>两个串的最长公共后缀，位于这两个串对应的结点在前缀树上的LCA位置。</p>
+<h2 id="理论构建方法"><a href="#理论构建方法" class="headerlink" title="理论构建方法"></a>理论构建方法</h2><p>（Menci的博客里有个地方讲错了一点点，这里基本上从Menci博客搬运过来）<br>我们使用增量算法构造SAM，假设我们已经有了字符串$S$的SAM，只需要考虑如何对其修改得到$S+c$的后缀自动机。<br>设之前表示整个串的结点为$last$，灰边为转移边，黑边为后缀链接。<br><img src="/img/SAM3.svg" alt>  </p>
+<p>现在我们加入新字符$c$，所以$v_1,v_2$添加了新字符$c$后得到的字符串出现了，且他们是新母串的后缀。设它们被点$u$所表示，显然$max(u)=max(v_1)+c,min(u)=max(v_2)+c$。<br><img src="/img/SAM4.svg" alt>  </p>
+<p>长度为$\left|min(v_2)\right|+1\rightarrow\left|max(v_1)\right|+1$的以$c$为结尾的字符串均用$u$来表示，比$\left|min(v_2)\right|+1$更短的子串已用$d$在前缀树上到根的路径中结点表示。所以，DAWG的性质已满足，考虑前缀树。  </p>
+<p>1.若不存在$v_3$有字符$c$的转移边，则将$next(u)$置为$root$，此时$\left|min(u)\right|=1$。  </p>
+<p>2.若$max(d)=max(v_3)+c$。<br>$\because\left|max(d)\right|=\left|max(v_3)\right|+1,\left|min(u)\right|=\left|min(v_2)\right|+1,\left|max(v_3)\right|+1=\left|min(v_2)\right|$。<br>$\therefore\left|max(d)\right|+1=\left|min(v_2)\right|+1=\left|min(u)\right|$。<br>满足后缀链接的定义，因此$u$的后缀链接连向$d$。<br><img src="/img/SAM5.svg" alt>  </p>
+<p>3.若$max(d)\neq max(v_3)+c$。<br>$\because\left|max(d)\right|\gt\left|max(v_3)\right|+1,\left|min(u)\right|=\left|min(v_2)\right|+1,\left|max(v_3)\right|+1=\left|min(v_2)\right|$<br>$\therefore\left|min(u)\right|\lt \left|max(d)\right|+1$。<br>不满足后缀链接的定义，因此不能将$u$的后缀链接连向$d$。  </p>
+<p>此时一定有一个异于$v_i$的结点$t$，满足$next(t)=v_3$，且有$t\rightarrow d$的转移边。<br><img src="/img/SAM6.svg" alt>  </p>
+<p>此时$d$所代表的串中，既有$t$的子串$+c$得到的串，又含有$t$的后缀$v_3+c$得到的串，它们不全都是$u$的后缀。举个例子：<br><img src="/img/SAM7.png" alt>  </p>
+<p>我们需要将$d$拆成两个点，一个点$n$表示长度小于等于$\left|max(v_3)\right|+1$的子串，用另一个点$o$表示长度更大的子串。<br><img src="/img/SAM8.png" alt>  </p>
+<p>$v_3,v_4$的转移边连向$n$，其余后继连向$o$，$next(n)=next(d),next(o)=n,next(u)=n$。<br>不难发现这样的拆分满足要求。  </p>
+<h2 id="实际构建方法"><a href="#实际构建方法" class="headerlink" title="实际构建方法"></a>实际构建方法</h2><p>1.建立新结点，令$p=last$，并更新$last$。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> p=last,u=newnode(Max[last]+<span class="number">1</span>);</span><br><span class="line">last=u;</span><br></pre></td></tr></table></figure></p>
+<p>2.沿着前缀树寻找第一个没有该字符儿子的结点。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(; p&amp;&amp;!child[p][data]; p=next[p])child[p][data]=u;</span><br></pre></td></tr></table></figure></p>
+<p>3.情况一：寻找到根节点也无该儿子。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(!p)next[u]=root;</span><br></pre></td></tr></table></figure></p>
+<p>4.情况二：若满足理论构建中的第2种情况。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> old=child[p][data];</span><br><span class="line"><span class="keyword">if</span>(Max[old]==Max[p]+<span class="number">1</span>)next[u]=old;</span><br></pre></td></tr></table></figure></p>
+<p>5.情况三：否则即为理论构建中的第3种情况，拆点并更新信息。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> New=newnode(Max[p]+<span class="number">1</span>);</span><br><span class="line">copy(child[old],child[old]+maxc,child[New]);</span><br><span class="line">next[New]=next[old];</span><br><span class="line">next[u]=next[old]=New;</span><br><span class="line"><span class="keyword">for</span>(; child[p][data]==old; p=next[p])child[p][data]=New;</span><br></pre></td></tr></table></figure></p>
+<p>全部代码<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">insert</span><span class="params">(<span class="keyword">int</span> data)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> p=last,u=newnode(Max[last]+<span class="number">1</span>);</span><br><span class="line">	last=u;</span><br><span class="line">	end_pos[u]=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span>(; p&amp;&amp;!child[p][data]; p=next[p])child[p][data]=u;</span><br><span class="line">	<span class="keyword">if</span>(!p)next[u]=root;</span><br><span class="line">	<span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">int</span> old=child[p][data];</span><br><span class="line">		<span class="keyword">if</span>(Max[old]==Max[p]+<span class="number">1</span>)next[u]=old;</span><br><span class="line">		<span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">int</span> New=newnode(Max[p]+<span class="number">1</span>);</span><br><span class="line">			copy(child[old],child[old]+maxc,child[New]);</span><br><span class="line">			next[New]=next[old];</span><br><span class="line">			next[u]=next[old]=New;</span><br><span class="line">			<span class="keyword">for</span>(; child[p][data]==old; p=next[p])child[p][data]=New;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="复杂度证明"><a href="#复杂度证明" class="headerlink" title="复杂度证明"></a>复杂度证明</h2><p>见<a href="https://oi.men.ci/suffix-automaton-notes/" target="_blank" rel="noopener">Menci’s Blog</a>。  </p>
+<h2 id="大字符集的处理"><a href="#大字符集的处理" class="headerlink" title="大字符集的处理"></a>大字符集的处理</h2><p>在字符集大小是常数的时候，后缀自动机时间复杂度是线性的。<br>如果字符集过大，可以开map存字符，复杂度增加$\log c$。  </p>
+<h2 id="拓扑序"><a href="#拓扑序" class="headerlink" title="拓扑序"></a>拓扑序</h2><p>如果有一条转移边$u\rightarrow v$，则$\left|max(u)\right|\lt\left|max(v)\right|$。<br>如果有$next(v)=u$，则也有$\left|max(u)\right|\lt\left|max(v)\right|$。  </p>
+<p>所以，按照每个结点记录的$max$长度排序，可以同时得到DAWG和前缀树的拓扑序。<br>使用计数排序可以做到线性的时空复杂度。（对于$max$长度有相同的时候可能会不适用）</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">topsort</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=cnt; i++)Bucket[Max[i]]++;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=cnt; i++)Bucket[i]+=Bucket[i<span class="number">-1</span>];</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=cnt; i++)top[Bucket[Max[i]]--]=i;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="end-pos-集合"><a href="#end-pos-集合" class="headerlink" title="$end$-$pos$集合"></a>$end$-$pos$集合</h2><p>初始原串的前缀结点$end$-$pos$为$1$。<br>先求出拓扑序，沿着逆拓扑序递推即可求出$end$-$pos$集合大小。<br>若要求出$end$-$pos$集合，需要用到启发式合并Splay。  </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">get_end_pos</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	topsort();</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=cnt; i&gt;=<span class="number">1</span>; i--)end_pos[next[top[i]]]+=end_pos[top[i]];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="树上的扩展"><a href="#树上的扩展" class="headerlink" title="树上的扩展"></a>树上的扩展</h2><p>我们可以把后缀自动机推广到树上的情况。<br>对于一个结点，我们从它的父亲对应的$last$开始插入新字符，此时有两种实现方法：  </p>
+<ul>
+<li>每次插入时$last$返回新结点的父亲的$last$，套用以前的插入。（这是正确的，但是因为$\left|max\right|$有重复，故不能计数排序计算拓扑序，只能宽搜）  </li>
+<li>每次插入时$last$返回新结点的父亲的$last$，将相同的转移合并起来。（时空间效率更高）</li>
+</ul>
+<p>需要注意$end$-$pos$的维护，这里给出第二种方法的代码。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">insert</span><span class="params">(<span class="keyword">int</span> data)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(child[last][data]) &#123;</span><br><span class="line">		<span class="keyword">int</span> p=last,old=child[last][data];</span><br><span class="line">		<span class="keyword">if</span>(Max[old]==Max[p]+<span class="number">1</span>) &#123;</span><br><span class="line">			last=old;</span><br><span class="line">			end_pos[old]++;</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">int</span> New=newnode(Max[p]+<span class="number">1</span>);</span><br><span class="line">			last=New;</span><br><span class="line">			end_pos[New]=<span class="number">1</span>;</span><br><span class="line">			copy(child[old],child[old]+maxc,child[New]);</span><br><span class="line">			next[New]=next[old];</span><br><span class="line">			next[old]=New;</span><br><span class="line">			<span class="keyword">for</span>(; child[p][data]==old; p=next[p])child[p][data]=New;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">int</span> p=last,u=newnode(Max[last]+<span class="number">1</span>);</span><br><span class="line">		last=u;</span><br><span class="line">		end_pos[u]=<span class="number">1</span>;</span><br><span class="line">		<span class="keyword">for</span>(; p&amp;&amp;!child[p][data]; p=next[p])child[p][data]=u;</span><br><span class="line">		<span class="keyword">if</span>(!p)next[u]=root;</span><br><span class="line">		<span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">int</span> old=child[p][data];</span><br><span class="line">			<span class="keyword">if</span>(Max[old]==Max[p]+<span class="number">1</span>)next[u]=old;</span><br><span class="line">			<span class="keyword">else</span> &#123;</span><br><span class="line">				<span class="keyword">int</span> New=newnode(Max[p]+<span class="number">1</span>);</span><br><span class="line">				copy(child[old],child[old]+maxc,child[New]);</span><br><span class="line">				next[New]=next[old];</span><br><span class="line">				next[u]=next[old]=New;</span><br><span class="line">				<span class="keyword">for</span>(; child[p][data]==old; p=next[p])child[p][data]=New;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><h3 id="求两个串的LCS"><a href="#求两个串的LCS" class="headerlink" title="求两个串的LCS"></a>求两个串的LCS</h3><h4 id="解法一："><a href="#解法一：" class="headerlink" title="解法一："></a>解法一：</h4><p>将其中一个串建成后缀自动机，另一个串放在自动机上运行，若匹配则匹配长度$len+1$，若不匹配则根据$max$长度重新计算匹配长度，答案即为匹配长度的最大值。</p>
+<h4 id="解法二："><a href="#解法二：" class="headerlink" title="解法二："></a>解法二：</h4><p>将两个串用分隔符连接建立后缀自动机，将$A$串和$B$串前缀经过的结点分别标注出来，并将标记沿着前缀树传递，统计同时有两种标记的$max$长度即为LCS</p>
+<h3 id="求多个串的LCS"><a href="#求多个串的LCS" class="headerlink" title="求多个串的LCS"></a>求多个串的LCS</h3><p>将其中一个串建为后缀自动机，其余的串在自动机上运行，记录每次运行每个结点得到的最长串长度，记录所有运行中最长串的最小值，再在最小值中找一个最大的记作答案。<br>注意每次运行结束更新最小值时需要按照逆拓扑序向后缀连接更新，因为儿子能匹配的祖先一定能匹配，但祖先在更新前不一定是最优答案。</p>
+<h3 id="求字符串最小表示"><a href="#求字符串最小表示" class="headerlink" title="求字符串最小表示"></a>求字符串最小表示</h3><p>将串扩展一倍建立后缀自动机，从根开始一直沿着最小的转移边转移，转移$|S|$步后停止。</p>
+<h3 id="求长度为i的串的最大出现次数"><a href="#求长度为i的串的最大出现次数" class="headerlink" title="求长度为i的串的最大出现次数"></a>求长度为i的串的最大出现次数</h3><p>求出$end$-$pos$集合，并用每个点$i$的$end$-$pos$集合更新其$f[\left|max(i)\right|]$（不可能将$[\left|min(i)\right|,\left|max(i)\right|]$全部更新，时间代价高），最后用$f[i+1]$更新$f[i]$（对于非同一结点，$i+1$的答案不可能比$i$的答案更优）。</p>
+<h3 id="求-k-小子串"><a href="#求-k-小子串" class="headerlink" title="求$k$小子串"></a>求$k$小子串</h3><p>数据结构上二分的思想：统计出从每个点出发还有多少种不同子串可以到达，即统计DAG上的$size$，再用检验每个儿子的排名确定走哪个儿子（类似平衡树）</p>
+<h3 id="动态维护-end-pos-大小"><a href="#动态维护-end-pos-大小" class="headerlink" title="动态维护$end$-$pos$大小"></a>动态维护$end$-$pos$大小</h3><p>用LCT维护前缀树或用Splay维护前缀树Dfs序（ETT）。</p>
+<h3 id="求一个串本质不同的子串"><a href="#求一个串本质不同的子串" class="headerlink" title="求一个串本质不同的子串"></a>求一个串本质不同的子串</h3><p>每个自动机上的结点$u$对答案的贡献为$\left|max(u)\right|-\left|min(u)\right|+1$。</p>
+<h3 id="求A串的子串与B串的子串匹配的次数（都不计重复）"><a href="#求A串的子串与B串的子串匹配的次数（都不计重复）" class="headerlink" title="求A串的子串与B串的子串匹配的次数（都不计重复）"></a>求A串的子串与B串的子串匹配的次数（都不计重复）</h3><h4 id="解法一：-1"><a href="#解法一：-1" class="headerlink" title="解法一："></a>解法一：</h4><p>对任意一个串（假设为$A$）建立AC自动机，将$B$串在自动机上运行，每运行到一个结点，代表B串的一段前缀，其祖先结点一定能被匹配，统计其祖先包含的所有串总数+$len-Max[next[u]]$（$len$是匹配长度），并将祖先的串数量清空，当前串数量$-(len-Max[next[u]])$。（暴力$O(n\sqrt n)$，数据结构维护$O(n\log n)/O(n\log^2 n)$）</p>
+<h4 id="解法二：-1"><a href="#解法二：-1" class="headerlink" title="解法二："></a>解法二：</h4><p>将两个串用分隔符连接建立后缀自动机，将$A$串和$B$串前缀经过的结点分别标注出来，并将标记沿着前缀树传递，对于都有标记的点$u$累加$\left|max(u)\right|-\left|min(u)\right|$</p>
+<h3 id="求-A-串的子串与-B-串的子串匹配的次数（都计重复）"><a href="#求-A-串的子串与-B-串的子串匹配的次数（都计重复）" class="headerlink" title="求$A$串的子串与$B$串的子串匹配的次数（都计重复）"></a>求$A$串的子串与$B$串的子串匹配的次数（都计重复）</h3><h4 id="解法一：-2"><a href="#解法一：-2" class="headerlink" title="解法一："></a>解法一：</h4><p>对任意一个串（假设为A）统计$end$-$pos$集合大小，前缀树上每一个结点$u$包含的串的出现次数为$(\left|max(u)\right|-\left|min(u)\right|)\times end$-$pos[u]$。<br>因为若一个结点包含的所有串被匹配，则其前缀树上的祖先结点均可被匹配，因此对$(\left|max(u)\right|-\left|min(u)\right|)\times end$-$pos[u]$作前缀和。  </p>
+<p>将$B$串放到自动机上运行，每运行到一个结点，代表$B$串的一段前缀，找到所有可匹配的结点数：<br>其前缀树父亲以上结点一定被全部匹配，而当前结点只有一部分串被匹配，因此答案累加父亲的前缀和$+(len-Max[next[u]])\times end$-$pos[u]$（$len$是匹配长度）</p>
+<h4 id="解法二：-2"><a href="#解法二：-2" class="headerlink" title="解法二："></a>解法二：</h4><p>将两个串用分隔符连接建立后缀自动机，将$A$串和$B$串前缀经过的结点分别标注出来，并将标记沿着前缀树传递，分别统计每个结点在两个串中所对应的$end$-$pos$，对于都有标记的点$u$累加$(\left|max(u)\right|-\left|min(u)\right|)\times end$-$pos-A[u]\times end$-$pos-B[u]$</p>
+<h3 id="求-A-串的子串在-B-串中出现的次数（-A-计重复，-B-不计重复）"><a href="#求-A-串的子串在-B-串中出现的次数（-A-计重复，-B-不计重复）" class="headerlink" title="求$A$串的子串在$B$串中出现的次数（$A$计重复，$B$不计重复）"></a>求$A$串的子串在$B$串中出现的次数（$A$计重复，$B$不计重复）</h3><h4 id="解法一：-3"><a href="#解法一：-3" class="headerlink" title="解法一："></a>解法一：</h4><p>将$B$串建成后缀自动机，将A串放到自动机上运行，若匹配就加上匹配长度$len$。</p>
+<h4 id="解法二：-3"><a href="#解法二：-3" class="headerlink" title="解法二："></a>解法二：</h4><p>将两个串用分隔符连接建立后缀自动机，将A串和B串前缀经过的结点分别标注出来，并将标记沿着前缀树传递，分别统计每个结点在$A$串中所对应的$end$-$pos$，对于都有标记的点$u$累加$(\left|max(u)\right|-\left|min(u)\right|)\times end$-$pos[u]$</p>
+<h3 id="求-A-串的子串在-B-串中的出现次数和（-A-不计重复，-B-计重复）"><a href="#求-A-串的子串在-B-串中的出现次数和（-A-不计重复，-B-计重复）" class="headerlink" title="求$A$串的子串在$B$串中的出现次数和（$A$不计重复，$B$计重复）"></a>求$A$串的子串在$B$串中的出现次数和（$A$不计重复，$B$计重复）</h3><h4 id="解法一：-4"><a href="#解法一：-4" class="headerlink" title="解法一："></a>解法一：</h4><p>上一问交换$A$和$B$</p>
+<h4 id="解法二：-4"><a href="#解法二：-4" class="headerlink" title="解法二："></a>解法二：</h4><p>将两个串用分隔符连接建立后缀自动机，将$A$串和$B$串前缀经过的结点分别标注出来，并将标记沿着前缀树传递，分别统计每个结点在$B$串中所对应的$end$-$pos$，对于都有标记的点$u$累加$(\left|max(u)\right|-\left|min(u)\right|)\times end$-$pos[u]$。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://oi.men.ci/suffix-automaton-notes/" target="_blank" rel="noopener">后缀自动机学习笔记 - Menci’s Blog</a>  </li>
+<li>后缀自动机及其应用 - 张天扬</li>
+<li>Bill Yang后缀自动机笔记初稿</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/SDOI2008-sandy/" rel="bookmark">「SDOI2008」Sandy的卡片 - KMP暴力/SAM/后缀数组</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/hdu4641-k-string/" rel="bookmark">「hdu4641」k-string - 后缀自动机</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/suffix-array-notes/" rel="bookmark">后缀数组学习笔记</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/dp-with-palindrome-notes/" rel="bookmark">一类使用回文自动机优化的动规问题</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/palindrome-automaton-notes/" rel="bookmark">回文自动机学习笔记</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div>姥爷们赏瓶冰阔落吧~</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="Bill Yang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="Bill Yang 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Bill Yang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.bill.moe/suffix-automaton-notes/" title="后缀自动机学习笔记">https://blog.bill.moe/suffix-automaton-notes/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/学习笔记/" rel="tag"><i class="fa fa-tag"></i> 学习笔记</a>
+              <a href="/tags/字符串/" rel="tag"><i class="fa fa-tag"></i> 字符串</a>
+              <a href="/tags/后缀自动机/" rel="tag"><i class="fa fa-tag"></i> 后缀自动机</a>
+          </div>
+
+        
+  <div class="post-widgets">
+    <div class="wp_rating">
+      <div id="wpac-rating"></div>
+    </div>
+  </div>
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/ZJOI2015-neverland/" rel="prev" title="「ZJOI2015」诸神眷顾的幻想乡 - 后缀自动机">
+      <i class="fa fa-chevron-left"></i> 「ZJOI2015」诸神眷顾的幻想乡 - 后缀自动机
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/APIO2014-palindrome/" rel="next" title="「APIO2014」回文串 - 回文自动机">
+      「APIO2014」回文串 - 回文自动机 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义（们）："><span class="nav-number">1.</span> <span class="nav-text">定义（们）：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DAWG"><span class="nav-number">1.1.</span> <span class="nav-text">DAWG</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结点"><span class="nav-number">1.2.</span> <span class="nav-text">结点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#转移边"><span class="nav-number">1.3.</span> <span class="nav-text">转移边</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#后缀链接与前缀树"><span class="nav-number">1.4.</span> <span class="nav-text">后缀链接与前缀树</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#理解"><span class="nav-number">2.</span> <span class="nav-text">理解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#关于结点"><span class="nav-number">2.1.</span> <span class="nav-text">关于结点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于DAWG"><span class="nav-number">2.2.</span> <span class="nav-text">关于DAWG</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于后缀链接与前缀树的祖先后代关系"><span class="nav-number">2.3.</span> <span class="nav-text">关于后缀链接与前缀树的祖先后代关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#作图"><span class="nav-number">2.4.</span> <span class="nav-text">作图</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#性质"><span class="nav-number">3.</span> <span class="nav-text">性质</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#性质一"><span class="nav-number">3.1.</span> <span class="nav-text">性质一</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#性质二"><span class="nav-number">3.2.</span> <span class="nav-text">性质二</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#性质三"><span class="nav-number">3.3.</span> <span class="nav-text">性质三</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#性质四"><span class="nav-number">3.4.</span> <span class="nav-text">性质四</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#性质五"><span class="nav-number">3.5.</span> <span class="nav-text">性质五</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#理论构建方法"><span class="nav-number">4.</span> <span class="nav-text">理论构建方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实际构建方法"><span class="nav-number">5.</span> <span class="nav-text">实际构建方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#复杂度证明"><span class="nav-number">6.</span> <span class="nav-text">复杂度证明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#大字符集的处理"><span class="nav-number">7.</span> <span class="nav-text">大字符集的处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#拓扑序"><span class="nav-number">8.</span> <span class="nav-text">拓扑序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#end-pos-集合"><span class="nav-number">9.</span> <span class="nav-text">$end$-$pos$集合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#树上的扩展"><span class="nav-number">10.</span> <span class="nav-text">树上的扩展</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应用"><span class="nav-number">11.</span> <span class="nav-text">应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#求两个串的LCS"><span class="nav-number">11.1.</span> <span class="nav-text">求两个串的LCS</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#解法一："><span class="nav-number">11.1.1.</span> <span class="nav-text">解法一：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解法二："><span class="nav-number">11.1.2.</span> <span class="nav-text">解法二：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#求多个串的LCS"><span class="nav-number">11.2.</span> <span class="nav-text">求多个串的LCS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#求字符串最小表示"><span class="nav-number">11.3.</span> <span class="nav-text">求字符串最小表示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#求长度为i的串的最大出现次数"><span class="nav-number">11.4.</span> <span class="nav-text">求长度为i的串的最大出现次数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#求-k-小子串"><span class="nav-number">11.5.</span> <span class="nav-text">求$k$小子串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动态维护-end-pos-大小"><span class="nav-number">11.6.</span> <span class="nav-text">动态维护$end$-$pos$大小</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#求一个串本质不同的子串"><span class="nav-number">11.7.</span> <span class="nav-text">求一个串本质不同的子串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#求A串的子串与B串的子串匹配的次数（都不计重复）"><span class="nav-number">11.8.</span> <span class="nav-text">求A串的子串与B串的子串匹配的次数（都不计重复）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#解法一：-1"><span class="nav-number">11.8.1.</span> <span class="nav-text">解法一：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解法二：-1"><span class="nav-number">11.8.2.</span> <span class="nav-text">解法二：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#求-A-串的子串与-B-串的子串匹配的次数（都计重复）"><span class="nav-number">11.9.</span> <span class="nav-text">求$A$串的子串与$B$串的子串匹配的次数（都计重复）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#解法一：-2"><span class="nav-number">11.9.1.</span> <span class="nav-text">解法一：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解法二：-2"><span class="nav-number">11.9.2.</span> <span class="nav-text">解法二：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#求-A-串的子串在-B-串中出现的次数（-A-计重复，-B-不计重复）"><span class="nav-number">11.10.</span> <span class="nav-text">求$A$串的子串在$B$串中出现的次数（$A$计重复，$B$不计重复）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#解法一：-3"><span class="nav-number">11.10.1.</span> <span class="nav-text">解法一：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解法二：-3"><span class="nav-number">11.10.2.</span> <span class="nav-text">解法二：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#求-A-串的子串在-B-串中的出现次数和（-A-不计重复，-B-计重复）"><span class="nav-number">11.11.</span> <span class="nav-text">求$A$串的子串在$B$串中的出现次数和（$A$不计重复，$B$计重复）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#解法一：-4"><span class="nav-number">11.11.1.</span> <span class="nav-text">解法一：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解法二：-4"><span class="nav-number">11.11.2.</span> <span class="nav-text">解法二：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">12.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Bill Yang"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Bill Yang</p>
+  <div class="site-description" itemprop="description">这辈子都不可能更新的</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">672</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">234</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=935683004" title="QQ → tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=935683004" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i>QQ</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ym13883407586@outlook.com" title="E-Mail → mailto:ym13883407586@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/BillYang2016" title="GitHub → https://github.com/BillYang2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://coding.net/u/Bill_Yang_2016" title="Coding → https://coding.net/u/Bill_Yang_2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-git-square"></i>Coding</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://music.163.com/#/user/home?nickname=Bill_Yang2016" title="网易云音乐 → http://music.163.com/#/user/home?nickname=Bill_Yang2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-music"></i>网易云音乐</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://space.bilibili.com/233682260/#/" title="bilibili → https://space.bilibili.com/233682260/#/" rel="noopener" target="_blank"><i class="fa fa-fw fa-youtube-play"></i>bilibili</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → /atom.xml"><i class="fa fa-fw fa-rss"></i>RSS</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      我的朋友们
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://pointedpoints.github.io/" title="http://pointedpoints.github.io/" rel="noopener" target="_blank">pointedpoints</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://keke046.coding.me/" title="https://keke046.coding.me/" rel="noopener" target="_blank">KEKE046</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://imperfect_zx.coding.me/" title="https://imperfect_zx.coding.me/" rel="noopener" target="_blank">Imperfect</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://achen.world/" title="https://achen.world/" rel="noopener" target="_blank">Achen</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://metakari.one/" title="https://metakari.one/" rel="noopener" target="_blank">Metakar1</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://39.106.98.75/" title="http://39.106.98.75/" rel="noopener" target="_blank">魏启大陆</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/friends/" title="/friends/">更多朋友们</a>
+        </li>
+    </ul>
+  </div>
+<!-- none-select-br -->
+
+<p></p>
+
+<!-- hitokoto -->
+
+<div class="hitokoto-title">
+	<i class="fa fa-paragraph"></i>
+	<b>一言</b>
+</div>
+
+<div id="hitokoto">:D 获取中...</div>
+<i id="hitofrom">:D 获取中...</i>
+
+<script src="https://cdn.jsdelivr.net/npm/bluebird@3/js/browser/bluebird.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/whatwg-fetch@2.0.3/fetch.min.js"></script>
+<script>
+  fetch('https://v1.hitokoto.cn')
+    .then(function (res){
+      return res.json();
+    })
+    .then(function (data) {
+      var hitokoto = document.getElementById('hitokoto');
+      hitokoto.innerText = '\xa0\xa0\xa0\xa0\xa0\xa0\xa0' + data.hitokoto;
+      var hitofrom = document.getElementById('hitofrom');
+      hitofrom.innerText = "——" + data.from + '\xa0'; 
+    })
+    .catch(function (err) {
+      console.error(err);
+    })
+</script>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Bill Yang 以 <a class="theme-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a> 协议发布</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+  <script>
+  if (CONFIG.page.isPost) {
+    wpac_init = window.wpac_init || [];
+    wpac_init.push({
+      widget: 'Rating',
+      id: 10154,
+      el: 'wpac-rating',
+      color: 'fc6423'
+    });
+    (function() {
+      if ('WIDGETPACK_LOADED' in window) return;
+      WIDGETPACK_LOADED = true;
+      var mc = document.createElement('script');
+      mc.type = 'text/javascript';
+      mc.async = true;
+      mc.src = '//embed.widgetpack.com/widget.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+    })();
+  }
+  </script>
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout: 3000,
+        priority: true,
+        ignores: [uri => uri.includes('#'),uri => uri == 'https://blog.bill.moe/suffix-automaton-notes/',]
+      });
+      });
+  </script>
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: true,
+      notify: false,
+      appId: 'JYwxXHHRe8RNGu498SnK9B3N-gzGzoHsz',
+      appKey: 'JBz9GW9kidjPp7gW5Y6VIgfe',
+      placeholder: "吹雪は猫~",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: 'zh-cn' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

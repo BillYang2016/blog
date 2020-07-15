@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.png">
+  <link rel="mask-icon" href="/images/logo.png" color="#222">
+  <meta name="google-site-verification" content="ghOTm3Im1Awef9otcmhxaBXZs5PlL-aApB3Zeo2qVrg">
+  <meta name="baidu-site-verification" content="PcyS4kW5Yu">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-bounce.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://blog.bill.moe').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},
+    path: 'search.xml',
+    motion: {"enable":true,"async":true,"transition":{"post_block":"swoopIn","post_header":"shrinkIn","post_body":"shrinkIn","coll_header":"expandIn","sidebar":"bounceIn"}}
+  };
+</script>
+
+  <meta name="description" content="最近在尝试把还没搬运的学习笔记搬运过来。   后缀数组是后缀树的优秀替代算法，与后缀自动机在字符串题中出现频率相似。其可以在$O(n\log n)$的时间内处理一类字符串后缀问题，且算法复杂度与字符集无关。   在本文中，使用$\left|s\right|$表示字符串$s$的长度。">
+<meta name="keywords" content="学习笔记,字符串,后缀数组">
+<meta property="og:type" content="article">
+<meta property="og:title" content="后缀数组学习笔记">
+<meta property="og:url" content="https://blog.bill.moe/suffix-array-notes/index.html">
+<meta property="og:site_name" content="Bill Yang&#39;s Blog">
+<meta property="og:description" content="最近在尝试把还没搬运的学习笔记搬运过来。   后缀数组是后缀树的优秀替代算法，与后缀自动机在字符串题中出现频率相似。其可以在$O(n\log n)$的时间内处理一类字符串后缀问题，且算法复杂度与字符集无关。   在本文中，使用$\left|s\right|$表示字符串$s$的长度。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://blog.bill.moe/img/suffix-array-notes-1.svg">
+<meta property="og:image" content="https://blog.bill.moe/img/suffix-array-notes-2.svg">
+<meta property="og:image" content="https://blog.bill.moe/img/suffix-array-notes-3.svg">
+<meta property="og:updated_time" content="2019-06-20T01:52:52.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="后缀数组学习笔记">
+<meta name="twitter:description" content="最近在尝试把还没搬运的学习笔记搬运过来。   后缀数组是后缀树的优秀替代算法，与后缀自动机在字符串题中出现频率相似。其可以在$O(n\log n)$的时间内处理一类字符串后缀问题，且算法复杂度与字符集无关。   在本文中，使用$\left|s\right|$表示字符串$s$的长度。">
+<meta name="twitter:image" content="https://blog.bill.moe/img/suffix-array-notes-1.svg">
+
+<link rel="canonical" href="https://blog.bill.moe/suffix-array-notes/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+<!-- jquery -->
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+<!-- 打字礼花及震动特效 -->
+
+<div id="append_parent"></div><div id="ajaxwaitid"></div>
+<script type="text/javascript" src="/lib/activate-power-mode/activate-power-mode.js"></script>
+<script>
+	POWERMODE.colorful = true;
+	POWERMODE.shake = false;
+	document.body.addEventListener('input',POWERMODE);
+</script>
+
+<!-- live2d -->
+
+<div class="waifu">
+	<div class="waifu-tips"></div>
+	<canvas id="live2d" width="240" height="350" class="live2d"></canvas>
+	<div class="hide-button">隐藏</div>
+</div>
+<script async src="/lib/poster-girl/waifu-tips.js"></script>
+<script src="/lib/poster-girl/live2d.js"></script>
+<script type="text/javascript">
+	loadlive2d("live2d", "/live2d/assets/kanna.model.json");
+</script>
+  <title>后缀数组学习笔记 | Bill Yang's Blog</title>
+  
+    <script>
+      function sendPageView() {
+        if (CONFIG.hostname !== location.hostname) return;
+        var uid = localStorage.getItem('uid') || (Math.random() + '.' + Math.random());
+        localStorage.setItem('uid', uid);
+        navigator.sendBeacon('https://www.google-analytics.com/collect', new URLSearchParams({
+          v  : 1,
+          tid: 'UA-157912381-1',
+          cid: uid,
+          t  : 'pageview',
+          dp : encodeURIComponent(location.pathname)
+        }));
+      }
+      document.addEventListener('pjax:complete', sendPageView);
+      sendPageView();
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?d538e1e81ada366563b03354efffd84c";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Bill Yang's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">路终会有尽头，但视野总能看到更远的地方。</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">10</span></a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-friends">
+
+    <a href="/friends" rel="section"><i class="fa fa-fw fa-users"></i>友链</a>
+
+  </li>
+        <li class="menu-item menu-item-board">
+
+    <a href="/board/" rel="section"><i class="fa fa-fw fa-sticky-note-o"></i>留言板</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">672</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">234</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.bill.moe/suffix-array-notes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Bill Yang">
+      <meta itemprop="description" content="这辈子都不可能更新的">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bill Yang's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          后缀数组学习笔记
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-03-07 20:17:03" itemprop="dateCreated datePublished" datetime="2018-03-07T20:17:03+08:00">2018-03-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-06-20 09:52:52" itemprop="dateModified" datetime="2019-06-20T09:52:52+08:00">2019-06-20</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OI/" itemprop="url" rel="index">
+                    <span itemprop="name">OI</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/suffix-array-notes/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/suffix-array-notes/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>最近在尝试把还没搬运的学习笔记搬运过来。  </p>
+<p>后缀数组是后缀树的优秀替代算法，与<a href="/suffix-automaton-notes/">后缀自动机</a>在字符串题中出现频率相似。其可以在$O(n\log n)$的时间内处理一类字符串后缀问题，且算法复杂度与字符集无关。  </p>
+<p>在本文中，使用$\left|s\right|$表示字符串$s$的长度。  </p>
+<a id="more"></a>
+<h2 id="定义（们）"><a href="#定义（们）" class="headerlink" title="定义（们）"></a>定义（们）</h2><h3 id="后缀"><a href="#后缀" class="headerlink" title="后缀"></a>后缀</h3><p>$\rm {suffix}(i)$表示字符串$s$从第$i$个位置开始的子串，$i\in[0,\left|s\right|]$。  </p>
+<h3 id="字典序"><a href="#字典序" class="headerlink" title="字典序"></a>字典序</h3><p>从首位开始按照ASCII码比较，若从某位开始ASCII码不相同，认为ASCII码小的所在字符串小。<br><strong>若两个字符串长度不同，则认为空字符ASCII码为$-1$。</strong><br>根据字典序我们可以定义字符串之间的大小关系与相同/不同关系。<br>显然，一个字符串的两个后缀是不同的。  </p>
+<h3 id="最长公共前缀LCP"><a href="#最长公共前缀LCP" class="headerlink" title="最长公共前缀LCP"></a>最长公共前缀LCP</h3><p>两个字符串$a,b$分别从起始位置延伸，使得延伸出的两个子串相同，所能延伸的最长长度。<br>如$ababaaa$与$ababcaa$的LCP为$4$。  </p>
+<h3 id="后缀数组-rm-sa"><a href="#后缀数组-rm-sa" class="headerlink" title="后缀数组$\rm {sa}[]$"></a>后缀数组$\rm {sa}[]$</h3><p>将所有后缀排好序后的结果，$sa[i]$表示第$i$小后缀在原串中的起始位置。<br>对应关系：名次$\Rightarrow$后缀起始位置</p>
+<h3 id="名次数组-rm-rk"><a href="#名次数组-rm-rk" class="headerlink" title="名次数组$\rm {rk}[]$"></a>名次数组$\rm {rk}[]$</h3><p>$rk[i]$表示$\rm {suffix}(i)$的排名。<br>显然有$rk[sa[i]]=i$。<br>对应关系：后缀起始位置$\Rightarrow$名次</p>
+<h3 id="高度数组-rm-height"><a href="#高度数组-rm-height" class="headerlink" title="高度数组$\rm {height}[]$"></a>高度数组$\rm {height}[]$</h3><p>保存排名相邻的后缀的LCP长度。  </p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\rm {height}[i]=\begin{cases}0 & i=0 \\ LCP(\rm {suffix}(\rm {sa}[i]),\rm {suffix}(\rm {sa}[i-1])) & i>0\end{cases}
+\end{aligned}</script><h2 id="后缀数组与名次数组的构造"><a href="#后缀数组与名次数组的构造" class="headerlink" title="后缀数组与名次数组的构造"></a>后缀数组与名次数组的构造</h2><p>下面给出两种可行的构造方法：  </p>
+<ol>
+<li>快排：$O(n^2\log n)$，字符串比较是$O(n)$的，太慢了。  </li>
+<li>倍增算法：$O(n\log n)/O(n\log^2 n)$，下面我们来介绍这种算法。  </li>
+</ol>
+<p>利用上一次的结果，倍增计算出每个位置开始的长度为$2^k$的子串排名。<br>先计算出每个位置开始，长度为$2^0=1$的子串排名，例字符串$heheda$。  </p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">$s[i]$</th>
+<th style="text-align:center">h</th>
+<th style="text-align:center">e</th>
+<th style="text-align:center">h</th>
+<th style="text-align:center">e</th>
+<th style="text-align:center">d</th>
+<th style="text-align:center">a </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">$\rm {rank}[i]$</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>为了求出长度为$2^1=2$的排名，我们以每个位置$i$开始，长度为$2^0=1$的子串排名作为第一关键字$\rm {fir}[]$，以每个位置$i+2^0=i+1$开始，长度为$2^0=1$的子串排名为第二关键字$\rm {sec}[]$，进行双关键字排序：（对于$\ge n$的位置，记其排名为$-1$）  </p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">$\rm {s}[i]$</th>
+<th style="text-align:center">h</th>
+<th style="text-align:center">e</th>
+<th style="text-align:center">h</th>
+<th style="text-align:center">e</th>
+<th style="text-align:center">d</th>
+<th style="text-align:center">a </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">$\rm {fir}[i]$</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">$\rm {sec}[i]$</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">-1</td>
+</tr>
+<tr>
+<td style="text-align:center">$\rm {rk}[i]$</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>重复以上过程：  </p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">$\rm {s}[i]$</th>
+<th style="text-align:center">h</th>
+<th style="text-align:center">e</th>
+<th style="text-align:center">h</th>
+<th style="text-align:center">e</th>
+<th style="text-align:center">d</th>
+<th style="text-align:center">a </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">$\rm {fir}[i]$</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">$\rm {sec}[i]$</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">-1</td>
+<td style="text-align:center">-1</td>
+</tr>
+<tr>
+<td style="text-align:center">$\rm {rk}[i]$</td>
+<td style="text-align:center">5</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>当$\rm {rk}[]$值互不相同时，下一次排序第一关键字互不相同，故已排序完毕，可以提前退出。  </p>
+<p>若还无法理解倍增算法排序，可以参考这一段：  </p>
+<blockquote>
+<p>通过不断地倍增，利用子串组合出后缀，因为双关键字排序比字符串排序快，因此倍增算法效率很高。<br><img src="/img/suffix-array-notes-1.svg" alt>  </p>
+</blockquote>
+<p>双关键字排序若使用快排实现，时间复杂度为$O(n\log^2 n)$，考虑离散化后字符集大小$\le n$，故可以使用$O(n)$的基数排序实现这一过程，将时间复杂度将为$O(n\log n)$。  </p>
+<p><strong>注：</strong></p>
+<ol>
+<li>本文在叙述时排名$\in[-1,n)$，实际在代码中$\in[0,n]$。  </li>
+<li>双关键字排序时先按第二关键字排序，用$\rm {tmp}[i]$记录第$i$<strong>大</strong>的第二关键字所在位置。<br>再按第一关键字排序，然后$i=1\sim n$遍历$\rm {tmp}$，取出第二关键字排名，按照第一关键字所在桶倒序插入。<br>这里也有其他的方式，但按照上述menci的方法简单易懂：<br><img src="/img/suffix-array-notes-2.svg" alt>  </li>
+<li>因为排名可能有并列，所以先将排序结果暂存在$\rm {sa}[]$中，再根据$\rm {sa}[]$分类讨论求出$\rm {rk}[]$。  </li>
+</ol>
+<p>下面分段讲解构造的代码：  </p>
+<p>首先，将字符集离散化，保证字符集元素在$[1,n]$中：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sort(a+<span class="number">1</span>,a+n+<span class="number">1</span>);</span><br><span class="line"><span class="keyword">int</span> tot=unique(a+<span class="number">1</span>,a+n+<span class="number">1</span>)-a<span class="number">-1</span>;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=n; i++)b[i]=lower_bound(a+<span class="number">1</span>,a+tot+<span class="number">1</span>,b[i])-a;</span><br></pre></td></tr></table></figure></p>
+<p>接着，计算单个字符的排名：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fill_buc</span><span class="params">(<span class="keyword">int</span> n,<span class="keyword">int</span> *a)</span> </span>&#123;</span><br><span class="line">    fill(buc,buc+n+<span class="number">1</span>,<span class="number">0</span>);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=n; i++)buc[a[i]]++;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=n; i++)buc[i]+=buc[i<span class="number">-1</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fill_buc(n,a);</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=n; i++)rk[i]=buc[a[i]<span class="number">-1</span>]+<span class="number">1</span>;</span><br></pre></td></tr></table></figure></p>
+<p>开始倍增：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> t=<span class="number">1</span>; t&lt;=n; t&lt;&lt;=<span class="number">1</span>) &#123;</span><br></pre></td></tr></table></figure></p>
+<p>设置每个位置的第一、第二关键字：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=n; i++) &#123;</span><br><span class="line">    fir[i]=rk[i];</span><br><span class="line">    sec[i]=(i+t)&gt;n?<span class="number">0</span>:rk[i+t];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>对第二关键字进行排序，用$\rm {tmp}[i]$记录第$i$<strong>大</strong>的第二关键字所在位置。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">fill_buc(n,sec);</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=n; i++)tmp[n-(--buc[sec[i]])]=i;</span><br></pre></td></tr></table></figure></p>
+<p>对第一关键字排序，根据两次排序结果固定排名（解释见上面的注$2$），用$\rm {sa}[i]$暂存。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">fill_buc(n,fir);</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=n; i++)sa[buc[fir[tmp[i]]]--]=tmp[i];</span><br></pre></td></tr></table></figure></p>
+<p>通过$\rm {sa}[]$计算$\rm {rk}[]$，并判断是否已经互不相同，可以提前退出：  </p>
+<ol>
+<li>没有前一名，当前位置的排名为$1$。  </li>
+<li>当前位置和前一名位置的第一、第二关键字均相等，当前位置的排名与前一位置的排名相等。  </li>
+<li>当前位置和前一名位置的第一或第二关键字不相等，当前位置的排名为前一位置的排名$+1$。  </li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">bool</span> unique=<span class="number">1</span>;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">1</span>,last=<span class="number">0</span>; j&lt;=n; j++) &#123;</span><br><span class="line">    <span class="keyword">int</span> i=sa[j];</span><br><span class="line">    <span class="keyword">if</span>(!last)rk[i]=<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(fir[i]==fir[last]&amp;&amp;sec[i]==sec[last])rk[i]=rk[last],unique=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">else</span> rk[i]=rk[last]+<span class="number">1</span>;</span><br><span class="line">    last=i;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(unique)<span class="keyword">break</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="高度数组的计算"><a href="#高度数组的计算" class="headerlink" title="高度数组的计算"></a>高度数组的计算</h2><p>后缀数组的应用几乎都需要用到$\rm {height}[]$，如果按照定义计算需要$O(n^2)$的时间。<br>如果优化求出$\rm {height}[]$的顺序，利用已知$\rm {height}$扩展未知$\rm {height}$，能否优化时间？  </p>
+<p>定义$\rm {h}[i]$表示第$i$个位置的后缀与排在其前一名的LCP长度，<br>即当$\rm {rk}[i]\gt 1$时：  </p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\rm {h}[i]&=\text {LCP}(\rm {suffix}(i),\rm {suffix}(\rm {sa}[\rm {rank}[i]-1])) \\
+&=\rm {height}[\rm {rk}[i]]
+\end{aligned}</script><blockquote>
+<p>定理：$\rm {h}(i)\ge \rm {h}(i-1)-1$  </p>
+</blockquote>
+<p>证明：</p>
+<ul>
+<li>当$\rm {h}(i-1)&lt;1$时显然成立。  </li>
+<li>当$\rm {h}(i-1)\ge1$时，说明$\rm {suffix}(i-1)$与其前一名有$ge1$的LCP。<br><img src="/img/suffix-array-notes-3.svg" alt><br>如图，$\rm {suffix}(\rm {sa}[\rm {rk}[i-1]-1]+1)$与$\rm {suffix(i)}$的LCP为$\rm {h}(i-1)-1$，而$\rm {suffix}(\rm {sa}[\rm {rk}[i-1]-1]+1)$与$\rm {suffix(i)}$在$\rm {sa}$中的距离比$\rm {suffix(i)}$与$\rm {suffix(\rm {sa}[\rm {rk}[i]-1])}$的距离更小，根据字典序的定义，后两者的LCP不会比前两者小，Q.E.D.  </li>
+</ul>
+<p>故我们可以按照$\rm {height}[\rm {sa}[i]]$的顺序进行递推，每次从$\rm {h}[i-1]-1$向后扩展LCP。<br>不难证明时间复杂度是均摊$O(n)$的。  </p>
+<h2 id="模板"><a href="#模板" class="headerlink" title="模板"></a>模板</h2><p>注意这里没有给出离散化的代码。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxn=<span class="number">200005</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> Suffix_Array &#123;</span><br><span class="line">	<span class="keyword">int</span> sa[maxn],rk[maxn],fir[maxn],sec[maxn],buc[maxn],tmp[maxn],height[maxn];</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">fill_buc</span><span class="params">(<span class="keyword">int</span> n,<span class="keyword">int</span> *a)</span> </span>&#123;</span><br><span class="line">		fill(buc,buc+n+<span class="number">1</span>,<span class="number">0</span>);</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=n; i++)buc[a[i]]++;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=n; i++)buc[i]+=buc[i<span class="number">-1</span>];</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">build</span><span class="params">(<span class="keyword">int</span> n,<span class="keyword">int</span> *a)</span> </span>&#123;</span><br><span class="line">		fill_buc(n,a);</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=n; i++)rk[i]=buc[a[i]<span class="number">-1</span>]+<span class="number">1</span>;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> t=<span class="number">1</span>; t&lt;=n; t&lt;&lt;=<span class="number">1</span>) &#123;</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=n; i++) &#123;</span><br><span class="line">				fir[i]=rk[i];</span><br><span class="line">				sec[i]=(i+t)&gt;n?<span class="number">0</span>:rk[i+t];</span><br><span class="line">			&#125;</span><br><span class="line">			fill_buc(n,sec);</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=n; i++)tmp[n-(--buc[sec[i]])]=i;</span><br><span class="line">			fill_buc(n,fir);</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=n; i++)sa[buc[fir[tmp[i]]]--]=tmp[i];</span><br><span class="line">			<span class="keyword">bool</span> unique=<span class="number">1</span>;</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">1</span>,last=<span class="number">0</span>; j&lt;=n; j++) &#123;</span><br><span class="line">				<span class="keyword">int</span> i=sa[j];</span><br><span class="line">				<span class="keyword">if</span>(!last)rk[i]=<span class="number">1</span>;</span><br><span class="line">				<span class="keyword">else</span> <span class="keyword">if</span>(fir[i]==fir[last]&amp;&amp;sec[i]==sec[last])rk[i]=rk[last],unique=<span class="number">0</span>;</span><br><span class="line">				<span class="keyword">else</span> rk[i]=rk[last]+<span class="number">1</span>;</span><br><span class="line">				last=i;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">if</span>(unique)<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">int</span> k=<span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=n; i++) &#123;</span><br><span class="line">			<span class="keyword">if</span>(rk[i]==<span class="number">1</span>)k=<span class="number">0</span>;</span><br><span class="line">			<span class="keyword">else</span> &#123;</span><br><span class="line">				<span class="keyword">if</span>(k&gt;<span class="number">0</span>)k--;</span><br><span class="line">				<span class="keyword">int</span> j=sa[rk[i]<span class="number">-1</span>];</span><br><span class="line">				<span class="keyword">while</span>(i+k&lt;=n&amp;&amp;j+k&lt;=n&amp;&amp;a[i+k]==a[j+k])k++;</span><br><span class="line">			&#125;</span><br><span class="line">			height[rk[i]]=k;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><ol>
+<li>求LCP<br>求两个后缀的LCP，可以使用RMQ查询最小值得到。<br>求$A,B$两个串子串的最大LCP（<a href="http://poj.org/problem?id=2774" target="_blank" rel="noopener">poj2774</a>），可以将两个串拼起来得到<code>A#B</code>，求出$\rm {sa}[]$与$\rm {height}[]$。<br>显然最大LCP在$\rm {sa}[]$中一定是相邻的，故枚举$\rm {sa}[]$，判断是否一个在<code>#</code>前，一个在<code>#</code>后，取个$\max$即可。  </li>
+<li>求回文串（<a href="http://acm.timus.ru/problem.aspx?space=1&amp;num=1297" target="_blank" rel="noopener">ural1297</a>）<br>将$s$翻转过来再插在原串后面，枚举回文中心就变成了求两个后缀的LCP，注意奇偶讨论。<br>然而求回文串我们一般都用马拉车算法或回文自动机跑了。  </li>
+<li>求一个串的不同子串个数（<a href="http://www.spoj.com/problems/SUBST1/" target="_blank" rel="noopener">SPOJ705</a>）<br>每个后缀对答案的贡献为$n-\rm {sa}[i]+1-\rm {height}[i]$。  </li>
+<li>求不重叠的子串最大LCP（<a href="https://www.luogu.org/problemnew/show/P2743" target="_blank" rel="noopener">「USACO5.1.3」乐曲主题</a>）<br>二分LCP长度，若有连续一段的$\rm {height}\ge mid$，检查$\max\lbrace \rm {sa}[i]\rbrace$-$\min\lbrace \rm {sa}[i]\rbrace$是否$\gt mid$，若大于说明不重叠，<code>return true;</code>  </li>
+<li>求出现了$k$次的最长串（<a href="http://www.lydsy.com/JudgeOnline/problem.php?id=1717" target="_blank" rel="noopener">「USACO 2006 December Gold」Milk Patterns产奶模式</a>）<br>二分LCP长度，若有连续一段的$\rm {height}\ge mid$，检查这一段长度是否$\ge k-1$，若是，<code>return true;</code></li>
+</ol>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://oi.men.ci/suffix-array-notes/" target="_blank" rel="noopener">后缀数组学习笔记 - Menci</a>  </li>
+<li>后缀数组学习笔记 - Bill Yang笔记本旧稿</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/manacher-algorithm-notes/" rel="bookmark">Manacher算法笔记</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/dp-with-palindrome-notes/" rel="bookmark">一类使用回文自动机优化的动规问题</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/palindrome-automaton-notes/" rel="bookmark">回文自动机学习笔记</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/suffix-automaton-notes/" rel="bookmark">后缀自动机学习笔记</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/bzoj4310-flea/" rel="bookmark">「BZOJ4310」跳蚤 - 二分+后缀数组+LCP</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div>姥爷们赏瓶冰阔落吧~</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="Bill Yang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="Bill Yang 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Bill Yang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.bill.moe/suffix-array-notes/" title="后缀数组学习笔记">https://blog.bill.moe/suffix-array-notes/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/学习笔记/" rel="tag"><i class="fa fa-tag"></i> 学习笔记</a>
+              <a href="/tags/字符串/" rel="tag"><i class="fa fa-tag"></i> 字符串</a>
+              <a href="/tags/后缀数组/" rel="tag"><i class="fa fa-tag"></i> 后缀数组</a>
+          </div>
+
+        
+  <div class="post-widgets">
+    <div class="wp_rating">
+      <div id="wpac-rating"></div>
+    </div>
+  </div>
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/ZJOI2016-forest/" rel="prev" title="「ZJOI2016」大森林 - 扫描线+动态树LCT">
+      <i class="fa fa-chevron-left"></i> 「ZJOI2016」大森林 - 扫描线+动态树LCT
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/ZJOI2009-square/" rel="next" title="「ZJOI2009」对称的正方形 - 单调队列+二维Manacher / 二分+Hash">
+      「ZJOI2009」对称的正方形 - 单调队列+二维Manacher / 二分+Hash <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义（们）"><span class="nav-number">1.</span> <span class="nav-text">定义（们）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#后缀"><span class="nav-number">1.1.</span> <span class="nav-text">后缀</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字典序"><span class="nav-number">1.2.</span> <span class="nav-text">字典序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最长公共前缀LCP"><span class="nav-number">1.3.</span> <span class="nav-text">最长公共前缀LCP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#后缀数组-rm-sa"><span class="nav-number">1.4.</span> <span class="nav-text">后缀数组$\rm {sa}[]$</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#名次数组-rm-rk"><span class="nav-number">1.5.</span> <span class="nav-text">名次数组$\rm {rk}[]$</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#高度数组-rm-height"><span class="nav-number">1.6.</span> <span class="nav-text">高度数组$\rm {height}[]$</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#后缀数组与名次数组的构造"><span class="nav-number">2.</span> <span class="nav-text">后缀数组与名次数组的构造</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#高度数组的计算"><span class="nav-number">3.</span> <span class="nav-text">高度数组的计算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模板"><span class="nav-number">4.</span> <span class="nav-text">模板</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应用"><span class="nav-number">5.</span> <span class="nav-text">应用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">6.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Bill Yang"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Bill Yang</p>
+  <div class="site-description" itemprop="description">这辈子都不可能更新的</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">672</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">234</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=935683004" title="QQ → tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=935683004" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i>QQ</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ym13883407586@outlook.com" title="E-Mail → mailto:ym13883407586@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/BillYang2016" title="GitHub → https://github.com/BillYang2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://coding.net/u/Bill_Yang_2016" title="Coding → https://coding.net/u/Bill_Yang_2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-git-square"></i>Coding</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://music.163.com/#/user/home?nickname=Bill_Yang2016" title="网易云音乐 → http://music.163.com/#/user/home?nickname=Bill_Yang2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-music"></i>网易云音乐</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://space.bilibili.com/233682260/#/" title="bilibili → https://space.bilibili.com/233682260/#/" rel="noopener" target="_blank"><i class="fa fa-fw fa-youtube-play"></i>bilibili</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → /atom.xml"><i class="fa fa-fw fa-rss"></i>RSS</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      我的朋友们
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://pointedpoints.github.io/" title="http://pointedpoints.github.io/" rel="noopener" target="_blank">pointedpoints</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://keke046.coding.me/" title="https://keke046.coding.me/" rel="noopener" target="_blank">KEKE046</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://imperfect_zx.coding.me/" title="https://imperfect_zx.coding.me/" rel="noopener" target="_blank">Imperfect</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://achen.world/" title="https://achen.world/" rel="noopener" target="_blank">Achen</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://metakari.one/" title="https://metakari.one/" rel="noopener" target="_blank">Metakar1</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://39.106.98.75/" title="http://39.106.98.75/" rel="noopener" target="_blank">魏启大陆</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/friends/" title="/friends/">更多朋友们</a>
+        </li>
+    </ul>
+  </div>
+<!-- none-select-br -->
+
+<p></p>
+
+<!-- hitokoto -->
+
+<div class="hitokoto-title">
+	<i class="fa fa-paragraph"></i>
+	<b>一言</b>
+</div>
+
+<div id="hitokoto">:D 获取中...</div>
+<i id="hitofrom">:D 获取中...</i>
+
+<script src="https://cdn.jsdelivr.net/npm/bluebird@3/js/browser/bluebird.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/whatwg-fetch@2.0.3/fetch.min.js"></script>
+<script>
+  fetch('https://v1.hitokoto.cn')
+    .then(function (res){
+      return res.json();
+    })
+    .then(function (data) {
+      var hitokoto = document.getElementById('hitokoto');
+      hitokoto.innerText = '\xa0\xa0\xa0\xa0\xa0\xa0\xa0' + data.hitokoto;
+      var hitofrom = document.getElementById('hitofrom');
+      hitofrom.innerText = "——" + data.from + '\xa0'; 
+    })
+    .catch(function (err) {
+      console.error(err);
+    })
+</script>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Bill Yang 以 <a class="theme-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a> 协议发布</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+  <script>
+  if (CONFIG.page.isPost) {
+    wpac_init = window.wpac_init || [];
+    wpac_init.push({
+      widget: 'Rating',
+      id: 10154,
+      el: 'wpac-rating',
+      color: 'fc6423'
+    });
+    (function() {
+      if ('WIDGETPACK_LOADED' in window) return;
+      WIDGETPACK_LOADED = true;
+      var mc = document.createElement('script');
+      mc.type = 'text/javascript';
+      mc.async = true;
+      mc.src = '//embed.widgetpack.com/widget.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+    })();
+  }
+  </script>
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout: 3000,
+        priority: true,
+        ignores: [uri => uri.includes('#'),uri => uri == 'https://blog.bill.moe/suffix-array-notes/',]
+      });
+      });
+  </script>
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: true,
+      notify: false,
+      appId: 'JYwxXHHRe8RNGu498SnK9B3N-gzGzoHsz',
+      appKey: 'JBz9GW9kidjPp7gW5Y6VIgfe',
+      placeholder: "吹雪は猫~",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: 'zh-cn' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

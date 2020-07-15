@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.png">
+  <link rel="mask-icon" href="/images/logo.png" color="#222">
+  <meta name="google-site-verification" content="ghOTm3Im1Awef9otcmhxaBXZs5PlL-aApB3Zeo2qVrg">
+  <meta name="baidu-site-verification" content="PcyS4kW5Yu">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-bounce.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://blog.bill.moe').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},
+    path: 'search.xml',
+    motion: {"enable":true,"async":true,"transition":{"post_block":"swoopIn","post_header":"shrinkIn","post_body":"shrinkIn","coll_header":"expandIn","sidebar":"bounceIn"}}
+  };
+</script>
+
+  <meta name="description" content="带花树是来解决一类一般图匹配问题的算法。带花树的应用并不广泛，目前仅停留在模板题阶段。其实维基百科讲得很好，其实我就是翻译了一下。">
+<meta name="keywords" content="学习笔记,带花树">
+<meta property="og:type" content="article">
+<meta property="og:title" content="带花树学习笔记">
+<meta property="og:url" content="https://blog.bill.moe/blossom-algorithm-notes/index.html">
+<meta property="og:site_name" content="Bill Yang&#39;s Blog">
+<meta property="og:description" content="带花树是来解决一类一般图匹配问题的算法。带花树的应用并不广泛，目前仅停留在模板题阶段。其实维基百科讲得很好，其实我就是翻译了一下。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://blog.bill.moe/img/blossom1.svg">
+<meta property="og:image" content="https://blog.bill.moe/img/blossom2.svg">
+<meta property="og:image" content="https://blog.bill.moe/img/blossom3.svg">
+<meta property="og:image" content="https://blog.bill.moe/img/blossom4.svg">
+<meta property="og:image" content="https://blog.bill.moe/img/blossom6.svg">
+<meta property="og:image" content="https://blog.bill.moe/img/blossom7.svg">
+<meta property="og:image" content="https://blog.bill.moe/img/blossom8.svg">
+<meta property="og:image" content="https://blog.bill.moe/img/blossom9.svg">
+<meta property="og:image" content="https://blog.bill.moe/img/blossom10.svg">
+<meta property="og:image" content="https://blog.bill.moe/img/blossom5.svg">
+<meta property="og:updated_time" content="2019-06-18T07:31:16.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="带花树学习笔记">
+<meta name="twitter:description" content="带花树是来解决一类一般图匹配问题的算法。带花树的应用并不广泛，目前仅停留在模板题阶段。其实维基百科讲得很好，其实我就是翻译了一下。">
+<meta name="twitter:image" content="https://blog.bill.moe/img/blossom1.svg">
+
+<link rel="canonical" href="https://blog.bill.moe/blossom-algorithm-notes/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+<!-- jquery -->
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+<!-- 打字礼花及震动特效 -->
+
+<div id="append_parent"></div><div id="ajaxwaitid"></div>
+<script type="text/javascript" src="/lib/activate-power-mode/activate-power-mode.js"></script>
+<script>
+	POWERMODE.colorful = true;
+	POWERMODE.shake = false;
+	document.body.addEventListener('input',POWERMODE);
+</script>
+
+<!-- live2d -->
+
+<div class="waifu">
+	<div class="waifu-tips"></div>
+	<canvas id="live2d" width="240" height="350" class="live2d"></canvas>
+	<div class="hide-button">隐藏</div>
+</div>
+<script async src="/lib/poster-girl/waifu-tips.js"></script>
+<script src="/lib/poster-girl/live2d.js"></script>
+<script type="text/javascript">
+	loadlive2d("live2d", "/live2d/assets/kanna.model.json");
+</script>
+  <title>带花树学习笔记 | Bill Yang's Blog</title>
+  
+    <script>
+      function sendPageView() {
+        if (CONFIG.hostname !== location.hostname) return;
+        var uid = localStorage.getItem('uid') || (Math.random() + '.' + Math.random());
+        localStorage.setItem('uid', uid);
+        navigator.sendBeacon('https://www.google-analytics.com/collect', new URLSearchParams({
+          v  : 1,
+          tid: 'UA-157912381-1',
+          cid: uid,
+          t  : 'pageview',
+          dp : encodeURIComponent(location.pathname)
+        }));
+      }
+      document.addEventListener('pjax:complete', sendPageView);
+      sendPageView();
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?d538e1e81ada366563b03354efffd84c";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Bill Yang's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">路终会有尽头，但视野总能看到更远的地方。</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">10</span></a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-friends">
+
+    <a href="/friends" rel="section"><i class="fa fa-fw fa-users"></i>友链</a>
+
+  </li>
+        <li class="menu-item menu-item-board">
+
+    <a href="/board/" rel="section"><i class="fa fa-fw fa-sticky-note-o"></i>留言板</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">672</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">234</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.bill.moe/blossom-algorithm-notes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Bill Yang">
+      <meta itemprop="description" content="这辈子都不可能更新的">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bill Yang's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          带花树学习笔记
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-12-14 10:46:39" itemprop="dateCreated datePublished" datetime="2017-12-14T10:46:39+08:00">2017-12-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-06-18 15:31:16" itemprop="dateModified" datetime="2019-06-18T15:31:16+08:00">2019-06-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OI/" itemprop="url" rel="index">
+                    <span itemprop="name">OI</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/blossom-algorithm-notes/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/blossom-algorithm-notes/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>带花树是来解决一类一般图匹配问题的算法。<br>带花树的应用并不广泛，目前仅停留在模板题阶段。<br>其实<a href="https://en.wikipedia.org/wiki/Blossom_algorithm" target="_blank" rel="noopener">维基百科</a>讲得很好，其实我就是翻译了一下。  </p>
+<a id="more"></a>
+<h2 id="增广路"><a href="#增广路" class="headerlink" title="增广路"></a>增广路</h2><p>学了二分图匹配的应该对增广路很熟悉，但我们还是提一下。  </p>
+<p>如果在一个$M$匹配的图$G$中，有一个点$v$是<strong>孤立</strong>的指没有与其匹配的点。一条在$G$中的路径如果其边在$M$中交替出现，则称为<strong>交错路（alternating path）</strong>。一条<strong>增广路（augmenting path）</strong>$P$是一条开始并结束于不相同的孤立点的交错路。<br>在增广路中不是匹配的边比是匹配的边多，因此增广路的边条数为奇数。<br>一个匹配在增广路上的增广即为异或操作：$M_1=M\,xor\,P$。<br><img src="/img/blossom1.svg" alt>  </p>
+<p>如果在$G$中没有$M$的增广路了，那么匹配$M$是$G$的最大匹配。如果$M$不是最大匹配，那么它一定可以被增广。  </p>
+<p>因此我们可以一直执行增广操作直到不能再增广，最后就可以得到图$G$的最大匹配$M$。  </p>
+<h2 id="花与收缩"><a href="#花与收缩" class="headerlink" title="花与收缩"></a>花与收缩</h2><p>在一个$M$匹配的图$G$中，一朵花$B$是一个图$G$中的包含$2k+1$条边的奇环，其中$k$条边在$M$中，并存在从环上任意一个点$v$（<strong>花根</strong>）到一个孤立点$w$的交错路（<strong>花茎</strong>）。  </p>
+<h3 id="如何找到一朵花？"><a href="#如何找到一朵花？" class="headerlink" title="如何找到一朵花？"></a>如何找到一朵花？</h3><ul>
+<li>从一个孤立的点$w$开始遍历图。  </li>
+<li>从孤立点$w$开始遍历，标记$w$为$o$型点（out of M）。  </li>
+<li>交替地用$i$和$o$标记结点，保证无两个相邻结点有相同标记。  </li>
+<li>如果找到两个相邻结点均含有标记$o$，那么我们就找到了一个奇环与一朵花。  </li>
+</ul>
+<p>定义<strong>收缩图</strong>$G’$是图$G$将所有花$B$缩为点后的图。<br>定义<strong>收缩匹配</strong>$M’$是在$G’$中对应的匹配$M$。  </p>
+<p><img src="/img/blossom2.svg" alt>  </p>
+<p>$G’$含有$M’$的增广路当且仅当$G$含有$M$的增广路，且任何$M’$在图$G’$的增广路$P’$都可以通过展开收缩的花还原$G$中的匹配$M$。<br>因此如果存在任意一条增广路$P’$通过收缩的花$V_B$，都可以找到合适的增广路通过花$B$。  </p>
+<h3 id="更多细节"><a href="#更多细节" class="headerlink" title="更多细节"></a>更多细节</h3><ul>
+<li><p>如果$P’$在图$G’$中经过$u\rightarrow V_B\rightarrow w$，这条增广路可以在$G$中被替换为$u\rightarrow (u’\rightarrow\ldots\rightarrow w’)\rightarrow w$，其中$u’$与$w’$在花$B$中。路径$u’\rightarrow w’$的选择需保证构成的新增广路仍然是交替的。（其中$u’$既在花$B$中也在匹配$M$中（花根），$w’\rightarrow w$是一条增广路）<br><img src="/img/blossom3.svg" alt>  </p>
+</li>
+<li><p>若$P’$在$V_B$结束，这条增广路可以在$G$中被替换为$u\rightarrow(u’\rightarrow\ldots\rightarrow v’)$，其中$u’$与$v’$在花$B$中。路径$u’\rightarrow v’$的选择需保证狗构成的新增广路仍然是交替的。（其中$v’$是孤立的（花根），$u\rightarrow u’$是一条增广路）<br><img src="/img/blossom4.svg" alt>  </p>
+</li>
+</ul>
+<p>因此花可以被收缩成点，这是带花树算法的核心。  </p>
+<h2 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h2><p>接下来的就不搬运维基百科的了。  </p>
+<h3 id="思考1"><a href="#思考1" class="headerlink" title="思考1"></a>思考1</h3><p>为什么我们仅仅将 花根与环外匹配的 环称为花？为什么不能 花根与环内匹配 不能称为一朵花？  </p>
+<p>因为带花树缩花的原因是为了防止寻找增广路的时候绕环一圈后重新进入花茎而发生干扰。  </p>
+<p>如果花茎是这样的：<br><img src="/img/blossom6.svg" alt><br>此时$o$标记的点相邻，因为队列中的点均为$o$标记点（下一部分会讲到），所以可能会与花茎发生干扰。  </p>
+<p>如果花茎是这样的：<br><img src="/img/blossom7.svg" alt><br>$i$标记点相邻，显然不会与花茎发生干扰。<br>虽然该环是一个奇环，但显然当前的交错路不会是花茎，当前的花茎相连的点也不是花根。<br>上图若要形成一朵花，应该是下图这样的形式：<br><img src="/img/blossom8.svg" alt>  </p>
+<h3 id="思考2"><a href="#思考2" class="headerlink" title="思考2"></a>思考2</h3><p>为什么我们不对偶环进行处理？  </p>
+<p>因为如果是偶环，那么从任意一个点开始进行标记，标记是不会发生冲突的（偶环是二分图）。故不会对花茎产生干扰，限制其匹配即可。<br><img src="/img/blossom9.svg" alt>  </p>
+<h3 id="思考3"><a href="#思考3" class="headerlink" title="思考3"></a>思考3</h3><p>如何输出匹配方案？  </p>
+<p>我们不进行显式缩点，记录每一个点所属于的花，每一次寻找到增广路后就可以直接沿着增广路维护信息。  </p>
+<h3 id="思考4（achen提出）"><a href="#思考4（achen提出）" class="headerlink" title="思考4（achen提出）"></a>思考4（achen提出）</h3><p>不进行显示缩点，如果有多朵花嵌套会对算法过程有影响吗？  </p>
+<p>答案是不会！<br>我们只需要考虑多个花嵌套时对单条增广路的影响。  </p>
+<p><img src="/img/blossom10.svg" alt>  </p>
+<p>如图，我们发现，无论花如何嵌套，我们始终可以找出沿着花边走的一条合法交错路。（在上一部分已经说明过可以找出一朵花的合法路径，因此也可以推广到嵌套）  </p>
+<h2 id="寻找增广路"><a href="#寻找增广路" class="headerlink" title="寻找增广路"></a>寻找增广路</h2><p>对于每个结点我们记录以下信息：  </p>
+<ul>
+<li>$type$：这个点的类型，$0$为$o$型点，$1$为$i$型点。  </li>
+<li>$match$：这个点所匹配的点。注意$match$是双向指针，如果$match[u]=v$，则$match[v]=u$。  </li>
+<li>$pre$：这个点在交错路中相邻但不和当前点构成匹配的点，若$match[u]$与其他点匹配了，则需要将$match[u]$置为$pre[u]$。注意$pre$在非花的增广路中是单向的，由在交错路中的后继指向其前驱，在花中$pre$指针是双向的。  </li>
+<li>$father$：这个点所属的花，若不属于任何花则置为本身。为了方便输出方案，我们不进行显式缩点，因此需要引入这个指针。  </li>
+</ul>
+<p><img src="/img/blossom5.svg" alt>  </p>
+<p>我们依次从每一个孤立点开始宽搜，并依次用$i$与$o$标记图上的点。  </p>
+<ul>
+<li>若寻找到一个未被标记的未匹配点：将其标记为$i$型点，找到一条增广路，更新并维护该增广路的信息，完成增广。  </li>
+<li>若寻找到一个未被标记的点，但其已经被匹配，将其标记为$i$型点，并将其匹配的点标记为$o$型点，加入队列。  </li>
+<li>若寻找到一个已经被标记的$i$型点，说明此时构成偶环，直接无视。  </li>
+<li>若寻找到一个已经被标记的$o$型点，说明此时构成奇环且构成花，在当前扩展出的交错路上找到其公共祖先$lca$，$lca$此时为花根，沿着两侧的花边爬到花根，将路径上的结点$father$指针更新，标记全部更新为$o$，并将$pre$指针变为双向指针。  </li>
+</ul>
+<h2 id="思考5"><a href="#思考5" class="headerlink" title="思考5"></a>思考5</h2><p>为什么链的交错路上的$pre$是单向指针，而花上的$pre$指针是双向指针？  </p>
+<p>因为在链的交错路上增广方向确定，只需要单向指针即可，而花上我们不确定会从什么方向增广，故需要双向指针。  </p>
+<h2 id="模板（UOJ79-一般图最大匹配）"><a href="#模板（UOJ79-一般图最大匹配）" class="headerlink" title="模板（UOJ79 一般图最大匹配）"></a>模板（UOJ79 一般图最大匹配）</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iomanip&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdlib&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;climits&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;queue&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">const</span> <span class="keyword">int</span> <span class="title">Get_Int</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> num=<span class="number">0</span>,bj=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">char</span> x=getchar();</span><br><span class="line">	<span class="keyword">while</span>(x&lt;<span class="string">'0'</span>||x&gt;<span class="string">'9'</span>) &#123;</span><br><span class="line">		<span class="keyword">if</span>(x==<span class="string">'-'</span>)bj=<span class="number">-1</span>;</span><br><span class="line">		x=getchar();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">while</span>(x&gt;=<span class="string">'0'</span>&amp;&amp;x&lt;=<span class="string">'9'</span>) &#123;</span><br><span class="line">		num=num*<span class="number">10</span>+x-<span class="string">'0'</span>;</span><br><span class="line">		x=getchar();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> num*bj;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxn=<span class="number">505</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> n,m,father[maxn],vst[maxn],match[maxn],pre[maxn],Type[maxn];</span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;edges[maxn];</span><br><span class="line"><span class="built_in">queue</span>&lt;<span class="keyword">int</span>&gt;Q;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">AddEdge</span><span class="params">(<span class="keyword">int</span> x,<span class="keyword">int</span> y)</span> </span>&#123;</span><br><span class="line">	edges[x].push_back(y);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">LCA</span><span class="params">(<span class="keyword">int</span> x,<span class="keyword">int</span> y)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">static</span> <span class="keyword">int</span> times=<span class="number">0</span>;</span><br><span class="line">	times++;</span><br><span class="line">	x=father[x],y=father[y]; <span class="comment">//已知环位置</span></span><br><span class="line">	<span class="keyword">while</span>(vst[x]!=times) &#123;</span><br><span class="line">		<span class="keyword">if</span>(x) &#123;</span><br><span class="line">			vst[x]=times;</span><br><span class="line">			x=father[pre[match[x]]];</span><br><span class="line">		&#125;</span><br><span class="line">		swap(x,y);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">blossom</span><span class="params">(<span class="keyword">int</span> x,<span class="keyword">int</span> y,<span class="keyword">int</span> lca)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">while</span>(father[x]!=lca) &#123;</span><br><span class="line">		pre[x]=y;</span><br><span class="line">		y=match[x];</span><br><span class="line">		<span class="keyword">if</span>(Type[y]==<span class="number">1</span>) &#123;</span><br><span class="line">			Type[y]=<span class="number">0</span>;</span><br><span class="line">			Q.push(y);</span><br><span class="line">		&#125;</span><br><span class="line">		father[x]=father[y]=father[lca];</span><br><span class="line">		x=pre[y];</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">Augument</span><span class="params">(<span class="keyword">int</span> s)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=n; i++)father[i]=i;</span><br><span class="line">	<span class="built_in">memset</span>(Type,<span class="number">-1</span>,<span class="keyword">sizeof</span>(Type));</span><br><span class="line">	Q=<span class="built_in">queue</span>&lt;<span class="keyword">int</span>&gt;();</span><br><span class="line">	Type[s]=<span class="number">0</span>;</span><br><span class="line">	Q.push(s); <span class="comment">//仅入队o型点</span></span><br><span class="line">	<span class="keyword">while</span>(!Q.empty()) &#123;</span><br><span class="line">		<span class="keyword">int</span> Now=Q.front();</span><br><span class="line">		Q.pop();</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> Next:edges[Now]) &#123;</span><br><span class="line">			<span class="keyword">if</span>(Type[Next]==<span class="number">-1</span>) &#123;</span><br><span class="line">				pre[Next]=Now;</span><br><span class="line">				Type[Next]=<span class="number">1</span>; <span class="comment">//标记为i型点</span></span><br><span class="line">				<span class="keyword">if</span>(!match[Next]) &#123;</span><br><span class="line">					<span class="keyword">for</span>(<span class="keyword">int</span> to=Next,from=Now; to; from=pre[to]) &#123;</span><br><span class="line">						match[to]=from;</span><br><span class="line">						swap(match[from],to);</span><br><span class="line">					&#125;</span><br><span class="line">					<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">				&#125;</span><br><span class="line">				Type[match[Next]]=<span class="number">0</span>;</span><br><span class="line">				Q.push(match[Next]);</span><br><span class="line">			&#125; <span class="keyword">else</span> <span class="keyword">if</span>(Type[Next]==<span class="number">0</span>&amp;&amp;father[Now]!=father[Next]) &#123;</span><br><span class="line">				<span class="keyword">int</span> lca=LCA(Now,Next);</span><br><span class="line">				blossom(Now,Next,lca);</span><br><span class="line">				blossom(Next,Now,lca);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> ans=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	n=Get_Int();</span><br><span class="line">	m=Get_Int();</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=m; i++) &#123;</span><br><span class="line">		<span class="keyword">int</span> x=Get_Int(),y=Get_Int();</span><br><span class="line">		AddEdge(x,y);</span><br><span class="line">		AddEdge(y,x);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=n; i&gt;=<span class="number">1</span>; i--)</span><br><span class="line">		<span class="keyword">if</span>(!match[i])ans+=Augument(i);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"%d\n"</span>,ans);</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=n; i++)<span class="built_in">printf</span>(<span class="string">"%d "</span>,match[i]);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h2><p>我们枚举孤立点并将所有点入队，若找到花需要遍历整朵花，因此时间复杂度为$O(n^3)$。  </p>
+<h2 id="带花树解决带权匹配问题"><a href="#带花树解决带权匹配问题" class="headerlink" title="带花树解决带权匹配问题"></a>带花树解决带权匹配问题</h2><p>我不会，也不会写23333。<br>估计也没几个人会写233333。  </p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://en.wikipedia.org/wiki/Blossom_algorithm" target="_blank" rel="noopener">Blossom algorithm - Wikipedia</a>   </li>
+<li><a href="https://www.cnblogs.com/ljh2000-jump/p/6254234.html" target="_blank" rel="noopener">UOJ79 一般图最大匹配 - ljh2000 提供代码</a>  </li>
+<li>浅谈图的匹配算法及其应用 - 陈胤伯</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/DP-backpack-notes/" rel="bookmark">五类背包问题总结笔记</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/linear-algebra/" rel="bookmark">「菜鸟的自我修养」线性代数笔记</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/cir-squ-tree-notes/" rel="bookmark">圆方树学习笔记</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/1d1d-DP-optimization-notes/" rel="bookmark">1D/1D动态规划优化学习笔记</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/computation-geometry-notes/" rel="bookmark">计算几何基础整合（Point类）</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div>姥爷们赏瓶冰阔落吧~</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="Bill Yang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="Bill Yang 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Bill Yang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.bill.moe/blossom-algorithm-notes/" title="带花树学习笔记">https://blog.bill.moe/blossom-algorithm-notes/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/学习笔记/" rel="tag"><i class="fa fa-tag"></i> 学习笔记</a>
+              <a href="/tags/带花树/" rel="tag"><i class="fa fa-tag"></i> 带花树</a>
+          </div>
+
+        
+  <div class="post-widgets">
+    <div class="wp_rating">
+      <div id="wpac-rating"></div>
+    </div>
+  </div>
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/SHOI2017-canteen/" rel="prev" title="「SHOI2017」寿司餐厅 - 最大权闭合子图">
+      <i class="fa fa-chevron-left"></i> 「SHOI2017」寿司餐厅 - 最大权闭合子图
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/git/" rel="next" title="「持续更新」Git常用指令集">
+      「持续更新」Git常用指令集 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#增广路"><span class="nav-number">1.</span> <span class="nav-text">增广路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#花与收缩"><span class="nav-number">2.</span> <span class="nav-text">花与收缩</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#如何找到一朵花？"><span class="nav-number">2.1.</span> <span class="nav-text">如何找到一朵花？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更多细节"><span class="nav-number">2.2.</span> <span class="nav-text">更多细节</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#思考"><span class="nav-number">3.</span> <span class="nav-text">思考</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#思考1"><span class="nav-number">3.1.</span> <span class="nav-text">思考1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#思考2"><span class="nav-number">3.2.</span> <span class="nav-text">思考2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#思考3"><span class="nav-number">3.3.</span> <span class="nav-text">思考3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#思考4（achen提出）"><span class="nav-number">3.4.</span> <span class="nav-text">思考4（achen提出）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#寻找增广路"><span class="nav-number">4.</span> <span class="nav-text">寻找增广路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#思考5"><span class="nav-number">5.</span> <span class="nav-text">思考5</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模板（UOJ79-一般图最大匹配）"><span class="nav-number">6.</span> <span class="nav-text">模板（UOJ79 一般图最大匹配）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#时间复杂度"><span class="nav-number">7.</span> <span class="nav-text">时间复杂度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#带花树解决带权匹配问题"><span class="nav-number">8.</span> <span class="nav-text">带花树解决带权匹配问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">9.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Bill Yang"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Bill Yang</p>
+  <div class="site-description" itemprop="description">这辈子都不可能更新的</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">672</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">234</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=935683004" title="QQ → tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=935683004" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i>QQ</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ym13883407586@outlook.com" title="E-Mail → mailto:ym13883407586@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/BillYang2016" title="GitHub → https://github.com/BillYang2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://coding.net/u/Bill_Yang_2016" title="Coding → https://coding.net/u/Bill_Yang_2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-git-square"></i>Coding</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://music.163.com/#/user/home?nickname=Bill_Yang2016" title="网易云音乐 → http://music.163.com/#/user/home?nickname=Bill_Yang2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-music"></i>网易云音乐</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://space.bilibili.com/233682260/#/" title="bilibili → https://space.bilibili.com/233682260/#/" rel="noopener" target="_blank"><i class="fa fa-fw fa-youtube-play"></i>bilibili</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → /atom.xml"><i class="fa fa-fw fa-rss"></i>RSS</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      我的朋友们
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://pointedpoints.github.io/" title="http://pointedpoints.github.io/" rel="noopener" target="_blank">pointedpoints</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://keke046.coding.me/" title="https://keke046.coding.me/" rel="noopener" target="_blank">KEKE046</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://imperfect_zx.coding.me/" title="https://imperfect_zx.coding.me/" rel="noopener" target="_blank">Imperfect</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://achen.world/" title="https://achen.world/" rel="noopener" target="_blank">Achen</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://metakari.one/" title="https://metakari.one/" rel="noopener" target="_blank">Metakar1</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://39.106.98.75/" title="http://39.106.98.75/" rel="noopener" target="_blank">魏启大陆</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/friends/" title="/friends/">更多朋友们</a>
+        </li>
+    </ul>
+  </div>
+<!-- none-select-br -->
+
+<p></p>
+
+<!-- hitokoto -->
+
+<div class="hitokoto-title">
+	<i class="fa fa-paragraph"></i>
+	<b>一言</b>
+</div>
+
+<div id="hitokoto">:D 获取中...</div>
+<i id="hitofrom">:D 获取中...</i>
+
+<script src="https://cdn.jsdelivr.net/npm/bluebird@3/js/browser/bluebird.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/whatwg-fetch@2.0.3/fetch.min.js"></script>
+<script>
+  fetch('https://v1.hitokoto.cn')
+    .then(function (res){
+      return res.json();
+    })
+    .then(function (data) {
+      var hitokoto = document.getElementById('hitokoto');
+      hitokoto.innerText = '\xa0\xa0\xa0\xa0\xa0\xa0\xa0' + data.hitokoto;
+      var hitofrom = document.getElementById('hitofrom');
+      hitofrom.innerText = "——" + data.from + '\xa0'; 
+    })
+    .catch(function (err) {
+      console.error(err);
+    })
+</script>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Bill Yang 以 <a class="theme-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a> 协议发布</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+  <script>
+  if (CONFIG.page.isPost) {
+    wpac_init = window.wpac_init || [];
+    wpac_init.push({
+      widget: 'Rating',
+      id: 10154,
+      el: 'wpac-rating',
+      color: 'fc6423'
+    });
+    (function() {
+      if ('WIDGETPACK_LOADED' in window) return;
+      WIDGETPACK_LOADED = true;
+      var mc = document.createElement('script');
+      mc.type = 'text/javascript';
+      mc.async = true;
+      mc.src = '//embed.widgetpack.com/widget.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+    })();
+  }
+  </script>
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout: 3000,
+        priority: true,
+        ignores: [uri => uri.includes('#'),uri => uri == 'https://blog.bill.moe/blossom-algorithm-notes/',]
+      });
+      });
+  </script>
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: true,
+      notify: false,
+      appId: 'JYwxXHHRe8RNGu498SnK9B3N-gzGzoHsz',
+      appKey: 'JBz9GW9kidjPp7gW5Y6VIgfe',
+      placeholder: "吹雪は猫~",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: 'zh-cn' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

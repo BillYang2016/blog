@@ -50,18 +50,18 @@
   };
 </script>
 
-  <meta name="description" content="今天A了5题，还算不错，但是AK的队伍好像有点多啊（ B.Boundary题目描述Given ${n}$ points in 2D plane. Considering all circles that the origin point ${(0, 0)}$ is on their boundries, find the one with the maximum given points on i">
+  <meta name="description" content="今天A了5题，还算不错，但是AK的队伍好像有点多啊（">
 <meta name="keywords" content="比赛酱油记">
 <meta property="og:type" content="article">
 <meta property="og:title" content="2020牛客暑期多校训练营（第二场）解题报告">
 <meta property="og:url" content="https://blog.bill.moe/newcoder-multischool-2/index.html">
 <meta property="og:site_name" content="Bill Yang&#39;s Blog">
-<meta property="og:description" content="今天A了5题，还算不错，但是AK的队伍好像有点多啊（ B.Boundary题目描述Given ${n}$ points in 2D plane. Considering all circles that the origin point ${(0, 0)}$ is on their boundries, find the one with the maximum given points on i">
+<meta property="og:description" content="今天A了5题，还算不错，但是AK的队伍好像有点多啊（">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-07-17T06:12:35.159Z">
+<meta property="og:updated_time" content="2020-07-17T06:22:53.799Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="2020牛客暑期多校训练营（第二场）解题报告">
-<meta name="twitter:description" content="今天A了5题，还算不错，但是AK的队伍好像有点多啊（ B.Boundary题目描述Given ${n}$ points in 2D plane. Considering all circles that the origin point ${(0, 0)}$ is on their boundries, find the one with the maximum given points on i">
+<meta name="twitter:description" content="今天A了5题，还算不错，但是AK的队伍好像有点多啊（">
 
 <link rel="canonical" href="https://blog.bill.moe/newcoder-multischool-2/">
 
@@ -301,7 +301,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-07-17 13:06:28 / 修改时间：14:12:35" itemprop="dateCreated datePublished" datetime="2020-07-17T13:06:28+08:00">2020-07-17</time>
+              <time title="创建时间：2020-07-17 13:06:28 / 修改时间：14:22:53" itemprop="dateCreated datePublished" datetime="2020-07-17T13:06:28+08:00">2020-07-17</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -348,6 +348,7 @@
 
       
         <p>今天A了5题，还算不错，但是AK的队伍好像有点多啊（</p>
+<a id="more"></a>
 <h2 id="B-Boundary"><a href="#B-Boundary" class="headerlink" title="B.Boundary"></a>B.Boundary</h2><h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><p>Given ${n}$ points in 2D plane. Considering all circles that the origin point ${(0, 0)}$ is on their boundries, find the one with the maximum given points on its boundry. Print the maximum number of points.</p>
 <h3 id="题目分析"><a href="#题目分析" class="headerlink" title="题目分析"></a>题目分析</h3><p>这道题首先可以想到使用$O(n^2)$的时间代价枚举圆（计算三点成圆的时间是$O(1)$的）<br>但是我们似乎只能用$O(n)$的时间去枚举圆上的点。  </p>
 <p>与题解不同的是，我们可以想到用map做所有圆的hash，自定义类记录下圆心和半径，重载一下小于符号即可。<br>但是map的常数过大，于是改成排序指针即可。  </p>

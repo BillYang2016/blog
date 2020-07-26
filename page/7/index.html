@@ -215,7 +215,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">673</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">674</span></a>
 
   </li>
         <li class="menu-item menu-item-tags">
@@ -271,6 +271,105 @@
             
 
   <div class="posts-expand">
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.bill.moe/bzoj3258-mission/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Bill Yang">
+      <meta itemprop="description" content="这辈子都不可能更新的">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bill Yang's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/bzoj3258-mission/" class="post-title-link" itemprop="url">「BZOJ3258」秘密任务 - 最小割唯一性判定</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-03-26 15:00:02" itemprop="dateCreated datePublished" datetime="2018-03-26T15:00:02+08:00">2018-03-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-06-10 10:32:50" itemprop="dateModified" datetime="2019-06-10T10:32:50+08:00">2019-06-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OI/" itemprop="url" rel="index">
+                    <span itemprop="name">OI</span>
+                  </a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/bzoj3258-mission/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/bzoj3258-mission/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="题目大意"><a href="#题目大意" class="headerlink" title="题目大意"></a>题目大意</h2><blockquote>
+<p>&ensp;&ensp;&ensp;&ensp;Alice听说在一片神奇的大陆MagicLand，有一个古老的传说……<br>&ensp;&ensp;&ensp;&ensp;很久很久以前，那个时候 MagicStates共和国刚刚成立。 反对新政府的势力虽已被镇压，但仍然在暗地活动。这一次，情报局得到了一个令人震惊的消息，被软禁在首都府邸中的Frank ——著名的反对派领袖，秘密逃出首都，去往反对派的大本营。根据相关的情报，Frank计划通过城市之间 发达的高速公路，经过最短的路程抵达目的地。不妨将 MagicStates共和国简化为由$N$个城市,$M$条高速公路构成的连通的无向图，首都为城市$1$，反对派的大本营为城市$N$。<br>&ensp;&ensp;&ensp;&ensp;每条高速公路连接两个不同的城市，且路程是已知的。而Frank选择了一条从城市$1$到城市$N$的最短路径作为他的逃跑路线。为了阻止Frank，共和国总统决定在某些城市的高速公路的出入口设立检查点，在Frank经过检查点时将他逮捕。<br>&ensp;&ensp;&ensp;&ensp;举例来说，如果有一条高速公路连接城市$u$和城市$v$，在这条公路的城市$u$或城市$v$的出入口设立检查点，那么Frank经过高速公路时就会被发现。特别的是，由于城市$N$实际上处在反对派的控制下，所以不能在城市$N$设立检查点。<br>&ensp;&ensp;&ensp;&ensp;然而在任何城市设立检查点都需要一定的费用。更具体的，若在城市$u$设立$k$个检查点，就要花费$A_u$乘以$k$的代价，其中$A_u$是城市$u$的相关参数。值得注意的是，这个代价与这$k$个检查点具体设在哪些公路的出入口无关,于是，总统责令情报局拟定一个方案，花费最小的代价使得无论Frank选择哪条最短路线，都会在（除城市$N$以外）某个城市的高速公路出入口被发现。读到这里，Alice很想知道阻止Frank所需要花费的最小代价，并且她还希望知道最优方案是否是唯一的。只好再请你帮助她了。<br>&ensp;&ensp;&ensp;&ensp;注意，我们称两个方案不同当且仅当存在某城市$k$，两种方案中在城市$k$的检查点的设置（而不仅是数目）是不同的。<br>&ensp;&ensp;&ensp;&ensp;注意，输入文件包含多组测试数据。</p>
+</blockquote>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/bzoj3258-mission/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
         
   
   
@@ -1172,106 +1271,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blog.bill.moe/bzoj2694-LCM/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Bill Yang">
-      <meta itemprop="description" content="这辈子都不可能更新的">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Bill Yang's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/bzoj2694-LCM/" class="post-title-link" itemprop="url">「bzoj2694」LCM - 莫比乌斯反演+线性筛</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-03-23 09:00:36" itemprop="dateCreated datePublished" datetime="2018-03-23T09:00:36+08:00">2018-03-23</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-06-10 09:10:56" itemprop="dateModified" datetime="2019-06-10T09:10:56+08:00">2019-06-10</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/OI/" itemprop="url" rel="index">
-                    <span itemprop="name">OI</span>
-                  </a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/bzoj2694-LCM/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/bzoj2694-LCM/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="题目大意"><a href="#题目大意" class="headerlink" title="题目大意"></a>题目大意</h2><blockquote>
-<p>&ensp;&ensp;&ensp;&ensp;定义整数$A,B$，求所有满足如下条件的$lcm(a,b)$的和：  </p>
-<script type="math/tex; mode=display">1\le a\le A,1\le b\le B,\forall n\gt1,n^2\nmid\gcd(a,b)</script><p>&ensp;&ensp;&ensp;&ensp;输出答案模$2^{30}$。</p>
-</blockquote>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/bzoj2694-LCM/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1344,7 +1343,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">673</span>
+          <span class="site-state-item-count">674</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

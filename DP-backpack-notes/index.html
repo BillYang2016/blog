@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.png">
+  <link rel="mask-icon" href="/images/logo.png" color="#222">
+  <meta name="google-site-verification" content="ghOTm3Im1Awef9otcmhxaBXZs5PlL-aApB3Zeo2qVrg">
+  <meta name="baidu-site-verification" content="PcyS4kW5Yu">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-bounce.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://blog.bill.moe').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},
+    path: 'search.xml',
+    motion: {"enable":true,"async":true,"transition":{"post_block":"swoopIn","post_header":"shrinkIn","post_body":"shrinkIn","coll_header":"expandIn","sidebar":"bounceIn"}}
+  };
+</script>
+
+  <meta name="description" content="本文主要描述背包问题的常见类型。">
+<meta name="keywords" content="动态规划,背包,学习笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="五类背包问题总结笔记">
+<meta property="og:url" content="https://blog.bill.moe/DP-backpack-notes/index.html">
+<meta property="og:site_name" content="Bill Yang&#39;s Blog">
+<meta property="og:description" content="本文主要描述背包问题的常见类型。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-07-12T13:40:38.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="五类背包问题总结笔记">
+<meta name="twitter:description" content="本文主要描述背包问题的常见类型。">
+
+<link rel="canonical" href="https://blog.bill.moe/DP-backpack-notes/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+<!-- jquery -->
+
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<!-- 打字礼花及震动特效 -->
+
+<div id="append_parent"></div><div id="ajaxwaitid"></div>
+<script type="text/javascript" src="/lib/activate-power-mode/activate-power-mode.js"></script>
+<script>
+	POWERMODE.colorful = true;
+	POWERMODE.shake = false;
+	document.body.addEventListener('input',POWERMODE);
+</script>
+
+<!-- live2d -->
+
+<div class="waifu">
+	<div class="waifu-tips"></div>
+	<canvas id="live2d" width="240" height="350" class="live2d"></canvas>
+	<div class="hide-button">隐藏</div>
+</div>
+<script async src="/lib/poster-girl/waifu-tips.js"></script>
+<script src="/lib/poster-girl/live2d.js"></script>
+<script type="text/javascript">
+	loadlive2d("live2d", "/live2d/assets/kanna.model.json");
+</script>
+  <title>五类背包问题总结笔记 | Bill Yang's Blog</title>
+  
+    <script>
+      function sendPageView() {
+        if (CONFIG.hostname !== location.hostname) return;
+        var uid = localStorage.getItem('uid') || (Math.random() + '.' + Math.random());
+        localStorage.setItem('uid', uid);
+        navigator.sendBeacon('https://www.google-analytics.com/collect', new URLSearchParams({
+          v  : 1,
+          tid: 'UA-157912381-1',
+          cid: uid,
+          t  : 'pageview',
+          dp : encodeURIComponent(location.pathname)
+        }));
+      }
+      document.addEventListener('pjax:complete', sendPageView);
+      sendPageView();
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?d538e1e81ada366563b03354efffd84c";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Bill Yang's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">路终会有尽头，但视野总能看到更远的地方。</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">10</span></a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-friends">
+
+    <a href="/friends" rel="section"><i class="fa fa-fw fa-users"></i>友链</a>
+
+  </li>
+        <li class="menu-item menu-item-board">
+
+    <a href="/board/" rel="section"><i class="fa fa-fw fa-sticky-note-o"></i>留言板</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">675</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">234</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.bill.moe/DP-backpack-notes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Bill Yang">
+      <meta itemprop="description" content="这辈子都不可能更新的">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bill Yang's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          五类背包问题总结笔记
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-01-05 16:54:29" itemprop="dateCreated datePublished" datetime="2018-01-05T16:54:29+08:00">2018-01-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-07-12 21:40:38" itemprop="dateModified" datetime="2020-07-12T21:40:38+08:00">2020-07-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OI/" itemprop="url" rel="index">
+                    <span itemprop="name">OI</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/DP-backpack-notes/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/DP-backpack-notes/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>本文主要描述背包问题的常见类型。  </p>
+<a id="more"></a>
+<h2 id="01背包"><a href="#01背包" class="headerlink" title="01背包"></a>01背包</h2><h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><p>有$n$种物品，每个物品有两个属性：代价与价值。每种物品只能选一个，给定一个载代价为$m$的背包，求可以获得的价值最大值。  </p>
+<h3 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h3><p>设$f[i,j]$表示前$i$种物品占用$j$代价后能够得到的最大价值。<br>分装与不装$i$物品进行讨论。  </p>
+<script type="math/tex; mode=display">
+f[i,j]=\max
+\begin{cases}
+f[i-1,j-w[i]]+c[i] & \text{装}i\text{物品} \\
+f[i-1,j] & \text{不装}i\text{物品}
+\end{cases}</script><p>因此我们可以在$O(nm)$的时间内求出答案。  </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=n; i++)</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>; j&lt;=m; j++) &#123;</span><br><span class="line">		f[i][j]=f[i<span class="number">-1</span>][j];</span><br><span class="line">		<span class="keyword">if</span>(j&gt;=cost[i])f[i][j]=max(f[i][j],f[i][j-cost[i]]+value[i]);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="优化1"><a href="#优化1" class="headerlink" title="优化1"></a>优化1</h3><p>发现第一维始终是从上一个转移而来，故省去第一维。<br>为了避免重复转移，将循环改为倒序枚举。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=n; i++)</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> j=m; j&gt;=cost[i]; j--)</span><br><span class="line">		f[j]=max(f[j],f[j-cost[i]]+value[i]);</span><br></pre></td></tr></table></figure></p>
+<h3 id="优化2"><a href="#优化2" class="headerlink" title="优化2"></a>优化2</h3><p>若只判断是否可达某个状态，而不要求求最大价值，可以使用bitset进行优化。<br>设$f[i,j]$表示前$i$种物品能否花费$j$的代价。<br>将其压缩为bitset。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=n; i++)f[i]=(f[i<span class="number">-1</span>]&gt;&gt;cost[i])|f[i<span class="number">-1</span>];</span><br></pre></td></tr></table></figure></p>
+<p>若要压缩空间可直接开一个bitset的变量即可。  </p>
+<h2 id="完全背包"><a href="#完全背包" class="headerlink" title="完全背包"></a>完全背包</h2><h3 id="问题描述-1"><a href="#问题描述-1" class="headerlink" title="问题描述"></a>问题描述</h3><p>有$n$种物品，每个物品有两个属性：代价与价值。每种物品只能选可以选无限个，给定一个载代价为$m$的背包，求可以获得的价值最大值。  </p>
+<h3 id="题解-1"><a href="#题解-1" class="headerlink" title="题解"></a>题解</h3><p>与01背包不同在于可以多次选择，只需要将转移方程稍微改一下即可：  </p>
+<script type="math/tex; mode=display">
+f[i,j]=\max
+\begin{cases}
+f[i,j-w[i]]+c[i] & \text{装}i\text{物品} \\
+f[i-1,j] & \text{不装}i\text{物品}
+\end{cases}</script><h3 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h3><p>发现第一维始终是从上一个转移而来，故省去第一维。<br>与01背包不同在于，可以多次选择，故不需要倒序枚举。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=n; i++)</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> j=cost[i]; j&lt;=m; j++)</span><br><span class="line">		f[j]=max(f[j],f[j-cost[i]]+value[i]);</span><br></pre></td></tr></table></figure></p>
+<h2 id="多维背包"><a href="#多维背包" class="headerlink" title="多维背包"></a>多维背包</h2><h3 id="问题描述-2"><a href="#问题描述-2" class="headerlink" title="问题描述"></a>问题描述</h3><p>多维背包对于每一个物品有多种付出的代价（如：重量，体积同时限制），仍然要求价值最大。  </p>
+<h3 id="题解-2"><a href="#题解-2" class="headerlink" title="题解"></a>题解</h3><p>修改一下状态定义<br>$f[a_1,a_2,\ldots,a_n]$分别表示$n$种付出的代价。<br>转移参考01背包与完全背包。  </p>
+<h2 id="多重背包"><a href="#多重背包" class="headerlink" title="多重背包"></a>多重背包</h2><h2 id="问题描述-3"><a href="#问题描述-3" class="headerlink" title="问题描述"></a>问题描述</h2><p>有$n$种物品，每个物品有三个属性：代价，价值与可选次数。给定一个载代价为$m$的背包，求可以获得的价值最大值。  </p>
+<h3 id="题解-3"><a href="#题解-3" class="headerlink" title="题解"></a>题解</h3><p>将每个物品拆成多个物品，保证可选次数为$1$。<br>对所有物品做01背包即可。<br>时间复杂度$O(m\sum num[i])$。  </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=n; i++)</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>; j&lt;=m; j++)</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> k=<span class="number">0</span>; k&lt;=a[i]&amp;&amp;k*cost[i]&lt;=j; k++)</span><br><span class="line">			f[j]=max(f[j],f[j-k*cost[i]]+k*value[i]);</span><br></pre></td></tr></table></figure>
+<h3 id="优化1-1"><a href="#优化1-1" class="headerlink" title="优化1"></a>优化1</h3><p>考虑，将一个数$x$进行二进制拆分后，$\forall y\lt x$可以用$x$的二进制拆分方式唯一表示出来。  </p>
+<p>如$13=1+2+4+6$，若选择$7=1+6$，选择$9=1+2+6$。<br>故我们可以对每个背包的物品进行二进制拆分，将第$i$种物品分为$O(\log num[i])$种物品，对拆分的物品代价与价值同时乘上拆分出的二进制数。  </p>
+<p>这样时间复杂度下降为$O(m\sum\log num[i])$。  </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">zero_one_pack</span><span class="params">(Thing a,<span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">	a.cost*=k,a.value*=k;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> j=m; j&gt;=a.cost; j--)</span><br><span class="line">		f[j]=max(f[j],f[j-a.cost]+a.value);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">complete_pack</span><span class="params">(<span class="keyword">const</span> Thing&amp; a)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> j=a.cost; j&lt;=m; j++)</span><br><span class="line">		f[j]=max(f[j],f[j-a.cost]+a.value);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">multiple_pack</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=n; i++) &#123;</span><br><span class="line">		<span class="keyword">if</span>(a[i].num*a[i].cost&gt;m) &#123; <span class="comment">//个数太多，可视为无穷</span></span><br><span class="line">			complete_pack(a[i]);</span><br><span class="line">			<span class="keyword">continue</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">int</span> k=<span class="number">1</span>;</span><br><span class="line">		<span class="keyword">while</span>(k&lt;a[i].num) &#123;</span><br><span class="line">			zero_one_pack(a[i],k);</span><br><span class="line">			a[i].num-=k;</span><br><span class="line">			k&lt;&lt;=<span class="number">1</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		zero_one_pack(a[i],a[i].num);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="优化2-1"><a href="#优化2-1" class="headerlink" title="优化2"></a>优化2</h3><p>使用单调队列优化多重背包。<br>重新列出转移方程。（设当前放置物品为$x$）  </p>
+<script type="math/tex; mode=display">f[i]=\max_{j=0}^{num[x]} \lbrace f[i-j\cdot cost[x]]+j\cdot value[x] \rbrace</script><p>我们发现有个$cost[x]$非常碍眼，如果能够把$cost[x]$去掉，那么转移的编号就连续了，就可以采用各种优化方法。  </p>
+<p>考虑将方程放入$\bmod cost[x]$的剩余系中考虑（可以理解为直接将下标中$cost[x]$抹掉）。<br>得到方程：  </p>
+<script type="math/tex; mode=display">f'[i]=\max_{j=0}^{num[x]} \lbrace f'[i-j]+j\cdot value[x] \rbrace</script><script type="math/tex; mode=display">f'[i]=\max_{j=i-num[x]}^{i} \lbrace f'[j]+(i-j)\cdot value[x] \rbrace</script><p>发现在转移时，$(i-j)\cdot value[x]$是一个差的增量，因此我们可以将方程写成这样：  </p>
+<script type="math/tex; mode=display">f'[i]=\max_{j=i-num[x]}^{i} \lbrace f'[j]\rbrace+i\cdot value[x]</script><p>此时我们就可以使用单调队列优化这个方程了。  </p>
+<p>具体实现的时候，我们需要枚举剩余系$mod$，然后进行上述Dp，注意方程中的编号$i$和实际的下标$index$不同，$index=i\cdot cost[x]+mod$，单调队列下标用$i$维护，转移时使用$index$。  </p>
+<p>时间复杂度$O(nm)$。  </p>
+<p>若可达到的价值比较小而容量可以很大，同样可以将方程对称一下，得到$O(nV)$的算法，其中$V$是最大价值。  </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pii pair<span class="meta-string">&lt;int,int&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> mp make_pair</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">trans</span><span class="params">(<span class="keyword">const</span> Thing&amp; a)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> mod=<span class="number">0</span>; mod&lt;a.cost; mod++) &#123;</span><br><span class="line">		<span class="built_in">deque</span>&lt;pii&gt;Q;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>,index; (index=i*a.cost+mod)&lt;=m; i++) &#123;</span><br><span class="line">			<span class="keyword">while</span>(!Q.empty()&amp;&amp;Q.front().first&lt;i-a.num)Q.pop_front();</span><br><span class="line">			<span class="keyword">while</span>(!Q.empty()&amp;&amp;Q.back().second&lt;=f[index]-i*a.value)Q.pop_back(); <span class="comment">//允许自己转移到自己</span></span><br><span class="line">			Q.push_back(mp(i,f[index]-i*a.value));</span><br><span class="line">			f[index]=Q.front().second+i*a.value;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">solve</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=n; i++)trans(a[i]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="树上背包"><a href="#树上背包" class="headerlink" title="树上背包"></a>树上背包</h2><h3 id="树形依赖背包"><a href="#树形依赖背包" class="headerlink" title="树形依赖背包"></a>树形依赖背包</h3><p>树上有一些物品，对这一些物品做01/完全/多重背包，满足所选点形成一个连通块。  </p>
+<h4 id="题解-4"><a href="#题解-4" class="headerlink" title="题解"></a>题解</h4><p>不难想到使用$O(nm^2)$的算法进行暴力转移。<br>设$f[i,j]$表示以$i$为根的子树，容量为$j$所获得最大价值。<br>枚举每个儿子分配，做01/完全/多重背包。<br><strong>易错点：01背包循环倒序枚举，完全背包正序枚举但要分离之前的Dp值与当前的Dp值（另开辅助数组记录）</strong>  </p>
+<p>本处以01背包举例。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">TreeDp</span><span class="params">(<span class="keyword">int</span> Now,<span class="keyword">int</span> fa)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;=m; i++)f[Now][i]=-INT_MAX/<span class="number">2</span>;</span><br><span class="line">	f[Now][cost[Now]]=value[Now];</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> Next:edges[Now]) &#123;</span><br><span class="line">		<span class="keyword">if</span>(Next==fa)<span class="keyword">continue</span>;</span><br><span class="line">		TreeDp(Next,Now);</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j=m; j&gt;=<span class="number">0</span>; j--)</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> k=j; k&gt;=<span class="number">0</span>; k--)</span><br><span class="line">				f[Now][j]=max(f[Now][j],f[Now][j-k]+f[Next][k]);</span><br><span class="line">	&#125;</span><br><span class="line">	f[Now][<span class="number">0</span>]=<span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="优化1（achen优化）"><a href="#优化1（achen优化）" class="headerlink" title="优化1（achen优化）"></a>优化1（achen优化）</h4><p>以真实结点为代价的树上背包时间复杂度是$O(n^2)$的。<br>即：若背包分配的代价是结点，那么<strong>严格限制转移的范围</strong>，时间复杂度是$O(n^2)$的。  </p>
+<p>注意这里的<strong>严格限制</strong>很容易漏掉限制，虽然随机数据下看似$O(n^2)$，但可以构数据卡成$O(n^3)$。<br>可以照着下面的程序检验是否漏掉限制。（本程序是当前状态从上一状态转移，与从当前状态转移到下一状态的写法稍有不同）<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">TreeDp</span><span class="params">(<span class="keyword">int</span> Now,<span class="keyword">int</span> fa)</span> </span>&#123;</span><br><span class="line">	Size[Now]=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;=n; i++)f[Now][i]=-INT_MAX/<span class="number">2</span>;</span><br><span class="line">	f[Now][<span class="number">1</span>]=value[Now];</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> Next:edges[Now]) &#123;</span><br><span class="line">		<span class="keyword">if</span>(Next==fa)<span class="keyword">continue</span>;</span><br><span class="line">		TreeDp(Next,Now);</span><br><span class="line">		Size[Now]+=Size[Next];</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j=Size[Now]-Size[Next]; j&gt;=<span class="number">0</span>; j--)g[j]=f[Now][j];</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j=Size[Now]; j&gt;=<span class="number">0</span>; j--)</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> k=min(j,Size[Next]); k&gt;=<span class="number">0</span>&amp;&amp;j-k&lt;=Size[Now]-Size[Next]; k--)</span><br><span class="line">				f[Now][j]=max(f[Now][j],g[j-k]+f[Next][k]);</span><br><span class="line">	&#125;</span><br><span class="line">	f[Now][<span class="number">0</span>]=<span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>证明：</p>
+<ol>
+<li>每次背包合并两棵树$T_1,T_2$的代价是$size(T_1)\cdot size(T_2)$，可以将每次合并的过程看做两棵树的结点两两配对的过程。每一对点只会在其$lca$处合并一次，故背包过程均摊是$\begin{pmatrix}n\\2\end{pmatrix}=\frac{n(n-1)}2=O(n^2)$。  </li>
+<li>使用<a href="/time-analysis-notes/">摊还分析</a>的记账方法分析。将合并倒过来看做分解，一开始存款$\frac{n^2}2$，每一次的分解都使用存款抵付，比如将$n$分解为$x,y(x+y=n)$，$\frac{n^2}2-xy=\frac{x^2}2+\frac{y^2}2$，可见，剩余存款仍然足够抵用后序分解，当分解到只剩结点时，剩余存款为$\frac 12\times n$，故均摊时间复杂度为$\frac {n^2-n}2=O(n^2)$  </li>
+</ol>
+<p>当限制了背包大小为$k$时，时间复杂度可以进一步降低到$O(n\cdot\min(n,k))$，证明见<a href="https://blog.csdn.net/lyd_7_29/article/details/79854245" target="_blank" rel="noopener">这里</a>。</p>
+<h4 id="优化2-2"><a href="#优化2-2" class="headerlink" title="优化2"></a>优化2</h4><p>对于在树上做多重背包的题目，普通算法时间复杂度是$O(nm^2)$。<br>此时我们可以考虑点分治。<br>一般的树上多重背包是从下往上更新，需要枚举转移量，因此效率低下。<br>经过点分治，转化为所有选择的点必须和重心连通，转化为从上往下更新。<br>每次向下递归时强制选择儿子，向上回溯时检查是否可以更新状态。<br>此时我们可以使用二进制拆分或单调队列对多重背包进行优化，将时间复杂度降为：$O(nm\log n\log d)$或$O(nm\log n)$。  </p>
+<p><a href="/bzoj4182-shopping/">模板题</a>  </p>
+<h3 id="非树形依赖背包"><a href="#非树形依赖背包" class="headerlink" title="非树形依赖背包"></a>非树形依赖背包</h3><p>某一些题目不要求选择的物品成为连通块，同时为了利用“树”的结构，在树上作了其他限制。  </p>
+<h4 id="题解-5"><a href="#题解-5" class="headerlink" title="题解"></a>题解</h4><p>暴力转移类似上述依赖背包。  </p>
+<h4 id="优化1（achen优化）-1"><a href="#优化1（achen优化）-1" class="headerlink" title="优化1（achen优化）"></a>优化1（achen优化）</h4><p>与上述achen优化相同。  </p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/tree-subdivision-for-tree-dp/" rel="bookmark">基于变换合并的树链剖分维护动态树形动规算法</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/dp-with-palindrome-notes/" rel="bookmark">一类使用回文自动机优化的动规问题</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/HNOI2008-cards/" rel="bookmark">「HNOI2008」洗牌cards - Polya计数+背包</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/NOIsimulation-jewelry/" rel="bookmark">「NOI模拟赛3.13」珠宝jewelry - 动态规划/背包+决策单调性</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/HEOI2013-newbackpack/" rel="bookmark">「HEOI2013」Eden的新背包问题 - CDQ分治左右逼近+多重背包</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div>姥爷们赏瓶冰阔落吧~</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="Bill Yang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="Bill Yang 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Bill Yang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.bill.moe/DP-backpack-notes/" title="五类背包问题总结笔记">https://blog.bill.moe/DP-backpack-notes/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/动态规划/" rel="tag"><i class="fa fa-tag"></i> 动态规划</a>
+              <a href="/tags/背包/" rel="tag"><i class="fa fa-tag"></i> 背包</a>
+              <a href="/tags/学习笔记/" rel="tag"><i class="fa fa-tag"></i> 学习笔记</a>
+          </div>
+
+        
+  <div class="post-widgets">
+    <div class="wp_rating">
+      <div id="wpac-rating"></div>
+    </div>
+  </div>
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/issue/" rel="prev" title="This is a post for issue">
+      <i class="fa fa-chevron-left"></i> This is a post for issue
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/lucas-theorem-notes/" rel="next" title="Lucas定理学习笔记">
+      Lucas定理学习笔记 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#01背包"><span class="nav-number">1.</span> <span class="nav-text">01背包</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题描述"><span class="nav-number">1.1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#题解"><span class="nav-number">1.2.</span> <span class="nav-text">题解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优化1"><span class="nav-number">1.3.</span> <span class="nav-text">优化1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优化2"><span class="nav-number">1.4.</span> <span class="nav-text">优化2</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#完全背包"><span class="nav-number">2.</span> <span class="nav-text">完全背包</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题描述-1"><span class="nav-number">2.1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#题解-1"><span class="nav-number">2.2.</span> <span class="nav-text">题解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优化"><span class="nav-number">2.3.</span> <span class="nav-text">优化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多维背包"><span class="nav-number">3.</span> <span class="nav-text">多维背包</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题描述-2"><span class="nav-number">3.1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#题解-2"><span class="nav-number">3.2.</span> <span class="nav-text">题解</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多重背包"><span class="nav-number">4.</span> <span class="nav-text">多重背包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#问题描述-3"><span class="nav-number">5.</span> <span class="nav-text">问题描述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#题解-3"><span class="nav-number">5.1.</span> <span class="nav-text">题解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优化1-1"><span class="nav-number">5.2.</span> <span class="nav-text">优化1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优化2-1"><span class="nav-number">5.3.</span> <span class="nav-text">优化2</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#树上背包"><span class="nav-number">6.</span> <span class="nav-text">树上背包</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#树形依赖背包"><span class="nav-number">6.1.</span> <span class="nav-text">树形依赖背包</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#题解-4"><span class="nav-number">6.1.1.</span> <span class="nav-text">题解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#优化1（achen优化）"><span class="nav-number">6.1.2.</span> <span class="nav-text">优化1（achen优化）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#优化2-2"><span class="nav-number">6.1.3.</span> <span class="nav-text">优化2</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#非树形依赖背包"><span class="nav-number">6.2.</span> <span class="nav-text">非树形依赖背包</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#题解-5"><span class="nav-number">6.2.1.</span> <span class="nav-text">题解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#优化1（achen优化）-1"><span class="nav-number">6.2.2.</span> <span class="nav-text">优化1（achen优化）</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Bill Yang"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Bill Yang</p>
+  <div class="site-description" itemprop="description">这辈子都不可能更新的</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">675</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">234</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=935683004" title="QQ → tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=935683004" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i>QQ</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ym13883407586@outlook.com" title="E-Mail → mailto:ym13883407586@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/BillYang2016" title="GitHub → https://github.com/BillYang2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://coding.net/u/Bill_Yang_2016" title="Coding → https://coding.net/u/Bill_Yang_2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-git-square"></i>Coding</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://music.163.com/#/user/home?nickname=Bill_Yang2016" title="网易云音乐 → http://music.163.com/#/user/home?nickname=Bill_Yang2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-music"></i>网易云音乐</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://space.bilibili.com/233682260/#/" title="bilibili → https://space.bilibili.com/233682260/#/" rel="noopener" target="_blank"><i class="fa fa-fw fa-youtube-play"></i>bilibili</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → /atom.xml"><i class="fa fa-fw fa-rss"></i>RSS</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      我的朋友们
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://pointedpoints.github.io/" title="http://pointedpoints.github.io/" rel="noopener" target="_blank">pointedpoints</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://keke046.coding.me/" title="https://keke046.coding.me/" rel="noopener" target="_blank">KEKE046</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://imperfect_zx.coding.me/" title="https://imperfect_zx.coding.me/" rel="noopener" target="_blank">Imperfect</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://achen.world/" title="https://achen.world/" rel="noopener" target="_blank">Achen</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://metakari.one/" title="https://metakari.one/" rel="noopener" target="_blank">Metakar1</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://39.106.98.75/" title="http://39.106.98.75/" rel="noopener" target="_blank">魏启大陆</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/friends/" title="/friends/">更多朋友们</a>
+        </li>
+    </ul>
+  </div>
+<!-- none-select-br -->
+
+<p></p>
+
+<!-- hitokoto -->
+
+<div class="hitokoto-title">
+	<i class="fa fa-paragraph"></i>
+	<b>一言</b>
+</div>
+
+<div id="hitokoto">:D 获取中...</div>
+<i id="hitofrom">:D 获取中...</i>
+
+<script src="https://cdn.jsdelivr.net/npm/bluebird@3/js/browser/bluebird.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/whatwg-fetch@2.0.3/fetch.min.js"></script>
+<script>
+  fetch('https://v1.hitokoto.cn')
+    .then(function (res){
+      return res.json();
+    })
+    .then(function (data) {
+      var hitokoto = document.getElementById('hitokoto');
+      hitokoto.innerText = '\xa0\xa0\xa0\xa0\xa0\xa0\xa0' + data.hitokoto;
+      var hitofrom = document.getElementById('hitofrom');
+      hitofrom.innerText = "——" + data.from + '\xa0'; 
+    })
+    .catch(function (err) {
+      console.error(err);
+    })
+</script>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Bill Yang 以 <a class="theme-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a> 协议发布</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+  <script>
+  if (CONFIG.page.isPost) {
+    wpac_init = window.wpac_init || [];
+    wpac_init.push({
+      widget: 'Rating',
+      id: 10154,
+      el: 'wpac-rating',
+      color: 'fc6423'
+    });
+    (function() {
+      if ('WIDGETPACK_LOADED' in window) return;
+      WIDGETPACK_LOADED = true;
+      var mc = document.createElement('script');
+      mc.type = 'text/javascript';
+      mc.async = true;
+      mc.src = '//embed.widgetpack.com/widget.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+    })();
+  }
+  </script>
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout: 3000,
+        priority: true,
+        ignores: [uri => uri.includes('#'),uri => uri == 'https://blog.bill.moe/DP-backpack-notes/',]
+      });
+      });
+  </script>
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: true,
+      notify: false,
+      appId: 'JYwxXHHRe8RNGu498SnK9B3N-gzGzoHsz',
+      appKey: 'JBz9GW9kidjPp7gW5Y6VIgfe',
+      placeholder: "吹雪は猫~",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: 'zh-cn' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

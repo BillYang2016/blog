@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.png">
+  <link rel="mask-icon" href="/images/logo.png" color="#222">
+  <meta name="google-site-verification" content="ghOTm3Im1Awef9otcmhxaBXZs5PlL-aApB3Zeo2qVrg">
+  <meta name="baidu-site-verification" content="PcyS4kW5Yu">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-bounce.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://blog.bill.moe').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},
+    path: 'search.xml',
+    motion: {"enable":true,"async":true,"transition":{"post_block":"swoopIn","post_header":"shrinkIn","post_body":"shrinkIn","coll_header":"expandIn","sidebar":"bounceIn"}}
+  };
+</script>
+
+  <meta name="description" content="在看本文之前可以参考这篇文章。   CDQ分治是陈丹琦在2009年国家集训队作业中提出的一种算法。CDQ分治在信息学竞赛中有很重要的运用。">
+<meta name="keywords" content="学习笔记,CDQ分治">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CDQ分治学习笔记">
+<meta property="og:url" content="https://blog.bill.moe/cdqbinary-notes/index.html">
+<meta property="og:site_name" content="Bill Yang&#39;s Blog">
+<meta property="og:description" content="在看本文之前可以参考这篇文章。   CDQ分治是陈丹琦在2009年国家集训队作业中提出的一种算法。CDQ分治在信息学竞赛中有很重要的运用。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://blog.bill.moe/img/cdq2.png">
+<meta property="og:updated_time" content="2020-01-16T08:55:52.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CDQ分治学习笔记">
+<meta name="twitter:description" content="在看本文之前可以参考这篇文章。   CDQ分治是陈丹琦在2009年国家集训队作业中提出的一种算法。CDQ分治在信息学竞赛中有很重要的运用。">
+<meta name="twitter:image" content="https://blog.bill.moe/img/cdq2.png">
+
+<link rel="canonical" href="https://blog.bill.moe/cdqbinary-notes/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+<!-- jquery -->
+
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<!-- 打字礼花及震动特效 -->
+
+<div id="append_parent"></div><div id="ajaxwaitid"></div>
+<script type="text/javascript" src="/lib/activate-power-mode/activate-power-mode.js"></script>
+<script>
+	POWERMODE.colorful = true;
+	POWERMODE.shake = false;
+	document.body.addEventListener('input',POWERMODE);
+</script>
+
+<!-- live2d -->
+
+<div class="waifu">
+	<div class="waifu-tips"></div>
+	<canvas id="live2d" width="240" height="350" class="live2d"></canvas>
+	<div class="hide-button">隐藏</div>
+</div>
+<script async src="/lib/poster-girl/waifu-tips.js"></script>
+<script src="/lib/poster-girl/live2d.js"></script>
+<script type="text/javascript">
+	loadlive2d("live2d", "/live2d/assets/kanna.model.json");
+</script>
+  <title>CDQ分治学习笔记 | Bill Yang's Blog</title>
+  
+    <script>
+      function sendPageView() {
+        if (CONFIG.hostname !== location.hostname) return;
+        var uid = localStorage.getItem('uid') || (Math.random() + '.' + Math.random());
+        localStorage.setItem('uid', uid);
+        navigator.sendBeacon('https://www.google-analytics.com/collect', new URLSearchParams({
+          v  : 1,
+          tid: 'UA-157912381-1',
+          cid: uid,
+          t  : 'pageview',
+          dp : encodeURIComponent(location.pathname)
+        }));
+      }
+      document.addEventListener('pjax:complete', sendPageView);
+      sendPageView();
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?d538e1e81ada366563b03354efffd84c";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Bill Yang's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">路终会有尽头，但视野总能看到更远的地方。</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">10</span></a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-friends">
+
+    <a href="/friends" rel="section"><i class="fa fa-fw fa-users"></i>友链</a>
+
+  </li>
+        <li class="menu-item menu-item-board">
+
+    <a href="/board/" rel="section"><i class="fa fa-fw fa-sticky-note-o"></i>留言板</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">675</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">234</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.bill.moe/cdqbinary-notes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Bill Yang">
+      <meta itemprop="description" content="这辈子都不可能更新的">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bill Yang's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          CDQ分治学习笔记
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-10-13 08:42:50" itemprop="dateCreated datePublished" datetime="2017-10-13T08:42:50+08:00">2017-10-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-01-16 16:55:52" itemprop="dateModified" datetime="2020-01-16T16:55:52+08:00">2020-01-16</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OI/" itemprop="url" rel="index">
+                    <span itemprop="name">OI</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/cdqbinary-notes/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/cdqbinary-notes/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>在看本文之前可以参考<a href="/fjwc2014-3Dtable/">这篇文章</a>。  </p>
+<p>CDQ分治是陈丹琦在2009年国家集训队作业中提出的一种算法。<br>CDQ分治在信息学竞赛中有很重要的运用。  </p>
+<a id="more"></a>  
+<hr>
+<h2 id="CDQ分治"><a href="#CDQ分治" class="headerlink" title="CDQ分治"></a>CDQ分治</h2><p>先介绍一些概念，大概了解一下。<br><strong>CDQ分治：对于有多个维度的问题，通过对其中一个维度进行分治，把穿插的修改和查询操作化为统一修改后统一查询的问题的算法。<br>不妨认为这个维度在分治中被“拍扁”成两个单位——修改单位和查询单位，也正因此我们把这种算法叫做降维打击。</strong>  </p>
+<p>这句话是CDQ分治的前奏部分，将所有有序的操作先混在一起变成无序，再按照一个维度排序后分治统一处理。  </p>
+<p><strong>CDQ分治的思想：将信息混合到一起记作一个带信息的点。每一次先递归左子区间，然后处理左边的信息对右边信息的影响，再递归右子区间。</strong></p>
+<hr>
+<h2 id="使用条件"><a href="#使用条件" class="headerlink" title="使用条件"></a>使用条件</h2><ul>
+<li><strong>必须可以离线</strong></li>
+<li>前一半做出决策后，后一半不可以再反过来影响前一半——也就是无后效性</li>
+<li>需要维护的数据规模与修改/提问的次数同阶</li>
+</ul>
+<hr>
+<h2 id="算法大致步骤"><a href="#算法大致步骤" class="headerlink" title="算法大致步骤"></a>算法大致步骤</h2><p>使用<code>CDQBinary(L,R)</code>来表示按照某个维度排好序后处理在区间$[L,R]$中的信息。  </p>
+<p>下面介绍<code>CDQBinary(L,R)</code>的过程：（所有应用的统一过程，并不会很详细）  </p>
+<h3 id="单位区间特判"><a href="#单位区间特判" class="headerlink" title="单位区间特判"></a>单位区间特判</h3><p>判断$L$是否等于$R$，若相等，则特殊处理点$L$的信息，然后返回。  </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(Left==Right) &#123;</span><br><span class="line">	Process_special();</span><br><span class="line">	<span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="划分区间"><a href="#划分区间" class="headerlink" title="划分区间"></a>划分区间</h3><p>然后对于$L\leftrightarrow R$中间的所有信息点，按照某一维度小于大于$mid$进行划分。<br>注意这里需要保证<strong>划分的维度不能有相同元素</strong>，否则会导致错误或时间退化，若划分的维度有重应该事先将其进行处理，在<a href="/bzoj3262-flower/">这里</a>我曾经讲过。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> mid=(Left+Right)&gt;&gt;<span class="number">1</span>;</span><br><span class="line"><span class="keyword">int</span> lpos=Left,rpos=mid+<span class="number">1</span>;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=Left; i&lt;=Right; i++)</span><br><span class="line">	<span class="keyword">if</span>(a[i].???&lt;=mid)tmp[lpos++]=a[i]; <span class="comment">//???表示CDQ分治选取的维度</span></span><br><span class="line">	<span class="keyword">else</span> tmp[rpos++]=a[i];</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=Left; i&lt;=Right; i++)a[i]=tmp[i];</span><br></pre></td></tr></table></figure></p>
+<h3 id="递归左子区间"><a href="#递归左子区间" class="headerlink" title="递归左子区间"></a>递归左子区间</h3><p>能够递归左子区间的<strong>充分性</strong>在于：我们按照$mid$进行划分后，左子区间与右子区间按照原有顺序（CDQ分治前排好序的顺序）仍然有序，因此可以递归左子区间。<br>能够递归左子区间的<strong>必要性</strong>在于：如果是按照CDQ分治的维度从左往右处理询问，那么对于某一类问题（如按照分治维度进行动规）就必须先将左子区间的答案计算出来才能计算当前答案。  </p>
+<p><strong>推荐所有题都在这里事先递归。</strong>（但是有一类题是不行的，之后再介绍）<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CDQBinary(Left,mid);</span><br></pre></td></tr></table></figure></p>
+<h3 id="处理左边对右边的影响"><a href="#处理左边对右边的影响" class="headerlink" title="处理左边对右边的影响"></a>处理左边对右边的影响</h3><p>如果是修改/询问的题目，在这里就是处理左边的修改对右边的询问的影响，否则统一是左边的信息点对右边的信息点的影响。  </p>
+<p>处理方法是这样的：<br><img src="/img/cdq2.png" alt><br>维护两个指针$i,j$，开始分别指向$mid+1,Left$。  </p>
+<p>若$a[j].t&lt;=a[i].t$，$t$是在CDQ分治前排序的维度，就在数据结构中加入$a[j]$，并使$j$指针右移，这样我们就维护好了两维的偏序关系（CDQ分治维度，分治前排序维度）。<br>若不满足上述条件，则在数据结构中询问满足$a[i]$第三维偏序关系的影响。  </p>
+<p>这里用到的数据结构需要满足的要求是：能够在一段区间（偏序关系）内询问一些信息（题目要求维护的信息）。<br>一般我们采用树状数组/线段树进行处理。  </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> j=Left;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=mid+<span class="number">1</span>; i&lt;=Right; i++) &#123;</span><br><span class="line">	<span class="keyword">while</span>(j&lt;=mid&amp;&amp;a[j]&lt;a[i]) &#123; <span class="comment">//重载小于符号为排序序</span></span><br><span class="line">		bit.add(a[j].^^,a[j]...); <span class="comment">//^^是第三个维度,...是点的信息</span></span><br><span class="line">		j++;</span><br><span class="line">	&#125;</span><br><span class="line">	bit.ask(a[i].^^,a[i]...); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="清空数据结构"><a href="#清空数据结构" class="headerlink" title="清空数据结构"></a>清空数据结构</h3><p>用完数据结构后记得清空！<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=Left; i&lt;=mid; i++)bit.clear(a[i].z);</span><br></pre></td></tr></table></figure></p>
+<h3 id="递归右子区间"><a href="#递归右子区间" class="headerlink" title="递归右子区间"></a>递归右子区间</h3><p>然后递归右区间，充分必要性都与递归左区间差不多。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CDQBinary(mid+<span class="number">1</span>,Right);</span><br></pre></td></tr></table></figure></p>
+<h3 id="合并信息点"><a href="#合并信息点" class="headerlink" title="合并信息点"></a>合并信息点</h3><p>根据题目的不同，这里可能需要根据某个顺序对左右区间进行合并。（使用STL实现）<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">merge(a+Left,a+mid+<span class="number">1</span>,a+mid+<span class="number">1</span>,a+Right+<span class="number">1</span>,tmp,cmp); <span class="comment">//cmp是某个顺序</span></span><br><span class="line"><span class="keyword">int</span> tot=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=Left; i&lt;=Right; i++)a[i]=tmp[tot++];</span><br></pre></td></tr></table></figure></p>
+<p>这就是CDQ分治的大致步骤了，虽然说讲的比较详细，但是初学者看到这里可能还是有些不懂，如果是这样希望你结合几道例题进行思考。<br>推荐先看这两道题：<br><a href="/fjwc2014-3Dtable/">「福建wc2014」3D桌球</a><br><a href="/bzoj1176-mokia/">「bzoj1176」「Balkan2007」Mokia</a></p>
+<hr>
+<h2 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h2><script type="math/tex; mode=display">T(n)=2T(\frac n2)+n\log n=O(n\log^2 n)</script><hr>
+<h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><h3 id="应用一-维护偏序问题"><a href="#应用一-维护偏序问题" class="headerlink" title="应用一.维护偏序问题"></a>应用一.维护偏序问题</h3><p>维护偏序问题是CDQ分治的拿手好戏。<br>在<a href="/fjwc2014-3Dtable/">这里</a>我们有过对偏序问题的总结。  </p>
+<h4 id="可分治维度"><a href="#可分治维度" class="headerlink" title="可分治维度"></a>可分治维度</h4><p>CDQ可以进行分治的维度有：  </p>
+<ul>
+<li>实际的维度（如$x$,$y$,$z$,$\ldots$）  </li>
+<li>时间维度（修改查询类问题的隐藏维度）  </li>
+<li>数组的下标（如动规的阶段）  </li>
+<li>树上的dfs序</li>
+<li>拓扑序</li>
+<li>两个实际维度之和之差</li>
+<li>动态规划出来的值</li>
+<li>答案（业界称为整体二分，实际上还是CDQ分治）</li>
+</ul>
+<p>但是这些进行分治的维度必须要满足上面提到的<strong>互不相同</strong>条件。  </p>
+<h4 id="算法步骤"><a href="#算法步骤" class="headerlink" title="算法步骤"></a>算法步骤</h4><p>偏序问题的算法步骤与上面介绍的算法大致步骤基本相同。<br>不同之处在于两个地方。  </p>
+<ul>
+<li><p>单位区间特判一般直接返回即可</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(Left==Right)<span class="keyword">return</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>合并信息的时候一般按照排序顺序合并。（在<a href="/bzoj3262-flower/">这里</a>提到过原因）  </p>
+</li>
+</ul>
+<h4 id="经典例题"><a href="#经典例题" class="headerlink" title="经典例题"></a>经典例题</h4><p><a href="/fjwc2014-3Dtable/">「福建wc2014」3D桌球</a><br><a href="/bzoj3262-flower/">「bzoj3262」陌上花开</a><br><a href="/bzoj1176-mokia/">「bzoj1176」「Balkan2007」Mokia</a><br><a href="/bzoj2683-eazy/">「bzoj2683」简单题</a><br><a href="/CQOI2011-pair/">「CQOI2011」动态逆序对</a><br><a href="/bzoj2716-angel/">「bzoj2716」「Violet 3」天使玩偶</a></p>
+<h3 id="应用二-左右逼近"><a href="#应用二-左右逼近" class="headerlink" title="应用二.左右逼近"></a>应用二.左右逼近</h3><h4 id="算法概述"><a href="#算法概述" class="headerlink" title="算法概述"></a>算法概述</h4><p>思考，我们使用CDQ分治来解决从左往右的影响关系。<br>比如在CDQ分治上进行的动态规划根据阶段利用左边更新右边。<br>再比如修改/查询类问题利用时间小的修改处理对时间大的查询的影响。  </p>
+<p>那么反过来呢？我们也可以处理右边对左边的影响。<br>合起来不就可以处理所有信息了吗？<br>不！缺了一个东西$mid$的影响没有处理。  </p>
+<p>那么这就出现了CDQ分治的第二个应用：<strong>左右逼近解决少一个物品影响的问题</strong>。  </p>
+<h4 id="算法步骤-1"><a href="#算法步骤-1" class="headerlink" title="算法步骤"></a>算法步骤</h4><p>左右逼近的算法步骤与上述算法大致步骤许多不同，我们重新介绍：  </p>
+<h5 id="单位区间特判-1"><a href="#单位区间特判-1" class="headerlink" title="单位区间特判"></a>单位区间特判</h5><p>统计当前答案并返回<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(Left==Right) &#123;</span><br><span class="line">	MakeAns();</span><br><span class="line">	<span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h5 id="处理右边对左边的影响"><a href="#处理右边对左边的影响" class="headerlink" title="处理右边对左边的影响"></a>处理右边对左边的影响</h5><p>先拷贝当前信息，然后处理右边对左边的影响。  </p>
+<h5 id="递归左子区间-1"><a href="#递归左子区间-1" class="headerlink" title="递归左子区间"></a>递归左子区间</h5><p>实际上我们先处理右边对左边的影响然后递归左区间，这样就可以从左到右依次统计出少一个物品的情况。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CDQBinary(Left,mid); <span class="comment">//向左逼近</span></span><br></pre></td></tr></table></figure></p>
+<h5 id="处理左边对右边的影响-1"><a href="#处理左边对右边的影响-1" class="headerlink" title="处理左边对右边的影响"></a>处理左边对右边的影响</h5><p>因为递归了左区间，信息已经发生了修改，因此需要先恢复原有信息。<br>然后再处理左边对右边的影响。  </p>
+<h5 id="递归右子区间-1"><a href="#递归右子区间-1" class="headerlink" title="递归右子区间"></a>递归右子区间</h5><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CDQBinary(mid+<span class="number">1</span>,Right); <span class="comment">//向右逼近</span></span><br></pre></td></tr></table></figure>
+<h5 id="恢复信息"><a href="#恢复信息" class="headerlink" title="恢复信息"></a>恢复信息</h5><p>视情况决定是否需要恢复递归左右区间前的信息</p>
+<p>一般这类问题的大致步骤如上，一般不含有划分合并的过程。  </p>
+<h4 id="经典例题-1"><a href="#经典例题-1" class="headerlink" title="经典例题"></a>经典例题</h4><p><a href="/bzoj2287-disappear/">「bzoj2287」消失之物</a><br><a href="/bzoj4424-fairy-CDQ/">「bzoj4424」「Codeforces19E」Fairy</a></p>
+<h3 id="应用三-维护凸包"><a href="#应用三-维护凸包" class="headerlink" title="应用三.维护凸包"></a>应用三.维护凸包</h3><h4 id="算法概述-1"><a href="#算法概述-1" class="headerlink" title="算法概述"></a>算法概述</h4><p>这类问题一般用于处理动规斜率优化不单调的问题。<br>当然也可以处理裸的可离线仅加点凸包问题。  </p>
+<h4 id="思想步骤"><a href="#思想步骤" class="headerlink" title="思想步骤"></a>思想步骤</h4><p>首先我们需要写出状态转移方程。<br>然后利用经典的<a href="/1d1d-DP-optimization-notes/#斜率优化">斜率优化</a>步骤对方程进行变化。<br>根据方程的几何意义决定维护什么凸包。<br>观察斜率$k$与加点横坐标$x$是否单调，若单调直接使用单调队列，否则进行CDQ分治的过程。  </p>
+<h4 id="算法步骤-2"><a href="#算法步骤-2" class="headerlink" title="算法步骤"></a>算法步骤</h4><p>在CDQ分治前先对斜率进行排序。  </p>
+<h5 id="单位区间特判-2"><a href="#单位区间特判-2" class="headerlink" title="单位区间特判"></a>单位区间特判</h5><p>计算当前信息点的横纵坐标，若方程中还有其它项也可以在这里处理。<br>然后返回</p>
+<h5 id="划分区间-1"><a href="#划分区间-1" class="headerlink" title="划分区间"></a>划分区间</h5><p>按照动规的阶段进行划分。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> mid=(Left+Right)&gt;&gt;<span class="number">1</span>;</span><br><span class="line"><span class="keyword">int</span> lpos=Left,rpos=mid+<span class="number">1</span>;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=Left; i&lt;=Right; i++)</span><br><span class="line">	<span class="keyword">if</span>(p[i].id&lt;=mid)tmp[lpos++]=p[i];</span><br><span class="line">	<span class="keyword">else</span> tmp[rpos++]=p[i];</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=Left; i&lt;=Right; i++)p[i]=tmp[i];</span><br></pre></td></tr></table></figure></p>
+<h5 id="递归左子区间-2"><a href="#递归左子区间-2" class="headerlink" title="递归左子区间"></a>递归左子区间</h5><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CDQBinary(Left,mid);</span><br></pre></td></tr></table></figure>
+<h5 id="处理左边对右边的影响-2"><a href="#处理左边对右边的影响-2" class="headerlink" title="处理左边对右边的影响"></a>处理左边对右边的影响</h5><p>先维护左子区间的凸包。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">deque</span>&lt;<span class="keyword">int</span>&gt;Q;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=Left; i&lt;=mid; i++) &#123;</span><br><span class="line">	<span class="keyword">while</span>(Q.size()&gt;=<span class="number">2</span>&amp;&amp;Slope(Q[Q.size()<span class="number">-2</span>],Q.back())&lt;Slope(Q.back(),i))Q.pop_back(); <span class="comment">//根据维护凸包不同改变小于符号，这里是上凸包</span></span><br><span class="line">	Q.push_back(i);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后通过左区间的凸包优化右区间的值。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=mid+<span class="number">1</span>; i&lt;=Right; i++) &#123;</span><br><span class="line">	<span class="keyword">while</span>(Q.size()&gt;=<span class="number">2</span>&amp;&amp;Slope(Q.front(),Q[<span class="number">1</span>])&gt;p[i].k)Q.pop_front(); <span class="comment">//根据维护信息不同改变大于符号</span></span><br><span class="line">	f[p[i].id]=max/min(f[p[i].id],....); <span class="comment">//计算f值</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h5 id="递归右子区间-2"><a href="#递归右子区间-2" class="headerlink" title="递归右子区间"></a>递归右子区间</h5><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CDQBinary(mid+<span class="number">1</span>,Right);</span><br></pre></td></tr></table></figure>
+<h5 id="合并信息点-1"><a href="#合并信息点-1" class="headerlink" title="合并信息点"></a>合并信息点</h5><p>因为要维护左子区间的凸包，因此这里必须根据水平序返回。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">merge(p+Left,p+mid+<span class="number">1</span>,p+mid+<span class="number">1</span>,p+Right+<span class="number">1</span>,tmp,cmp); <span class="comment">//水平序</span></span><br><span class="line"><span class="keyword">int</span> tot=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=Left; i&lt;=Right; i++)p[i]=tmp[tot++];</span><br></pre></td></tr></table></figure></p>
+<p>注意若从右往左维护凸包需要交换递归顺序。  </p>
+<h4 id="经典例题-2"><a href="#经典例题-2" class="headerlink" title="经典例题"></a>经典例题</h4><p><a href="/NOI2007-cash/">「NOI2007」货币兑换</a><br><a href="/SDOI2012-arrange/">「SDOI2012」任务安排</a><br><a href="/yaliD6T1-music/">「雅礼day6」失去了我的音乐lost my music</a>  </p>
+<h3 id="应用四-缩小数据规模"><a href="#应用四-缩小数据规模" class="headerlink" title="应用四.缩小数据规模"></a>应用四.缩小数据规模</h3><h4 id="算法概述-2"><a href="#算法概述-2" class="headerlink" title="算法概述"></a>算法概述</h4><p>这类问题长得一点也不像CDQ分治，但也是CDQ分治的一类。<br>将$Left \leftrightarrow Right$区间内的信息模糊化，通过特殊处理去掉一些肯定不会被选择的信息，然后递归左右区间进行处理。  </p>
+<h4 id="算法步骤-3"><a href="#算法步骤-3" class="headerlink" title="算法步骤"></a>算法步骤</h4><h5 id="单位区间特判-3"><a href="#单位区间特判-3" class="headerlink" title="单位区间特判"></a>单位区间特判</h5><p>将信息实际化，在非单位区间我们将信息模糊化进行缩减规模，所以在单位区间我们要求出答案，因此需要将信息实际化。  </p>
+<p>然后我们根据所有未被去掉的实际信息，求出题目所要求的问题。  </p>
+<h5 id="信息模糊化"><a href="#信息模糊化" class="headerlink" title="信息模糊化"></a>信息模糊化</h5><p>将$Left \leftrightarrow Right$区间内的信息强制模糊化，将其数值置为一个特定的值。  </p>
+<h5 id="缩减规模"><a href="#缩减规模" class="headerlink" title="缩减规模"></a>缩减规模</h5><p>根据被模糊化的信息，去掉一定不会被选取的点。  </p>
+<h5 id="递归子区间"><a href="#递归子区间" class="headerlink" title="递归子区间"></a>递归子区间</h5><p>递归左右区间依次处理。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> mid=(Left+Right)&gt;&gt;<span class="number">1</span>;</span><br><span class="line">CDQBinary(Left,mid);</span><br><span class="line">CDQBinary(mid+<span class="number">1</span>,Right);</span><br></pre></td></tr></table></figure></p>
+<h4 id="经典例题-3"><a href="#经典例题-3" class="headerlink" title="经典例题"></a>经典例题</h4><p><a href="/HNOI2010-city/">「HNOI2010」城市建设</a></p>
+<h3 id="应用五-整体二分"><a href="#应用五-整体二分" class="headerlink" title="应用五.整体二分"></a>应用五.整体二分</h3><h4 id="算法概述-3"><a href="#算法概述-3" class="headerlink" title="算法概述"></a>算法概述</h4><p>整体二分的特殊在于它是对答案进行二分，而CDQ分治是对操作（时间轴）等进行二分。<br>为什么这种方法被称为整体二分？普通的二分是对某个单个元素进行的二分，而整体二分是对一个区间整体进行的二分，因此被称为整体二分，但因此必须要求答案与点数同阶才能进行。<br>整体二分的原理是二分答案，将操作对答案的影响根据二分的值划归在两个区间中依次继续二分。若每一层消耗的时间是$O(R-L)$的，那么整体二分的复杂度则为$O(n\log n)$</p>
+<p>整体二分的题目非常神奇，但也没什么值得讲的好题。<br>其算法步骤在<a href="/ZJOI2013-kth-number/">例题</a>中讲的已经很详细，就不在这儿赘述了。  </p>
+<h4 id="经典例题-4"><a href="#经典例题-4" class="headerlink" title="经典例题"></a>经典例题</h4><p><a href="/ZJOI2013-kth-number/">「ZJOI2013」K大数查询</a>  </p>
+<h3 id="扩展-树上CDQ分治"><a href="#扩展-树上CDQ分治" class="headerlink" title="扩展.树上CDQ分治"></a>扩展.树上CDQ分治</h3><p>这个扩展是achen发现的，因此也被称为<del>ADQ分治</del>。  </p>
+<h4 id="算法概述-4"><a href="#算法概述-4" class="headerlink" title="算法概述"></a>算法概述</h4><p>类似序列上的CDQ分治，我们需要将树分为一半递归。<br>不难想到使用重心将树划分为一半，然后先对重心以上的部分进行递归，处理重心以上对重心及以下的部分的影响，然后递归下面的子树。  </p>
+<p>具体的顺序需要根据题目的不同进行考虑。</p>
+<h4 id="经典例题-5"><a href="#经典例题-5" class="headerlink" title="经典例题"></a>经典例题</h4><p><a href="/yaliD6T1-music/">「雅礼day6」失去了我的音乐lost my music</a></p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/linear-bases-notes/" rel="bookmark">线性基学习笔记</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/linear-algebra/" rel="bookmark">「菜鸟的自我修养」线性代数笔记</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/cir-squ-tree-notes/" rel="bookmark">圆方树学习笔记</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/1d1d-DP-optimization-notes/" rel="bookmark">1D/1D动态规划优化学习笔记</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/computation-geometry-notes/" rel="bookmark">计算几何基础整合（Point类）</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div>姥爷们赏瓶冰阔落吧~</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="Bill Yang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="Bill Yang 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Bill Yang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.bill.moe/cdqbinary-notes/" title="CDQ分治学习笔记">https://blog.bill.moe/cdqbinary-notes/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/学习笔记/" rel="tag"><i class="fa fa-tag"></i> 学习笔记</a>
+              <a href="/tags/CDQ分治/" rel="tag"><i class="fa fa-tag"></i> CDQ分治</a>
+          </div>
+
+        
+  <div class="post-widgets">
+    <div class="wp_rating">
+      <div id="wpac-rating"></div>
+    </div>
+  </div>
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/SDOI2012-arrange/" rel="prev" title="「SDOI2012」任务安排 - 动态规划+斜率优化+CDQ分治维护凸包">
+      <i class="fa fa-chevron-left"></i> 「SDOI2012」任务安排 - 动态规划+斜率优化+CDQ分治维护凸包
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/yaliD6T1-heaven/" rel="next" title="「雅礼day6」通往天堂的路star way to heaven - 最小生成树">
+      「雅礼day6」通往天堂的路star way to heaven - 最小生成树 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#CDQ分治"><span class="nav-number">1.</span> <span class="nav-text">CDQ分治</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用条件"><span class="nav-number">2.</span> <span class="nav-text">使用条件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#算法大致步骤"><span class="nav-number">3.</span> <span class="nav-text">算法大致步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#单位区间特判"><span class="nav-number">3.1.</span> <span class="nav-text">单位区间特判</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#划分区间"><span class="nav-number">3.2.</span> <span class="nav-text">划分区间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#递归左子区间"><span class="nav-number">3.3.</span> <span class="nav-text">递归左子区间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#处理左边对右边的影响"><span class="nav-number">3.4.</span> <span class="nav-text">处理左边对右边的影响</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#清空数据结构"><span class="nav-number">3.5.</span> <span class="nav-text">清空数据结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#递归右子区间"><span class="nav-number">3.6.</span> <span class="nav-text">递归右子区间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#合并信息点"><span class="nav-number">3.7.</span> <span class="nav-text">合并信息点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#时间复杂度"><span class="nav-number">4.</span> <span class="nav-text">时间复杂度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应用"><span class="nav-number">5.</span> <span class="nav-text">应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#应用一-维护偏序问题"><span class="nav-number">5.1.</span> <span class="nav-text">应用一.维护偏序问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#可分治维度"><span class="nav-number">5.1.1.</span> <span class="nav-text">可分治维度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#算法步骤"><span class="nav-number">5.1.2.</span> <span class="nav-text">算法步骤</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#经典例题"><span class="nav-number">5.1.3.</span> <span class="nav-text">经典例题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用二-左右逼近"><span class="nav-number">5.2.</span> <span class="nav-text">应用二.左右逼近</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#算法概述"><span class="nav-number">5.2.1.</span> <span class="nav-text">算法概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#算法步骤-1"><span class="nav-number">5.2.2.</span> <span class="nav-text">算法步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#单位区间特判-1"><span class="nav-number">5.2.2.1.</span> <span class="nav-text">单位区间特判</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#处理右边对左边的影响"><span class="nav-number">5.2.2.2.</span> <span class="nav-text">处理右边对左边的影响</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#递归左子区间-1"><span class="nav-number">5.2.2.3.</span> <span class="nav-text">递归左子区间</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#处理左边对右边的影响-1"><span class="nav-number">5.2.2.4.</span> <span class="nav-text">处理左边对右边的影响</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#递归右子区间-1"><span class="nav-number">5.2.2.5.</span> <span class="nav-text">递归右子区间</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#恢复信息"><span class="nav-number">5.2.2.6.</span> <span class="nav-text">恢复信息</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#经典例题-1"><span class="nav-number">5.2.3.</span> <span class="nav-text">经典例题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用三-维护凸包"><span class="nav-number">5.3.</span> <span class="nav-text">应用三.维护凸包</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#算法概述-1"><span class="nav-number">5.3.1.</span> <span class="nav-text">算法概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#思想步骤"><span class="nav-number">5.3.2.</span> <span class="nav-text">思想步骤</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#算法步骤-2"><span class="nav-number">5.3.3.</span> <span class="nav-text">算法步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#单位区间特判-2"><span class="nav-number">5.3.3.1.</span> <span class="nav-text">单位区间特判</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#划分区间-1"><span class="nav-number">5.3.3.2.</span> <span class="nav-text">划分区间</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#递归左子区间-2"><span class="nav-number">5.3.3.3.</span> <span class="nav-text">递归左子区间</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#处理左边对右边的影响-2"><span class="nav-number">5.3.3.4.</span> <span class="nav-text">处理左边对右边的影响</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#递归右子区间-2"><span class="nav-number">5.3.3.5.</span> <span class="nav-text">递归右子区间</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#合并信息点-1"><span class="nav-number">5.3.3.6.</span> <span class="nav-text">合并信息点</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#经典例题-2"><span class="nav-number">5.3.4.</span> <span class="nav-text">经典例题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用四-缩小数据规模"><span class="nav-number">5.4.</span> <span class="nav-text">应用四.缩小数据规模</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#算法概述-2"><span class="nav-number">5.4.1.</span> <span class="nav-text">算法概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#算法步骤-3"><span class="nav-number">5.4.2.</span> <span class="nav-text">算法步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#单位区间特判-3"><span class="nav-number">5.4.2.1.</span> <span class="nav-text">单位区间特判</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#信息模糊化"><span class="nav-number">5.4.2.2.</span> <span class="nav-text">信息模糊化</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#缩减规模"><span class="nav-number">5.4.2.3.</span> <span class="nav-text">缩减规模</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#递归子区间"><span class="nav-number">5.4.2.4.</span> <span class="nav-text">递归子区间</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#经典例题-3"><span class="nav-number">5.4.3.</span> <span class="nav-text">经典例题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用五-整体二分"><span class="nav-number">5.5.</span> <span class="nav-text">应用五.整体二分</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#算法概述-3"><span class="nav-number">5.5.1.</span> <span class="nav-text">算法概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#经典例题-4"><span class="nav-number">5.5.2.</span> <span class="nav-text">经典例题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#扩展-树上CDQ分治"><span class="nav-number">5.6.</span> <span class="nav-text">扩展.树上CDQ分治</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#算法概述-4"><span class="nav-number">5.6.1.</span> <span class="nav-text">算法概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#经典例题-5"><span class="nav-number">5.6.2.</span> <span class="nav-text">经典例题</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Bill Yang"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Bill Yang</p>
+  <div class="site-description" itemprop="description">这辈子都不可能更新的</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">675</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">234</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=935683004" title="QQ → tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=935683004" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i>QQ</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ym13883407586@outlook.com" title="E-Mail → mailto:ym13883407586@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/BillYang2016" title="GitHub → https://github.com/BillYang2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://coding.net/u/Bill_Yang_2016" title="Coding → https://coding.net/u/Bill_Yang_2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-git-square"></i>Coding</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://music.163.com/#/user/home?nickname=Bill_Yang2016" title="网易云音乐 → http://music.163.com/#/user/home?nickname=Bill_Yang2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-music"></i>网易云音乐</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://space.bilibili.com/233682260/#/" title="bilibili → https://space.bilibili.com/233682260/#/" rel="noopener" target="_blank"><i class="fa fa-fw fa-youtube-play"></i>bilibili</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → /atom.xml"><i class="fa fa-fw fa-rss"></i>RSS</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      我的朋友们
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://pointedpoints.github.io/" title="http://pointedpoints.github.io/" rel="noopener" target="_blank">pointedpoints</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://keke046.coding.me/" title="https://keke046.coding.me/" rel="noopener" target="_blank">KEKE046</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://imperfect_zx.coding.me/" title="https://imperfect_zx.coding.me/" rel="noopener" target="_blank">Imperfect</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://achen.world/" title="https://achen.world/" rel="noopener" target="_blank">Achen</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://metakari.one/" title="https://metakari.one/" rel="noopener" target="_blank">Metakar1</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://39.106.98.75/" title="http://39.106.98.75/" rel="noopener" target="_blank">魏启大陆</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/friends/" title="/friends/">更多朋友们</a>
+        </li>
+    </ul>
+  </div>
+<!-- none-select-br -->
+
+<p></p>
+
+<!-- hitokoto -->
+
+<div class="hitokoto-title">
+	<i class="fa fa-paragraph"></i>
+	<b>一言</b>
+</div>
+
+<div id="hitokoto">:D 获取中...</div>
+<i id="hitofrom">:D 获取中...</i>
+
+<script src="https://cdn.jsdelivr.net/npm/bluebird@3/js/browser/bluebird.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/whatwg-fetch@2.0.3/fetch.min.js"></script>
+<script>
+  fetch('https://v1.hitokoto.cn')
+    .then(function (res){
+      return res.json();
+    })
+    .then(function (data) {
+      var hitokoto = document.getElementById('hitokoto');
+      hitokoto.innerText = '\xa0\xa0\xa0\xa0\xa0\xa0\xa0' + data.hitokoto;
+      var hitofrom = document.getElementById('hitofrom');
+      hitofrom.innerText = "——" + data.from + '\xa0'; 
+    })
+    .catch(function (err) {
+      console.error(err);
+    })
+</script>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Bill Yang 以 <a class="theme-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a> 协议发布</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+  <script>
+  if (CONFIG.page.isPost) {
+    wpac_init = window.wpac_init || [];
+    wpac_init.push({
+      widget: 'Rating',
+      id: 10154,
+      el: 'wpac-rating',
+      color: 'fc6423'
+    });
+    (function() {
+      if ('WIDGETPACK_LOADED' in window) return;
+      WIDGETPACK_LOADED = true;
+      var mc = document.createElement('script');
+      mc.type = 'text/javascript';
+      mc.async = true;
+      mc.src = '//embed.widgetpack.com/widget.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+    })();
+  }
+  </script>
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout: 3000,
+        priority: true,
+        ignores: [uri => uri.includes('#'),uri => uri == 'https://blog.bill.moe/cdqbinary-notes/',]
+      });
+      });
+  </script>
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: true,
+      notify: false,
+      appId: 'JYwxXHHRe8RNGu498SnK9B3N-gzGzoHsz',
+      appKey: 'JBz9GW9kidjPp7gW5Y6VIgfe',
+      placeholder: "吹雪は猫~",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: 'zh-cn' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

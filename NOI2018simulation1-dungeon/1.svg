@@ -1,0 +1,25 @@
+<svg width="370" height="180" xmlns="http://www.w3.org/2000/svg">
+ <!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ -->
+ <g>
+  <title>background</title>
+  <rect fill="#fff" id="canvas_background" height="182" width="372" y="-1" x="-1"/>
+  <g display="none" overflow="visible" y="0" x="0" height="100%" width="100%" id="canvasGrid">
+   <rect fill="url(#gridpattern)" stroke-width="0" y="0" x="0" height="100%" width="100%"/>
+  </g>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <ellipse ry="34.5" rx="35" id="svg_1" cy="51" cx="76" stroke-width="1.5" stroke="#000" fill="#fff"/>
+  <line stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_2" y2="144.5" x2="325" y1="63.5" x1="32" stroke-width="1.5" stroke="#000" fill="none"/>
+  <line stroke="#000" stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_4" y2="133.5" x2="307" y1="137.5" x1="297" fill-opacity="null" stroke-opacity="null" stroke-width="1.5" fill="none"/>
+  <ellipse ry="1" rx="1" id="svg_5" cy="51" cx="76" stroke-width="1.5" stroke="#000" fill="#fff"/>
+  <line stroke-linecap="null" stroke-linejoin="null" id="svg_7" y2="74" x2="69" y1="52.5" x1="76" fill-opacity="null" stroke-opacity="null" stroke-width="1.5" stroke="#000" fill="none"/>
+  <rect stroke="#000" transform="rotate(15.5 194.82592773437514,112.3717956542968) " id="svg_8" height="2.34237" width="260.812171" y="111.200611" x="64.419842" stroke-opacity="null" stroke-width="0" fill="#ff0000"/>
+  <rect stroke="#000" transform="rotate(18 68.99999999999999,61.50000000000002) " id="svg_9" height="19.755362" width="2.572903" y="51.622321" x="67.713549" stroke-opacity="null" stroke-width="0" fill="#00ff00"/>
+  <line stroke-width="1.5" stroke-linecap="null" stroke-linejoin="null" id="svg_10" y2="143.5" x2="324" y1="51.5" x1="76" stroke-opacity="null" stroke="#000" fill="none"/>
+  <line stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_3" y2="145.5" x2="303" y1="137.5" x1="297" fill-opacity="null" stroke-opacity="null" stroke-width="1.5" stroke="#000" fill="none"/>
+  <rect stroke="#000" transform="rotate(20.5 200.99999999999994,93.50000000000006) " id="svg_12" height="2.832749" width="259.28415" y="92.083625" x="71.357927" stroke-opacity="null" stroke-width="0" fill="#00ffff"/>
+  <text xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="24" id="svg_13" y="152.5" x="328.5" stroke-opacity="null" stroke-width="0" stroke="#000" fill="#000000">p</text>
+  <text xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="24" id="svg_14" y="159.5" x="287.5" stroke-opacity="null" stroke-width="0" stroke="#000" fill="#000000">v</text>
+ </g>
+</svg>

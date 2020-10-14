@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.png">
+  <link rel="mask-icon" href="/images/logo.png" color="#222">
+  <meta name="google-site-verification" content="ghOTm3Im1Awef9otcmhxaBXZs5PlL-aApB3Zeo2qVrg">
+  <meta name="baidu-site-verification" content="PcyS4kW5Yu">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-bounce.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://blog.bill.moe').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},
+    path: 'search.xml',
+    motion: {"enable":true,"async":true,"transition":{"post_block":"swoopIn","post_header":"shrinkIn","post_body":"shrinkIn","coll_header":"expandIn","sidebar":"bounceIn"}}
+  };
+</script>
+
+  <meta name="description" content="题目大意 &amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;一个合数的真因数是指这个数不包括其本身的所有因数，例如$6$的正因数有$1,2,3,6$，其中真因数有$1,2,3$。一个合数的最大真因数则是这个数的所有真因数中最大的一个，例如$6$的最大真因数为$3$。&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;给定正整数$l$和$r$，请你求出$l$和$r$之间（包括$l$和$r$）所有合数的最大">
+<meta name="keywords" content="数学,数论">
+<meta property="og:type" content="article">
+<meta property="og:title" content="「FCS NOI 2018 day1」最大真因数 - 分段打表">
+<meta property="og:url" content="https://blog.bill.moe/FCS-NOI2018-day1-factor/index.html">
+<meta property="og:site_name" content="Bill Yang&#39;s Blog">
+<meta property="og:description" content="题目大意 &amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;一个合数的真因数是指这个数不包括其本身的所有因数，例如$6$的正因数有$1,2,3,6$，其中真因数有$1,2,3$。一个合数的最大真因数则是这个数的所有真因数中最大的一个，例如$6$的最大真因数为$3$。&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;给定正整数$l$和$r$，请你求出$l$和$r$之间（包括$l$和$r$）所有合数的最大">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-06-10T01:10:56.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="「FCS NOI 2018 day1」最大真因数 - 分段打表">
+<meta name="twitter:description" content="题目大意 &amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;一个合数的真因数是指这个数不包括其本身的所有因数，例如$6$的正因数有$1,2,3,6$，其中真因数有$1,2,3$。一个合数的最大真因数则是这个数的所有真因数中最大的一个，例如$6$的最大真因数为$3$。&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;给定正整数$l$和$r$，请你求出$l$和$r$之间（包括$l$和$r$）所有合数的最大">
+
+<link rel="canonical" href="https://blog.bill.moe/FCS-NOI2018-day1-factor/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+<!-- jquery -->
+
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<!-- 打字礼花及震动特效 -->
+
+<div id="append_parent"></div><div id="ajaxwaitid"></div>
+<script type="text/javascript" src="/lib/activate-power-mode/activate-power-mode.js"></script>
+<script>
+	POWERMODE.colorful = true;
+	POWERMODE.shake = false;
+	document.body.addEventListener('input',POWERMODE);
+</script>
+
+<!-- live2d -->
+
+<div class="waifu">
+	<div class="waifu-tips"></div>
+	<canvas id="live2d" width="240" height="350" class="live2d"></canvas>
+	<div class="hide-button">隐藏</div>
+</div>
+<script async src="/lib/poster-girl/waifu-tips.js"></script>
+<script src="/lib/poster-girl/live2d.js"></script>
+<script type="text/javascript">
+	loadlive2d("live2d", "/live2d/assets/kanna.model.json");
+</script>
+  <title>「FCS NOI 2018 day1」最大真因数 - 分段打表 | Bill Yang's Blog</title>
+  
+    <script>
+      function sendPageView() {
+        if (CONFIG.hostname !== location.hostname) return;
+        var uid = localStorage.getItem('uid') || (Math.random() + '.' + Math.random());
+        localStorage.setItem('uid', uid);
+        navigator.sendBeacon('https://www.google-analytics.com/collect', new URLSearchParams({
+          v  : 1,
+          tid: 'UA-157912381-1',
+          cid: uid,
+          t  : 'pageview',
+          dp : encodeURIComponent(location.pathname)
+        }));
+      }
+      document.addEventListener('pjax:complete', sendPageView);
+      sendPageView();
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?d538e1e81ada366563b03354efffd84c";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Bill Yang's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">路终会有尽头，但视野总能看到更远的地方。</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">10</span></a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-friends">
+
+    <a href="/friends" rel="section"><i class="fa fa-fw fa-users"></i>友链</a>
+
+  </li>
+        <li class="menu-item menu-item-board">
+
+    <a href="/board/" rel="section"><i class="fa fa-fw fa-sticky-note-o"></i>留言板</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">675</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">234</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.bill.moe/FCS-NOI2018-day1-factor/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Bill Yang">
+      <meta itemprop="description" content="这辈子都不可能更新的">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bill Yang's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          「FCS NOI 2018 day1」最大真因数 - 分段打表
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-03-16 08:26:39" itemprop="dateCreated datePublished" datetime="2018-03-16T08:26:39+08:00">2018-03-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-06-10 09:10:56" itemprop="dateModified" datetime="2019-06-10T09:10:56+08:00">2019-06-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OI/" itemprop="url" rel="index">
+                    <span itemprop="name">OI</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/FCS-NOI2018-day1-factor/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/FCS-NOI2018-day1-factor/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="题目大意"><a href="#题目大意" class="headerlink" title="题目大意"></a>题目大意</h2><blockquote>
+<p>&ensp;&ensp;&ensp;&ensp;一个合数的真因数是指这个数不包括其本身的所有因数，例如$6$的正因数有$1,2,3,6$，其中真因数有$1,2,3$。一个合数的最大真因数则是这个数的所有真因数中最大的一个，例如$6$的最大真因数为$3$。<br>&ensp;&ensp;&ensp;&ensp;给定正整数$l$和$r$，请你求出$l$和$r$之间（包括$l$和$r$）所有合数的最大真因数之和。</p>
+</blockquote>
+<a id="more"></a>
+<hr>
+<h2 id="题目分析"><a href="#题目分析" class="headerlink" title="题目分析"></a>题目分析</h2><p>这不是标解，标解是埃筛。  </p>
+<p>最大真因数$=$原数$/$最小质因数。<br>因此求出最小质因数即可。<br>对于$r-l\le5\times10^6$的情况，显然筛出一遍素数后枚举倍数即可，时间复杂度$O(\frac{n}{\ln n}\times\log n)=O(n)$。<br>对于其他情况，我们可以分段打表。<br>首先预处理出$1\sim5\times10^6,5\times10^6+1\sim1\times10^7,\ldots,5\times10^9-5\times10^6+1\sim5\times10^9$的真因数之和，打表存下来。<br>接下来将询问区间边界的不完整区间用暴力计算，剩下$5\times10^6$的整块，利用打好的表取个和即可。  </p>
+<hr>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> LL;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> LL <span class="title">Get_Int</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	LL num=<span class="number">0</span>,bj=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">char</span> x=getchar();</span><br><span class="line">	<span class="keyword">while</span>(!<span class="built_in">isdigit</span>(x)) &#123;<span class="keyword">if</span>(x==<span class="string">'-'</span>)bj=<span class="number">-1</span>;x=getchar();&#125;</span><br><span class="line">	<span class="keyword">while</span>(<span class="built_in">isdigit</span>(x)) &#123;num=num*<span class="number">10</span>+x-<span class="string">'0'</span>;x=getchar();&#125;</span><br><span class="line">	<span class="keyword">return</span> num*bj;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxv=<span class="number">5000000</span>,maxn=maxv+<span class="number">5</span>;</span><br><span class="line"></span><br><span class="line">LL l,r;</span><br><span class="line"><span class="keyword">int</span> pr[maxn],Min[maxn],cnt=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">bool</span> vst[maxn];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Prime_Table</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">2</span>; i&lt;=x; i++) &#123;</span><br><span class="line">		<span class="keyword">if</span>(!vst[i])pr[++cnt]=i;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">1</span>; j&lt;=cnt&amp;&amp;i*pr[j]&lt;=x; j++) &#123;</span><br><span class="line">			vst[i*pr[j]]=<span class="number">1</span>;</span><br><span class="line">			<span class="keyword">if</span>(i%pr[j]==<span class="number">0</span>)<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> Solve1 &#123;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">solve</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> delta=r-l;</span><br><span class="line">		LL ans=<span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=cnt; i++)</span><br><span class="line">			<span class="keyword">for</span>(LL j=max(<span class="number">2l</span>l,(l<span class="number">-1</span>)/pr[i]+<span class="number">1</span>)*pr[i]; j&lt;=r; j+=pr[i])</span><br><span class="line">				<span class="keyword">if</span>(!Min[j-l])Min[j-l]=pr[i];</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;=delta; i++)<span class="keyword">if</span>(Min[i])ans+=(i+l)/Min[i];</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"%lld\n"</span>,ans);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> Solve2 &#123;</span><br><span class="line">	LL f[]= &#123;<span class="number">0l</span>l,<span class="number">4126246193160l</span>l,<span class="number">12378728639758l</span>l,<span class="number">20631171412037l</span>l,<span class="number">28883635629265l</span>l,<span class="number">37136106727534l</span>l,<span class="number">45388534571542l</span>l,<span class="number">53641029590780l</span>l,<span class="number">61893450343725l</span>l,<span class="number">70145939882670l</span>l,<span class="number">78398314522564l</span>l,<span class="number">86650906615396l</span>l,<span class="number">94903251693489l</span>l,<span class="number">103155721252391l</span>l,<span class="number">111408151342220l</span>l,<span class="number">119660677157336l</span>l,<span class="number">127913087049852l</span>l,<span class="number">136165567668553l</span>l,<span class="number">144417970434463l</span>l,<span class="number">152670398028287l</span>l,<span class="number">160922963597770l</span>l,<span class="number">169175312295969l</span>l,<span class="number">177427680650599l</span>l,<span class="number">185680460766117l</span>l,<span class="number">193932650163658l</span>l,<span class="number">202185176961496l</span>l,<span class="number">210437541301111l</span>l,<span class="number">218690115627072l</span>l,<span class="number">226942486289180l</span>l,<span class="number">235194942080358l</span>l,<span class="number">243447495675021l</span>l,<span class="number">251699799516949l</span>l,<span class="number">259952394940665l</span>l,<span class="number">268204695273212l</span>l,<span class="number">276457252222829l</span>l,<span class="number">284709622036265l</span>l,<span class="number">292962015904071l</span>l,<span class="number">301214665538349l</span>l,<span class="number">309467086512465l</span>l,<span class="number">317719457852396l</span>l,<span class="number">325971946736178l</span>l,<span class="number">334224451664188l</span>l,<span class="number">342476792512463l</span>l,<span class="number">350729348954642l</span>l,<span class="number">358981705820952l</span>l,<span class="number">367234133799499l</span>l,<span class="number">375486666486722l</span>l,<span class="number">383739264009402l</span>l,<span class="number">391991117300691l</span>l,<span class="number">400244011032328l</span>l,<span class="number">408496574863862l</span>l,<span class="number">416748807652817l</span>l,<span class="number">425001435374479l</span>l,<span class="number">433253880717281l</span>l,<span class="number">441506236356385l</span>l,<span class="number">449758526618126l</span>l,<span class="number">458011169792727l</span>l,<span class="number">466263743492592l</span>l,<span class="number">474515781733944l</span>l,<span class="number">482768535461101l</span>l,<span class="number">491021202744901l</span>l,<span class="number">499273194350303l</span>l,<span class="number">507525966605171l</span>l,<span class="number">515778154479056l</span>l,<span class="number">524030722845805l</span>l,<span class="number">532283516302184l</span>l,<span class="number">540535501723841l</span>l,<span class="number">548788043558658l</span>l,<span class="number">557040717591692l</span>l,<span class="number">565292937838426l</span>l,<span class="number">573545603889411l</span>l,<span class="number">581797717040707l</span>l,<span class="number">590050362090575l</span>l,<span class="number">598302979698892l</span>l,<span class="number">606555124683247l</span>l,<span class="number">614807927249441l</span>l,<span class="number">623059608785879l</span>l,<span class="number">631312600962465l</span>l,<span class="number">639565241647958l</span>l,<span class="number">647817472963535l</span>l,<span class="number">656070199278377l</span>l,<span class="number">664322088355244l</span>l,<span class="number">672575067134735l</span>l,<span class="number">680827284961412l</span>l,<span class="number">689079890210004l</span>l,<span class="number">697332008730881l</span>l,<span class="number">705584639010052l</span>l,<span class="number">713837712288471l</span>l,<span class="number">722089316408170l</span>l,<span class="number">730341725563046l</span>l,<span class="number">738594505418893l</span>l,<span class="number">746846835981219l</span>l,<span class="number">755099583270599l</span>l,<span class="number">763351864888613l</span>l,<span class="number">771603710033399l</span>l,<span class="number">779856976763962l</span>l,<span class="number">788109207052402l</span>l,<span class="number">796361174622565l</span>l,<span class="number">804614420822359l</span>l,<span class="number">812866591976123l</span>l,<span class="number">821118851080778l</span>l,<span class="number">829372204248270l</span>l,<span class="number">837623474425889l</span>l,<span class="number">845876927637946l</span>l,<span class="number">854128436542735l</span>l,<span class="number">862381009647939l</span>l,<span class="number">870633753994368l</span>l,<span class="number">878886439323054l</span>l,<span class="number">887138401182421l</span>l,<span class="number">895391028877154l</span>l,<span class="number">903643602429997l</span>l,<span class="number">911895426257868l</span>l,<span class="number">920148576694384l</span>l,<span class="number">928400863241610l</span>l,<span class="number">936653167437912l</span>l,<span class="number">944905350159692l</span>l,<span class="number">953158718292359l</span>l,<span class="number">961410349110812l</span>l,<span class="number">969663171666091l</span>l,<span class="number">977915396915438l</span>l,<span class="number">986168202061453l</span>l,<span class="number">994419463152938l</span>l,<span class="number">1002673635435969l</span>l,<span class="number">1010924920684017l</span>l,<span class="number">1019178082375547l</span>l,<span class="number">1027430133354405l</span>l,<span class="number">1035682568863422l</span>l,<span class="number">1043934760662113l</span>l,<span class="number">1052187976648438l</span>l,<span class="number">1060440793106895l</span>l,<span class="number">1068692261743516l</span>l,<span class="number">1076944900567338l</span>l,<span class="number">1085197297761257l</span>l,<span class="number">1093449721607556l</span>l,<span class="number">1101702394376349l</span>l,<span class="number">1109954235112313l</span>l,<span class="number">1118207029673161l</span>l,<span class="number">1126460508129417l</span>l,<span class="number">1134712036579317l</span>l,<span class="number">1142964370246743l</span>l,<span class="number">1151217008530707l</span>l,<span class="number">1159469475456289l</span>l,<span class="number">1167721757923135l</span>l,<span class="number">1175974090868977l</span>l,<span class="number">1184227282851390l</span>l,<span class="number">1192478706186883l</span>l,<span class="number">1200732563131593l</span>l,<span class="number">1208984180940840l</span>l,<span class="number">1217236305634235l</span>l,<span class="number">1225488947632331l</span>l,<span class="number">1233741871517893l</span>l,<span class="number">1241993958571201l</span>l,<span class="number">1250246088181101l</span>l,<span class="number">1258499194833254l</span>l,<span class="number">1266751869692086l</span>l,<span class="number">1275003341569934l</span>l,<span class="number">1283256504415517l</span>l,<span class="number">1291508484922880l</span>l,<span class="number">1299760151731961l</span>l,<span class="number">1308014221805983l</span>l,<span class="number">1316265856124619l</span>l,<span class="number">1324518483557648l</span>l,<span class="number">1332770251302124l</span>l,<span class="number">1341022911721461l</span>l,<span class="number">1349276565829502l</span>l,<span class="number">1357528406229662l</span>l,<span class="number">1365779744761484l</span>l,<span class="number">1374033915528551l</span>l,<span class="number">1382285388655225l</span>l,<span class="number">1390537540980637l</span>l,<span class="number">1398791249871999l</span>l,<span class="number">1407042240544114l</span>l,<span class="number">1415296385539158l</span>l,<span class="number">1423547429013263l</span>l,<span class="number">1431800462368597l</span>l,<span class="number">1440052337629769l</span>l,<span class="number">1448305632012050l</span>l,<span class="number">1456558276107036l</span>l,<span class="number">1464809655951319l</span>l,<span class="number">1473062914412690l</span>l,<span class="number">1481314756967827l</span>l,<span class="number">1489567362230863l</span>l,<span class="number">1497820324948255l</span>l,<span class="number">1506070964389182l</span>l,<span class="number">1514324955290500l</span>l,<span class="number">1522577865690641l</span>l,<span class="number">1530830106935135l</span>l,<span class="number">1539081694793857l</span>l,<span class="number">1547335918438050l</span>l,<span class="number">1555586420051109l</span>l,<span class="number">1563839820474230l</span>l,<span class="number">1572092368606447l</span>l,<span class="number">1580344034678732l</span>l,<span class="number">1588595860213855l</span>l,<span class="number">1596850670612261l</span>l,<span class="number">1605100106681656l</span>l,<span class="number">1613354897926284l</span>l,<span class="number">1621607310143153l</span>l,<span class="number">1629859232761564l</span>l,<span class="number">1638111057078298l</span>l,<span class="number">1646363045338683l</span>l,<span class="number">1654617259483886l</span>l,<span class="number">1662868196559047l</span>l,<span class="number">1671120919901352l</span>l,<span class="number">1679373915658212l</span>l,<span class="number">1687625643310699l</span>l,<span class="number">1695879680251068l</span>l,<span class="number">1704130712168994l</span>l,<span class="number">1712383981938390l</span>l,<span class="number">1720635847170218l</span>l,<span class="number">1728888769219544l</span>l,<span class="number">1737141308617387l</span>l,<span class="number">1745393827514876l</span>l,<span class="number">1753645829064356l</span>l,<span class="number">1761898237936909l</span>l,<span class="number">1770149877526034l</span>l,<span class="number">1778403083075087l</span>l,<span class="number">1786656187825069l</span>l,<span class="number">1794907216427108l</span>l,<span class="number">1803160869233978l</span>l,<span class="number">1811412861084890l</span>l,<span class="number">1819665697313207l</span>l,<span class="number">1827917581067464l</span>l,<span class="number">1836170352615014l</span>l,<span class="number">1844422872364856l</span>l,<span class="number">1852675227343068l</span>l,<span class="number">1860927821683761l</span>l,<span class="number">1869181407009959l</span>l,<span class="number">1877433105952955l</span>l,<span class="number">1885685435450589l</span>l,<span class="number">1893938202260706l</span>l,<span class="number">1902188139115598l</span>l,<span class="number">1910443306681314l</span>l,<span class="number">1918694955467222l</span>l,<span class="number">1926947711739837l</span>l,<span class="number">1935197857656708l</span>l,<span class="number">1943453131796200l</span>l,<span class="number">1951705160391135l</span>l,<span class="number">1959956495848252l</span>l,<span class="number">1968209847055867l</span>l,<span class="number">1976461969711557l</span>l,<span class="number">1984715635835030l</span>l,<span class="number">1992966124436530l</span>l,<span class="number">2001219663785650l</span>l,<span class="number">2009471480847824l</span>l,<span class="number">2017725104191343l</span>l,<span class="number">2025977283904286l</span>l,<span class="number">2034228228313111l</span>l,<span class="number">2042481800056284l</span>l,<span class="number">2050733629245479l</span>l,<span class="number">2058986717014352l</span>l,<span class="number">2067239201164281l</span>l,<span class="number">2075491149005751l</span>l,<span class="number">2083742724373623l</span>l,<span class="number">2091997048458561l</span>l,<span class="number">2100248931002962l</span>l,<span class="number">2108501755892471l</span>l,<span class="number">2116754135888405l</span>l,<span class="number">2125005595567988l</span>l,<span class="number">2133257441387098l</span>l,<span class="number">2141512200368743l</span>l,<span class="number">2149762870497800l</span>l,<span class="number">2158015001725590l</span>l,<span class="number">2166270167126305l</span>l,<span class="number">2174519725845254l</span>l,<span class="number">2182774082798822l</span>l,<span class="number">2191025083937208l</span>l,<span class="number">2199278134597698l</span>l,<span class="number">2207531378356192l</span>l,<span class="number">2215782665731750l</span>l,<span class="number">2224034866970548l</span>l,<span class="number">2232287529331023l</span>l,<span class="number">2240541777780767l</span>l,<span class="number">2248790658347194l</span>l,<span class="number">2257045984980081l</span>l,<span class="number">2265298598456865l</span>l,<span class="number">2273550020373621l</span>l,<span class="number">2281802714042583l</span>l,<span class="number">2290055083002437l</span>l,<span class="number">2298306169151238l</span>l,<span class="number">2306561731004904l</span>l,<span class="number">2314812817512349l</span>l,<span class="number">2323065690981348l</span>l,<span class="number">2331315364934695l</span>l,<span class="number">2339571431699355l</span>l,<span class="number">2347821791748916l</span>l,<span class="number">2356074961017660l</span>l,<span class="number">2364326904764672l</span>l,<span class="number">2372580070281120l</span>l,<span class="number">2380830838425313l</span>l,<span class="number">2389086187722516l</span>l,<span class="number">2397336977397341l</span>l,<span class="number">2405589113210539l</span>l,<span class="number">2413841641652242l</span>l,<span class="number">2422096106926725l</span>l,<span class="number">2430345845885611l</span>l,<span class="number">2438598211406487l</span>l,<span class="number">2446851190644917l</span>l,<span class="number">2455104197702870l</span>l,<span class="number">2463355847173999l</span>l,<span class="number">2471608956552202l</span>l,<span class="number">2479861328799484l</span>l,<span class="number">2488114725555395l</span>l,<span class="number">2496365795717479l</span>l,<span class="number">2504619346864744l</span>l,<span class="number">2512870942260390l</span>l,<span class="number">2521123827009031l</span>l,<span class="number">2529376442907829l</span>l,<span class="number">2537628076790470l</span>l,<span class="number">2545880651216727l</span>l,<span class="number">2554134824164497l</span>l,<span class="number">2562385843219303l</span>l,<span class="number">2570637680306174l</span>l,<span class="number">2578891743596679l</span>l,<span class="number">2587143805083959l</span>l,<span class="number">2595396771938871l</span>l,<span class="number">2603647330263169l</span>l,<span class="number">2611901162154061l</span>l,<span class="number">2620152607355913l</span>l,<span class="number">2628405271530396l</span>l,<span class="number">2636658705189102l</span>l,<span class="number">2644910159364180l</span>l,<span class="number">2653161097628552l</span>l,<span class="number">2661417352150409l</span>l,<span class="number">2669668680155701l</span>l,<span class="number">2677919047757929l</span>l,<span class="number">2686173962128975l</span>l,<span class="number">2694423901936113l</span>l,<span class="number">2702677384654151l</span>l,<span class="number">2710931402419704l</span>l,<span class="number">2719180961356208l</span>l,<span class="number">2727437198491801l</span>l,<span class="number">2735688159732884l</span>l,<span class="number">2743938560734532l</span>l,<span class="number">2752191761157047l</span>l,<span class="number">2760445500330152l</span>l,<span class="number">2768697722003280l</span>l,<span class="number">2776949080456953l</span>l,<span class="number">2785202186480074l</span>l,<span class="number">2793454995947942l</span>l,<span class="number">2801706920159967l</span>l,<span class="number">2809958667660044l</span>l,<span class="number">2818212288270407l</span>l,<span class="number">2826464105305695l</span>l,<span class="number">2834716830009522l</span>l,<span class="number">2842968346431169l</span>l,<span class="number">2851223117209708l</span>l,<span class="number">2859474865661328l</span>l,<span class="number">2867726001876589l</span>l,<span class="number">2875980642747090l</span>l,<span class="number">2884229439265929l</span>l,<span class="number">2892485296796488l</span>l,<span class="number">2900735647772762l</span>l,<span class="number">2908990075928416l</span>l,<span class="number">2917241190823227l</span>l,<span class="number">2925493917128939l</span>l,<span class="number">2933746130760822l</span>l,<span class="number">2941997615382457l</span>l,<span class="number">2950251046025549l</span>l,<span class="number">2958504165936910l</span>l,<span class="number">2966755565778810l</span>l,<span class="number">2975008295551923l</span>l,<span class="number">2983260228872575l</span>l,<span class="number">2991513982840406l</span>l,<span class="number">2999766319392187l</span>l,<span class="number">3008017181921323l</span>l,<span class="number">3016273376889765l</span>l,<span class="number">3024521499662162l</span>l,<span class="number">3032775913878930l</span>l,<span class="number">3041027942524243l</span>l,<span class="number">3049280825052736l</span>l,<span class="number">3057533413819963l</span>l,<span class="number">3065786326481569l</span>l,<span class="number">3074037245466723l</span>l,<span class="number">3082289463597926l</span>l,<span class="number">3090544175363390l</span>l,<span class="number">3098793356187296l</span>l,<span class="number">3107050080366003l</span>l,<span class="number">3115300585865975l</span>l,<span class="number">3123551494602499l</span>l,<span class="number">3131805229163926l</span>l,<span class="number">3140055693810208l</span>l,<span class="number">3148311912014555l</span>l,<span class="number">3156562718240183l</span>l,<span class="number">3164814508688857l</span>l,<span class="number">3173068026750489l</span>l,<span class="number">3181319821977095l</span>l,<span class="number">3189572530168994l</span>l,<span class="number">3197823945837887l</span>l,<span class="number">3206078039894298l</span>l,<span class="number">3214328255124715l</span>l,<span class="number">3222581084326855l</span>l,<span class="number">3230837277567491l</span>l,<span class="number">3239086940284289l</span>l,<span class="number">3247338339522627l</span>l,<span class="number">3255590861769794l</span>l,<span class="number">3263844071347975l</span>l,<span class="number">3272095742840731l</span>l,<span class="number">3280351794222680l</span>l,<span class="number">3288600187270777l</span>l,<span class="number">3296855101030879l</span>l,<span class="number">3305106732435792l</span>l,<span class="number">3313358838877316l</span>l,<span class="number">3321609478416381l</span>l,<span class="number">3329863741114340l</span>l,<span class="number">3338118017610359l</span>l,<span class="number">3346369579999256l</span>l,<span class="number">3354618268876799l</span>l,<span class="number">3362875003236037l</span>l,<span class="number">3371124766735525l</span>l,<span class="number">3379379131186447l</span>l,<span class="number">3387630185746211l</span>l,<span class="number">3395884185073377l</span>l,<span class="number">3404136571076753l</span>l,<span class="number">3412388208110334l</span>l,<span class="number">3420640759671914l</span>l,<span class="number">3428893081553050l</span>l,<span class="number">3437144665606191l</span>l,<span class="number">3445398534916775l</span>l,<span class="number">3453651967361451l</span>l,<span class="number">3461903599686551l</span>l,<span class="number">3470151645249035l</span>l,<span class="number">3478411531209438l</span>l,<span class="number">3486657674985036l</span>l,<span class="number">3494911760900681l</span>l,<span class="number">3503167301426935l</span>l,<span class="number">3511419820519635l</span>l,<span class="number">3519670280851579l</span>l,<span class="number">3527922907716281l</span>l,<span class="number">3536175956334171l</span>l,<span class="number">3544427218232422l</span>l,<span class="number">3552678692429904l</span>l,<span class="number">3560933574552396l</span>l,<span class="number">3569185407516411l</span>l,<span class="number">3577436984311315l</span>l,<span class="number">3585687121017890l</span>l,<span class="number">3593944211615305l</span>l,<span class="number">3602194945359195l</span>l,<span class="number">3610447684034185l</span>l,<span class="number">3618698899000597l</span>l,<span class="number">3626953566197827l</span>l,<span class="number">3635203144855753l</span>l,<span class="number">3643458359026990l</span>l,<span class="number">3651710787511210l</span>l,<span class="number">3659960442631978l</span>l,<span class="number">3668213778093901l</span>l,<span class="number">3676467282458260l</span>l,<span class="number">3684720013115923l</span>l,<span class="number">3692971943730382l</span>l,<span class="number">3701224319428737l</span>l,<span class="number">3709474046014293l</span>l,<span class="number">3717727830441720l</span>l,<span class="number">3725986030793314l</span>l,<span class="number">3734230263576533l</span>l,<span class="number">3742486533281976l</span>l,<span class="number">3750737459936037l</span>l,<span class="number">3758992261189390l</span>l,<span class="number">3767243145817809l</span>l,<span class="number">3775495493074221l</span>l,<span class="number">3783748018080245l</span>l,<span class="number">3791999710195498l</span>l,<span class="number">3800255057787662l</span>l,<span class="number">3808505965568630l</span>l,<span class="number">3816755962419611l</span>l,<span class="number">3825013670562066l</span>l,<span class="number">3833263570884925l</span>l,<span class="number">3841516176820074l</span>l,<span class="number">3849768247889225l</span>l,<span class="number">3858020207678925l</span>l,<span class="number">3866275753963201l</span>l,<span class="number">3874525283257184l</span>l,<span class="number">3882776423413622l</span>l,<span class="number">3891029351931232l</span>l,<span class="number">3899284867808382l</span>l,<span class="number">3907536125048951l</span>l,<span class="number">3915788901889101l</span>l,<span class="number">3924039009777036l</span>l,<span class="number">3932290833033464l</span>l,<span class="number">3940545304020242l</span>l,<span class="number">3948801860322982l</span>l,<span class="number">3957046187721652l</span>l,<span class="number">3965304733421226l</span>l,<span class="number">3973554335216274l</span>l,<span class="number">3981807117966089l</span>l,<span class="number">3990060750267243l</span>l,<span class="number">3998314460692582l</span>l,<span class="number">4006560671488589l</span>l,<span class="number">4014818231242852l</span>l,<span class="number">4023071192200276l</span>l,<span class="number">4031323017039280l</span>l,<span class="number">4039573093193550l</span>l,<span class="number">4047825255044345l</span>l,<span class="number">4056080829555106l</span>l,<span class="number">4064333445879854l</span>l,<span class="number">4072585531782464l</span>l,<span class="number">4080833873396170l</span>l,<span class="number">4089091894128706l</span>l,<span class="number">4097339447670076l</span>l,<span class="number">4105594737376001l</span>l,<span class="number">4113845113269680l</span>l,<span class="number">4122100958768381l</span>l,<span class="number">4130349716036392l</span>l,<span class="number">4138604645600883l</span>l,<span class="number">4146858875667187l</span>l,<span class="number">4155108634922538l</span>l,<span class="number">4163358989129136l</span>l,<span class="number">4171615654775226l</span>l,<span class="number">4179864221592264l</span>l,<span class="number">4188118335870568l</span>l,<span class="number">4196372031635332l</span>l,<span class="number">4204622781909687l</span>l,<span class="number">4212875778823105l</span>l,<span class="number">4221129111264738l</span>l,<span class="number">4229380093156833l</span>l,<span class="number">4237633483561950l</span>l,<span class="number">4245884624779001l</span>l,<span class="number">4254136039199650l</span>l,<span class="number">4262392639421847l</span>l,<span class="number">4270645240285504l</span>l,<span class="number">4278895213798486l</span>l,<span class="number">4287148555171525l</span>l,<span class="number">4295400082017421l</span>l,<span class="number">4303653849433572l</span>l,<span class="number">4311904371059075l</span>l,<span class="number">4320158627329533l</span>l,<span class="number">4328408885659026l</span>l,<span class="number">4336663211549554l</span>l,<span class="number">4344917177993784l</span>l,<span class="number">4353168513967272l</span>l,<span class="number">4361421317405677l</span>l,<span class="number">4369672448665840l</span>l,<span class="number">4377922613690984l</span>l,<span class="number">4386178632133923l</span>l,<span class="number">4394429821218815l</span>l,<span class="number">4402682845669681l</span>l,<span class="number">4410932045929304l</span>l,<span class="number">4419189403338844l</span>l,<span class="number">4427439599770921l</span>l,<span class="number">4435692124669981l</span>l,<span class="number">4443946522514183l</span>l,<span class="number">4452196587319287l</span>l,<span class="number">4460447153426211l</span>l,<span class="number">4468705524093101l</span>l,<span class="number">4476954181084895l</span>l,<span class="number">4485206616541896l</span>l,<span class="number">4493457877867992l</span>l,<span class="number">4501712440750199l</span>l,<span class="number">4509966093000512l</span>l,<span class="number">4518216506891885l</span>l,<span class="number">4526468925225636l</span>l,<span class="number">4534721059237123l</span>l,<span class="number">4542975579161994l</span>l,<span class="number">4551226795053220l</span>l,<span class="number">4559478991861728l</span>l,<span class="number">4567730994677183l</span>l,<span class="number">4575983234574448l</span>l,<span class="number">4584235374889421l</span>l,<span class="number">4592489738610728l</span>l,<span class="number">4600740266178086l</span>l,<span class="number">4608994265114010l</span>l,<span class="number">4617245053650908l</span>l,<span class="number">4625500717375617l</span>l,<span class="number">4633748360643935l</span>l,<span class="number">4642002933017796l</span>l,<span class="number">4650255844494153l</span>l,<span class="number">4658508096927840l</span>l,<span class="number">4666761375547773l</span>l,<span class="number">4675012263067416l</span>l,<span class="number">4683266095603251l</span>l,<span class="number">4691521004668729l</span>l,<span class="number">4699769084549337l</span>l,<span class="number">4708020526467684l</span>l,<span class="number">4716277951464806l</span>l,<span class="number">4724525356564207l</span>l,<span class="number">4732781612707648l</span>l,<span class="number">4741032880704836l</span>l,<span class="number">4749286176188914l</span>l,<span class="number">4757538892784039l</span>l,<span class="number">4765789307656539l</span>l,<span class="number">4774043033174736l</span>l,<span class="number">4782295053138499l</span>l,<span class="number">4790547038841279l</span>l,<span class="number">4798798277165948l</span>l,<span class="number">4807050651303544l</span>l,<span class="number">4815306969070132l</span>l,<span class="number">4823559674137575l</span>l,<span class="number">4831809222903867l</span>l,<span class="number">4840061553191787l</span>l,<span class="number">4848313873538669l</span>l,<span class="number">4856568456018401l</span>l,<span class="number">4864820368485566l</span>l,<span class="number">4873071271599686l</span>l,<span class="number">4881326656599298l</span>l,<span class="number">4889574106182860l</span>l,<span class="number">4897828348489435l</span>l,<span class="number">4906084894092353l</span>l,<span class="number">4914333979722197l</span>l,<span class="number">4922586029481820l</span>l,<span class="number">4930841251272688l</span>l,<span class="number">4939091122861998l</span>l,<span class="number">4947343865010627l</span>l,<span class="number">4955593762249549l</span>l,<span class="number">4963851374956602l</span>l,<span class="number">4972101430778074l</span>l,<span class="number">4980356617120612l</span>l,<span class="number">4988605472991551l</span>l,<span class="number">4996859300719623l</span>l,<span class="number">5005110950089551l</span>l,<span class="number">5013366272410924l</span>l,<span class="number">5021612591511858l</span>l,<span class="number">5029868130439516l</span>l,<span class="number">5038123202765017l</span>l,<span class="number">5046375221972283l</span>l,<span class="number">5054623203943886l</span>l,<span class="number">5062879831936568l</span>l,<span class="number">5071127894977068l</span>l,<span class="number">5079383388402940l</span>l,<span class="number">5087638427339662l</span>l,<span class="number">5095887087656285l</span>l,<span class="number">5104139219182680l</span>l,<span class="number">5112394000517895l</span>l,<span class="number">5120647030784142l</span>l,<span class="number">5128898084678534l</span>l,<span class="number">5137150402274426l</span>l,<span class="number">5145405017821747l</span>l,<span class="number">5153651932590512l</span>l,<span class="number">5161909049716145l</span>l,<span class="number">5170164124810685l</span>l,<span class="number">5178409266375282l</span>l,<span class="number">5186665883448277l</span>l,<span class="number">5194917706183003l</span>l,<span class="number">5203168195571922l</span>l,<span class="number">5211422535889657l</span>l,<span class="number">5219678304065660l</span>l,<span class="number">5227924652110881l</span>l,<span class="number">5236182924879430l</span>l,<span class="number">5244427838140794l</span>l,<span class="number">5252686230736253l</span>l,<span class="number">5260933446056267l</span>l,<span class="number">5269189861397709l</span>l,<span class="number">5277444344529586l</span>l,<span class="number">5285694171177002l</span>l,<span class="number">5293945628073748l</span>l,<span class="number">5302200401096075l</span>l,<span class="number">5310455705831528l</span>l,<span class="number">5318699675434409l</span>l,<span class="number">5326958615514079l</span>l,<span class="number">5335210297462303l</span>l,<span class="number">5343463534496012l</span>l,<span class="number">5351712082540394l</span>l,<span class="number">5359968777766584l</span>l,<span class="number">5368215565581855l</span>l,<span class="number">5376472535549718l</span>l,<span class="number">5384728611656937l</span>l,<span class="number">5392974363218411l</span>l,<span class="number">5401227570782007l</span>l,<span class="number">5409485601461581l</span>l,<span class="number">5417731750067066l</span>l,<span class="number">5425986267734462l</span>l,<span class="number">5434239074781473l</span>l,<span class="number">5442488923218258l</span>l,<span class="number">5450744086966550l</span>l,<span class="number">5458998889389518l</span>l,<span class="number">5467248638660167l</span>l,<span class="number">5475496914177482l</span>l,<span class="number">5483755422447857l</span>l,<span class="number">5492004339489281l</span>l,<span class="number">5500255884432981l</span>l,<span class="number">5508512951046708l</span>l,<span class="number">5516764998806126l</span>l,<span class="number">5525015045632539l</span>l,<span class="number">5533270980896929l</span>l,<span class="number">5541521576351934l</span>l,<span class="number">5549770963039480l</span>l,<span class="number">5558026750548537l</span>l,<span class="number">5566277558132396l</span>l,<span class="number">5574528013657487l</span>l,<span class="number">5582784523800746l</span>l,<span class="number">5591031947469177l</span>l,<span class="number">5599292632015776l</span>l,<span class="number">5607541140214280l</span>l,<span class="number">5615789099754928l</span>l,<span class="number">5624042497439130l</span>l,<span class="number">5632300302823064l</span>l,<span class="number">5640548217180715l</span>l,<span class="number">5648803982957420l</span>l,<span class="number">5657056003627456l</span>l,<span class="number">5665305077660600l</span>l,<span class="number">5673556165459395l</span>l,<span class="number">5681815417972322l</span>l,<span class="number">5690061491829913l</span>l,<span class="number">5698319588106770l</span>l,<span class="number">5706572156975665l</span>l,<span class="number">5714819498651897l</span>l,<span class="number">5723072813114938l</span>l,<span class="number">5731329338381847l</span>l,<span class="number">5739578823419933l</span>l,<span class="number">5747829614334653l</span>l,<span class="number">5756085004354851l</span>l,<span class="number">5764336282944942l</span>l,<span class="number">5772590605617758l</span>l,<span class="number">5780839158537564l</span>l,<span class="number">5789091823427477l</span>l,<span class="number">5797347276534064l</span>l,<span class="number">5805601470594884l</span>l,<span class="number">5813848885349429l</span>l,<span class="number">5822104960113992l</span>l,<span class="number">5830353571547651l</span>l,<span class="number">5838610465535497l</span>l,<span class="number">5846861312526612l</span>l,<span class="number">5855113623773091l</span>l,<span class="number">5863365156848187l</span>l,<span class="number">5871618565545585l</span>l,<span class="number">5879873004314040l</span>l,<span class="number">5888126917716649l</span>l,<span class="number">5896372908100239l</span>l,<span class="number">5904629644635474l</span>l,<span class="number">5912883289621822l</span>l,<span class="number">5921129467378451l</span>l,<span class="number">5929387216285172l</span>l,<span class="number">5937637675491927l</span>l,<span class="number">5945890500817572l</span>l,<span class="number">5954143538519239l</span>l,<span class="number">5962396442363892l</span>l,<span class="number">5970648401446912l</span>l,<span class="number">5978898227856883l</span>l,<span class="number">5987155268828423l</span>l,<span class="number">5995404961153194l</span>l,<span class="number">6003654727692311l</span>l,<span class="number">6011906886897873l</span>l,<span class="number">6020166226085924l</span>l,<span class="number">6028413105831074l</span>l,<span class="number">6036666571813983l</span>l,<span class="number">6044920969838969l</span>l,<span class="number">6053172891426176l</span>l,<span class="number">6061424084184666l</span>l,<span class="number">6069675162136651l</span>l,<span class="number">6077934276966594l</span>l,<span class="number">6086181836672854l</span>l,<span class="number">6094438566042231l</span>l,<span class="number">6102685082610800l</span>l,<span class="number">6110939135288748l</span>l,<span class="number">6119191071540472l</span>l,<span class="number">6127444900452135l</span>l,<span class="number">6135695402899421l</span>l,<span class="number">6143947383269049l</span>l,<span class="number">6152202292015254l</span>l,<span class="number">6160457524289004l</span>l,<span class="number">6168709021820804l</span>l,<span class="number">6176953770015863l</span>l,<span class="number">6185210225162499l</span>l,<span class="number">6193462103998242l</span>l,<span class="number">6201721417504669l</span>l,<span class="number">6209968441531394l</span>l,<span class="number">6218222584076174l</span>l,<span class="number">6226473518437889l</span>l,<span class="number">6234724450986511l</span>l,<span class="number">6242979165522463l</span>l,<span class="number">6251231794987889l</span>l,<span class="number">6259485663139794l</span>l,<span class="number">6267737986678539l</span>l,<span class="number">6275986360420790l</span>l,<span class="number">6284240385704516l</span>l,<span class="number">6292493831905101l</span>l,<span class="number">6300743643053655l</span>l,<span class="number">6308998224165984l</span>l,<span class="number">6317252218019157l</span>l,<span class="number">6325502004309904l</span>l,<span class="number">6333753482286491l</span>l,<span class="number">6342008874879601l</span>l,<span class="number">6350260170447059l</span>l,<span class="number">6358515626542934l</span>l,<span class="number">6366765296724798l</span>l,<span class="number">6375022442187828l</span>l,<span class="number">6383265429991092l</span>l,<span class="number">6391523961223505l</span>l,<span class="number">6399776682559935l</span>l,<span class="number">6408027333463195l</span>l,<span class="number">6416278739223222l</span>l,<span class="number">6424539559816842l</span>l,<span class="number">6432778918894588l</span>l,<span class="number">6441039011354239l</span>l,<span class="number">6449289439301017l</span>l,<span class="number">6457544447970078l</span>l,<span class="number">6465798128909762l</span>l,<span class="number">6474047228863189l</span>l,<span class="number">6482299292746479l</span>l,<span class="number">6490552887117242l</span>l,<span class="number">6498802108265034l</span>l,<span class="number">6507057978954221l</span>l,<span class="number">6515310157081339l</span>l,<span class="number">6523563131048348l</span>l,<span class="number">6531812264509276l</span>l,<span class="number">6540067528248903l</span>l,<span class="number">6548319658836561l</span>l,<span class="number">6556570874249643l</span>l,<span class="number">6564821175483977l</span>l,<span class="number">6573081418472554l</span>l,<span class="number">6581333115221803l</span>l,<span class="number">6589579439588766l</span>l,<span class="number">6597834824506338l</span>l,<span class="number">6606083064324884l</span>l,<span class="number">6614339526281843l</span>l,<span class="number">6622597513181267l</span>l,<span class="number">6630836635393075l</span>l,<span class="number">6639099482805580l</span>l,<span class="number">6647350450478108l</span>l,<span class="number">6655603607800850l</span>l,<span class="number">6663849823207608l</span>l,<span class="number">6672106851372059l</span>l,<span class="number">6680360937732904l</span>l,<span class="number">6688607697105081l</span>l,<span class="number">6696865016533754l</span>l,<span class="number">6705117106721407l</span>l,<span class="number">6713367402094191l</span>l,<span class="number">6721624083899389l</span>l,<span class="number">6729872622938087l</span>l,<span class="number">6738122787065790l</span>l,<span class="number">6746382851526592l</span>l,<span class="number">6754630624237557l</span>l,<span class="number">6762884948000277l</span>l,<span class="number">6771137156065200l</span>l,<span class="number">6779384687986064l</span>l,<span class="number">6787641598489658l</span>l,<span class="number">6795892562013620l</span>l,<span class="number">6804141307711215l</span>l,<span class="number">6812402975668927l</span>l,<span class="number">6820644402604050l</span>l,<span class="number">6828904689395772l</span>l,<span class="number">6837157066430693l</span>l,<span class="number">6845410176071217l</span>l,<span class="number">6853658312239207l</span>l,<span class="number">6861912851883538l</span>l,<span class="number">6870166887673232l</span>l,<span class="number">6878418852766272l</span>l,<span class="number">6886666064788549l</span>l,<span class="number">6894927310457310l</span>l,<span class="number">6903175013655245l</span>l,<span class="number">6911420988380029l</span>l,<span class="number">6919685885895149l</span>l,<span class="number">6927930137610693l</span>l,<span class="number">6936183841821810l</span>l,<span class="number">6944440867682952l</span>l,<span class="number">6952684334947450l</span>l,<span class="number">6960939293511696l</span>l,<span class="number">6969197357239842l</span>l,<span class="number">6977448584288780l</span>l,<span class="number">6985699505503416l</span>l,<span class="number">6993954645411518l</span>l,<span class="number">7002203082009207l</span>l,<span class="number">7010453855644442l</span>l,<span class="number">7018709318547936l</span>l,<span class="number">7026960407016206l</span>l,<span class="number">7035217927611865l</span>l,<span class="number">7043466419037300l</span>l,<span class="number">7051719427417281l</span>l,<span class="number">7059966536615330l</span>l,<span class="number">7068228797995147l</span>l,<span class="number">7076471989708885l</span>l,<span class="number">7084730852071606l</span>l,<span class="number">7092978395293010l</span>l,<span class="number">7101231938643095l</span>l,<span class="number">7109486977603916l</span>l,<span class="number">7117744828960168l</span>l,<span class="number">7125989323962864l</span>l,<span class="number">7134240013521474l</span>l,<span class="number">7142496932289252l</span>l,<span class="number">7150744626501259l</span>l,<span class="number">7159000214046991l</span>l,<span class="number">7167254393506188l</span>l,<span class="number">7175506144671609l</span>l,<span class="number">7183759413599110l</span>l,<span class="number">7192008701930204l</span>l,<span class="number">7200260129579064l</span>l,<span class="number">7208517514046550l</span>l,<span class="number">7216769489140625l</span>l,<span class="number">7225014978232798l</span>l,<span class="number">7233271154130501l</span>l,<span class="number">7241529364083236l</span>l,<span class="number">7249777411172574l</span>l,<span class="number">7258029298497640l</span>l,<span class="number">7266287105155387l</span>l,<span class="number">7274535503716788l</span>l,<span class="number">7282786739567212l</span>l,<span class="number">7291038180179142l</span>l,<span class="number">7299292435136628l</span>l,<span class="number">7307546937789671l</span>l,<span class="number">7315796838776594l</span>l,<span class="number">7324053003643892l</span>l,<span class="number">7332305970713796l</span>l,<span class="number">7340552287123121l</span>l,<span class="number">7348804754649584l</span>l,<span class="number">7357057570825706l</span>l,<span class="number">7365315855028632l</span>l,<span class="number">7373565153334962l</span>l,<span class="number">7381813915105376l</span>l,<span class="number">7390071245066023l</span>l,<span class="number">7398322950338870l</span>l,<span class="number">7406573783636134l</span>l,<span class="number">7414828891602267l</span>l,<span class="number">7423077573276426l</span>l,<span class="number">7431329629774319l</span>l,<span class="number">7439586625813374l</span>l,<span class="number">7447833320907149l</span>l,<span class="number">7456084338574506l</span>l,<span class="number">7464348653284835l</span>l,<span class="number">7472598982748900l</span>l,<span class="number">7480842189080237l</span>l,<span class="number">7489098505612442l</span>l,<span class="number">7497347755961998l</span>l,<span class="number">7505603433642677l</span>l,<span class="number">7513859688553926l</span>l,<span class="number">7522107918315630l</span>l,<span class="number">7530358319887666l</span>l,<span class="number">7538610435162381l</span>l,<span class="number">7546871107586580l</span>l,<span class="number">7555118524215395l</span>l,<span class="number">7563372351358735l</span>l,<span class="number">7571622303721121l</span>l,<span class="number">7579871036159131l</span>l,<span class="number">7588133999963564l</span>l,<span class="number">7596383249386616l</span>l,<span class="number">7604626737199583l</span>l,<span class="number">7612891787764363l</span>l,<span class="number">7621137023828605l</span>l,<span class="number">7629384973424964l</span>l,<span class="number">7637646286762868l</span>l,<span class="number">7645898146282521l</span>l,<span class="number">7654147355711203l</span>l,<span class="number">7662393200254094l</span>l,<span class="number">7670656138283468l</span>l,<span class="number">7678904160136127l</span>l,<span class="number">7687158481216871l</span>l,<span class="number">7695412717696013l</span>l,<span class="number">7703660933660557l</span>l,<span class="number">7711914575612208l</span>l,<span class="number">7720167737473709l</span>l,<span class="number">7728416925310084l</span>l,<span class="number">7736672148549850l</span>l,<span class="number">7744925462336070l</span>l,<span class="number">7753172855758582l</span>l,<span class="number">7761434677625269l</span>l,<span class="number">7769683995902167l</span>l,<span class="number">7777933859410497l</span>l,<span class="number">7786185222549176l</span>l,<span class="number">7794441380416444l</span>l,<span class="number">7802689623315417l</span>l,<span class="number">7810945026449234l</span>l,<span class="number">7819191051776533l</span>l,<span class="number">7827451586781376l</span>l,<span class="number">7835703520256323l</span>l,<span class="number">7843949357504304l</span>l,<span class="number">7852211389178157l</span>l,<span class="number">7860460171903986l</span>l,<span class="number">7868708784182509l</span>l,<span class="number">7876966001612754l</span>l,<span class="number">7885217827997875l</span>l,<span class="number">7893469377340151l</span>l,<span class="number">7901713111346610l</span>l,<span class="number">7909980586212708l</span>l,<span class="number">7918229848967808l</span>l,<span class="number">7926475725616806l</span>l,<span class="number">7934732425834514l</span>l,<span class="number">7942975827545192l</span>l,<span class="number">7951237923355540l</span>l,<span class="number">7959497414687351l</span>l,<span class="number">7967738738895736l</span>l,<span class="number">7975988621863044l</span>l,<span class="number">7984247248180536l</span>l,<span class="number">7992499095559087l</span>l,<span class="number">8000748061706199l</span>l,<span class="number">8009005365389683l</span>l,<span class="number">8017254279468093l</span>l,<span class="number">8025508035004150l</span>l,<span class="number">8033762318558178l</span>l,<span class="number">8042010797225973l</span>l,<span class="number">8050263937530394l</span>l,<span class="number">8058519617851198l</span>l,<span class="number">8066772572056332l</span>l,<span class="number">8075020103588341l</span>l,<span class="number">8083280498765985l</span>l,<span class="number">8091523112748816l</span>l,<span class="number">8099777069138991l</span>l,<span class="number">8108041966885339l</span>l,<span class="number">8116282552165392l</span>l,<span class="number">8124534952802314l</span>l,<span class="number">8132795963680539l</span>l,<span class="number">8141034628392631l</span>l,<span class="number">8149296427897892l</span>l,<span class="number">8157545519899955l</span>l,<span class="number">8165800317750035l</span>l,<span class="number">8174049687323585l</span>l,<span class="number">8182301934425911l</span>l,<span class="number">8190558479023990l</span>l,<span class="number">8198816455233635l</span>l,<span class="number">8207059653642486l</span>l,<span class="number">8215313533705195l</span>l,<span class="number">8223567434586417l</span>l,<span class="number">8231823535766866l</span>l,<span class="number">8240069684329272l</span>l,<span class="number">8248333472646903l</span>l&#125;;</span><br><span class="line">	LL ans=<span class="number">0</span>;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">solve</span><span class="params">(LL l,LL r)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> delta=r-l;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=cnt; i++)</span><br><span class="line">			<span class="keyword">for</span>(LL j=max(<span class="number">2l</span>l,(l<span class="number">-1</span>)/pr[i]+<span class="number">1</span>)*pr[i]; j&lt;=r; j+=pr[i])</span><br><span class="line">				<span class="keyword">if</span>(!Min[j-l])Min[j-l]=pr[i];</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;=delta; i++)<span class="keyword">if</span>(Min[i])ans+=(i+l)/Min[i];</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">solve</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		LL l1=l,r1=((l<span class="number">-1</span>)/maxv+<span class="number">1</span>)*maxv;</span><br><span class="line">		solve(l1,r1);</span><br><span class="line">		<span class="built_in">memset</span>(Min,<span class="number">0</span>,<span class="keyword">sizeof</span>(Min));</span><br><span class="line">		LL l2=(r<span class="number">-1</span>)/maxv*maxv+<span class="number">1</span>,r2=r;</span><br><span class="line">		solve(l2,r2);</span><br><span class="line">		<span class="keyword">int</span> l3=r1/maxv+<span class="number">1</span>,r3=(l2<span class="number">-1</span>)/maxv;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=l3; i&lt;=r3; i++)ans+=f[i];</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"%lld\n"</span>,ans);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	l=Get_Int();</span><br><span class="line">	r=Get_Int();</span><br><span class="line">	Prime_Table(<span class="built_in">sqrt</span>(r)+<span class="number">5</span>);</span><br><span class="line">	<span class="keyword">if</span>(r-l&lt;=maxv)Solve1::solve();</span><br><span class="line">	<span class="keyword">else</span> Solve2::solve();</span><br><span class="line">	fclose(<span class="built_in">stdin</span>);</span><br><span class="line">	fclose(<span class="built_in">stdout</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/SDOI2016-count/" rel="bookmark">「SDOI2016」排列计数 - 组合计数+错排</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/nowcoder-multischool-5/" rel="bookmark">2020牛客暑期多校训练营（第五场）解题报告</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/bzoj3837-filary/" rel="bookmark">「bzoj3837」「Pa2013」Filary - 随机化$+\gcd$</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/SDOI2013-necklace/" rel="bookmark">「SDOI2013」项链 - 莫比乌斯反演+Polya计数+欧拉函数+数列通项</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/Codeforces-round460-div2-E-Equation/" rel="bookmark">「Codeforces Round 460 div2」E. Congruence Equation - 数论+费马小定理+循环节</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div>姥爷们赏瓶冰阔落吧~</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="Bill Yang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="Bill Yang 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Bill Yang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.bill.moe/FCS-NOI2018-day1-factor/" title="「FCS NOI 2018 day1」最大真因数 - 分段打表">https://blog.bill.moe/FCS-NOI2018-day1-factor/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/数学/" rel="tag"><i class="fa fa-tag"></i> 数学</a>
+              <a href="/tags/数论/" rel="tag"><i class="fa fa-tag"></i> 数论</a>
+          </div>
+
+        
+  <div class="post-widgets">
+    <div class="wp_rating">
+      <div id="wpac-rating"></div>
+    </div>
+  </div>
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/FCS-NOI2018-day1-phi/" rel="prev" title="「FCS NOI 2018 day1」欧拉函数 - 线段树+bitset+欧拉函数">
+      <i class="fa fa-chevron-left"></i> 「FCS NOI 2018 day1」欧拉函数 - 线段树+bitset+欧拉函数
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/FCS-NOI2018-day1-equ/" rel="next" title="「FCS NOI 2018 day1」残缺的算式 - 表达式运算+递推+第一类Stirling数">
+      「FCS NOI 2018 day1」残缺的算式 - 表达式运算+递推+第一类Stirling数 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#题目大意"><span class="nav-number">1.</span> <span class="nav-text">题目大意</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#题目分析"><span class="nav-number">2.</span> <span class="nav-text">题目分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码"><span class="nav-number">3.</span> <span class="nav-text">代码</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Bill Yang"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Bill Yang</p>
+  <div class="site-description" itemprop="description">这辈子都不可能更新的</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">675</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">234</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=935683004" title="QQ → tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=935683004" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i>QQ</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ym13883407586@outlook.com" title="E-Mail → mailto:ym13883407586@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/BillYang2016" title="GitHub → https://github.com/BillYang2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://coding.net/u/Bill_Yang_2016" title="Coding → https://coding.net/u/Bill_Yang_2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-git-square"></i>Coding</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://music.163.com/#/user/home?nickname=Bill_Yang2016" title="网易云音乐 → http://music.163.com/#/user/home?nickname=Bill_Yang2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-music"></i>网易云音乐</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://space.bilibili.com/233682260/#/" title="bilibili → https://space.bilibili.com/233682260/#/" rel="noopener" target="_blank"><i class="fa fa-fw fa-youtube-play"></i>bilibili</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → /atom.xml"><i class="fa fa-fw fa-rss"></i>RSS</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      我的朋友们
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://pointedpoints.github.io/" title="http://pointedpoints.github.io/" rel="noopener" target="_blank">pointedpoints</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://keke046.coding.me/" title="https://keke046.coding.me/" rel="noopener" target="_blank">KEKE046</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://imperfect_zx.coding.me/" title="https://imperfect_zx.coding.me/" rel="noopener" target="_blank">Imperfect</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://achen.world/" title="https://achen.world/" rel="noopener" target="_blank">Achen</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://metakari.one/" title="https://metakari.one/" rel="noopener" target="_blank">Metakar1</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://39.106.98.75/" title="http://39.106.98.75/" rel="noopener" target="_blank">魏启大陆</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/friends/" title="/friends/">更多朋友们</a>
+        </li>
+    </ul>
+  </div>
+<!-- none-select-br -->
+
+<p></p>
+
+<!-- hitokoto -->
+
+<div class="hitokoto-title">
+	<i class="fa fa-paragraph"></i>
+	<b>一言</b>
+</div>
+
+<div id="hitokoto">:D 获取中...</div>
+<i id="hitofrom">:D 获取中...</i>
+
+<script src="https://cdn.jsdelivr.net/npm/bluebird@3/js/browser/bluebird.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/whatwg-fetch@2.0.3/fetch.min.js"></script>
+<script>
+  fetch('https://v1.hitokoto.cn')
+    .then(function (res){
+      return res.json();
+    })
+    .then(function (data) {
+      var hitokoto = document.getElementById('hitokoto');
+      hitokoto.innerText = '\xa0\xa0\xa0\xa0\xa0\xa0\xa0' + data.hitokoto;
+      var hitofrom = document.getElementById('hitofrom');
+      hitofrom.innerText = "——" + data.from + '\xa0'; 
+    })
+    .catch(function (err) {
+      console.error(err);
+    })
+</script>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Bill Yang 以 <a class="theme-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a> 协议发布</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+  <script>
+  if (CONFIG.page.isPost) {
+    wpac_init = window.wpac_init || [];
+    wpac_init.push({
+      widget: 'Rating',
+      id: 10154,
+      el: 'wpac-rating',
+      color: 'fc6423'
+    });
+    (function() {
+      if ('WIDGETPACK_LOADED' in window) return;
+      WIDGETPACK_LOADED = true;
+      var mc = document.createElement('script');
+      mc.type = 'text/javascript';
+      mc.async = true;
+      mc.src = '//embed.widgetpack.com/widget.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+    })();
+  }
+  </script>
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout: 3000,
+        priority: true,
+        ignores: [uri => uri.includes('#'),uri => uri == 'https://blog.bill.moe/FCS-NOI2018-day1-factor/',]
+      });
+      });
+  </script>
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: true,
+      notify: false,
+      appId: 'JYwxXHHRe8RNGu498SnK9B3N-gzGzoHsz',
+      appKey: 'JBz9GW9kidjPp7gW5Y6VIgfe',
+      placeholder: "吹雪は猫~",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: 'zh-cn' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

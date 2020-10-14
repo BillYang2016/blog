@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.png">
+  <link rel="mask-icon" href="/images/logo.png" color="#222">
+  <meta name="google-site-verification" content="ghOTm3Im1Awef9otcmhxaBXZs5PlL-aApB3Zeo2qVrg">
+  <meta name="baidu-site-verification" content="PcyS4kW5Yu">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-bounce.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://blog.bill.moe').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},
+    path: 'search.xml',
+    motion: {"enable":true,"async":true,"transition":{"post_block":"swoopIn","post_header":"shrinkIn","post_body":"shrinkIn","coll_header":"expandIn","sidebar":"bounceIn"}}
+  };
+</script>
+
+  <meta name="description" content="一些记号在本文中，为了描述方便，我们使用以下记号：    $\bigoplus$：异或。$2\bigoplus3=1$。   $\vec v$：向量，本文中的向量是抽象的数学概念，而非简单的带方向的数。">
+<meta name="keywords" content="线性基,学习笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="线性基学习笔记">
+<meta property="og:url" content="https://blog.bill.moe/linear-bases-notes/index.html">
+<meta property="og:site_name" content="Bill Yang&#39;s Blog">
+<meta property="og:description" content="一些记号在本文中，为了描述方便，我们使用以下记号：    $\bigoplus$：异或。$2\bigoplus3=1$。   $\vec v$：向量，本文中的向量是抽象的数学概念，而非简单的带方向的数。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-06-18T08:57:26.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="线性基学习笔记">
+<meta name="twitter:description" content="一些记号在本文中，为了描述方便，我们使用以下记号：    $\bigoplus$：异或。$2\bigoplus3=1$。   $\vec v$：向量，本文中的向量是抽象的数学概念，而非简单的带方向的数。">
+
+<link rel="canonical" href="https://blog.bill.moe/linear-bases-notes/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+<!-- jquery -->
+
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<!-- 打字礼花及震动特效 -->
+
+<div id="append_parent"></div><div id="ajaxwaitid"></div>
+<script type="text/javascript" src="/lib/activate-power-mode/activate-power-mode.js"></script>
+<script>
+	POWERMODE.colorful = true;
+	POWERMODE.shake = false;
+	document.body.addEventListener('input',POWERMODE);
+</script>
+
+<!-- live2d -->
+
+<div class="waifu">
+	<div class="waifu-tips"></div>
+	<canvas id="live2d" width="240" height="350" class="live2d"></canvas>
+	<div class="hide-button">隐藏</div>
+</div>
+<script async src="/lib/poster-girl/waifu-tips.js"></script>
+<script src="/lib/poster-girl/live2d.js"></script>
+<script type="text/javascript">
+	loadlive2d("live2d", "/live2d/assets/kanna.model.json");
+</script>
+  <title>线性基学习笔记 | Bill Yang's Blog</title>
+  
+    <script>
+      function sendPageView() {
+        if (CONFIG.hostname !== location.hostname) return;
+        var uid = localStorage.getItem('uid') || (Math.random() + '.' + Math.random());
+        localStorage.setItem('uid', uid);
+        navigator.sendBeacon('https://www.google-analytics.com/collect', new URLSearchParams({
+          v  : 1,
+          tid: 'UA-157912381-1',
+          cid: uid,
+          t  : 'pageview',
+          dp : encodeURIComponent(location.pathname)
+        }));
+      }
+      document.addEventListener('pjax:complete', sendPageView);
+      sendPageView();
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?d538e1e81ada366563b03354efffd84c";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Bill Yang's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">路终会有尽头，但视野总能看到更远的地方。</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">10</span></a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-friends">
+
+    <a href="/friends" rel="section"><i class="fa fa-fw fa-users"></i>友链</a>
+
+  </li>
+        <li class="menu-item menu-item-board">
+
+    <a href="/board/" rel="section"><i class="fa fa-fw fa-sticky-note-o"></i>留言板</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">675</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">234</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.bill.moe/linear-bases-notes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Bill Yang">
+      <meta itemprop="description" content="这辈子都不可能更新的">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bill Yang's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          线性基学习笔记
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-12-17 10:14:33" itemprop="dateCreated datePublished" datetime="2017-12-17T10:14:33+08:00">2017-12-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-06-18 16:57:26" itemprop="dateModified" datetime="2019-06-18T16:57:26+08:00">2019-06-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OI/" itemprop="url" rel="index">
+                    <span itemprop="name">OI</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/linear-bases-notes/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/linear-bases-notes/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="一些记号"><a href="#一些记号" class="headerlink" title="一些记号"></a>一些记号</h2><p>在本文中，为了描述方便，我们使用以下记号：  </p>
+<ul>
+<li>$\bigoplus$：异或。$2\bigoplus3=1$。  </li>
+<li>$\vec v$：向量，本文中的向量是抽象的数学概念，而非简单的带方向的数。  </li>
+</ul>
+<a id="more"></a>
+<h2 id="定义（们）"><a href="#定义（们）" class="headerlink" title="定义（们）"></a>定义（们）</h2><h3 id="向量空间（vector-space）"><a href="#向量空间（vector-space）" class="headerlink" title="向量空间（vector space）"></a><a href="https://en.wikipedia.org/wiki/Vector_space" target="_blank" rel="noopener">向量空间（vector space）</a></h3><p>这里只是对向量空间进行严格定义，若不喜欢定义可以直接跳过。  </p>
+<p>给定域$F$，$F$上的向量空间$V$是一个集合，其上定义了两种二元运算满足八条公理。  </p>
+<ul>
+<li>向量加法$+$：$V\times V\rightarrow V$，把$V$中两个元素$\vec u,\vec v$映射到$V$中的另一个元素，记为$\vec u+\vec v$。  </li>
+<li>标量乘法$\cdot$：$F\times V\rightarrow V$，把$F$中的一个元素$a$和$V$中的一个元素$\vec u$变成$V$中另一个元素，记作$a\vec u$。  </li>
+</ul>
+<p>$F$中的元素称为标量，$V$中的元素称为向量。<br>一个满足要求的向量空间必须满足以下八条公理。（以下公理中，$\vec u,\vec v,\vec w$是$V$中的向量，$a,b$是$F$中的标量） </p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">公理</th>
+<th style="text-align:left">说明 </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">向量加法的结合律</td>
+<td style="text-align:left">$\vec u+(\vec v+\vec w)=(\vec u+\vec v)+\vec w$</td>
+</tr>
+<tr>
+<td style="text-align:left">向量加法的交换律</td>
+<td style="text-align:left">$\vec u+\vec v=\vec v+\vec u$</td>
+</tr>
+<tr>
+<td style="text-align:left">向量加法的单位元</td>
+<td style="text-align:left">存在一个称作零向量的元素$\vec0\in V$，使得任意$\vec v$满足$\vec v+\vec0=\vec v$</td>
+</tr>
+<tr>
+<td style="text-align:left">向量加法的逆元</td>
+<td style="text-align:left">对任意$\vec v\in V$都存在其逆元$\vec{-v}\in V$使得$\vec v+(\vec{-v})=\vec0$</td>
+</tr>
+<tr>
+<td style="text-align:left">标量乘法与标量域乘法互换</td>
+<td style="text-align:left">$a(b\vec v)=(ab)\vec v$</td>
+</tr>
+<tr>
+<td style="text-align:left">标量乘法的单位元</td>
+<td style="text-align:left">域$F$内存在乘法单位元$1$满足$1\vec v=\vec v$  </td>
+</tr>
+<tr>
+<td style="text-align:left">标量乘法对向量加法的分配律</td>
+<td style="text-align:left">$a(\vec u+\vec v)=a\vec u+a\vec v$  </td>
+</tr>
+<tr>
+<td style="text-align:left">标量乘法对域加法的分配律</td>
+<td style="text-align:left">$(a+b)\vec v=a\vec v+b\vec v$</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>若满足以上公理，我们记$(F,V,+,\cdot)$为向量空间。  </p>
+<h3 id="线性相关（linearly-dependent）与线性无关（linearly-independent）"><a href="#线性相关（linearly-dependent）与线性无关（linearly-independent）" class="headerlink" title="线性相关（linearly dependent）与线性无关（linearly independent）"></a><a href="https://en.wikipedia.org/wiki/Linear_independence" target="_blank" rel="noopener">线性相关（linearly dependent）与线性无关（linearly independent）</a></h3><p>若向量空间$(F,V,+,\cdot)$中存在一组向量$\vec{v_1},\vec{v_2},\ldots,\vec{v_n}$，若域$F$中存在一组不全为$0$的数$a_1,a_2,\ldots,a_n$，使得：  </p>
+<script type="math/tex; mode=display">a_1\vec{v_1}+a_2\vec{v_2}+\cdots+a_n\vec{v_n}=\vec0</script><p>即：  </p>
+<script type="math/tex; mode=display">\sum_{i=1}^n a_i\vec{v_i}=\vec0</script><p>则称这组向量$\vec{v_1},\vec{v_2},\ldots,\vec{v_n}$线性相关，否则称这组向量线性无关。  </p>
+<h3 id="线性组合（linear-combination）"><a href="#线性组合（linear-combination）" class="headerlink" title="线性组合（linear combination）"></a><a href="https://en.wikipedia.org/wiki/Linear_combination" target="_blank" rel="noopener">线性组合（linear combination）</a></h3><p>令$S$是向量空间$(F,V,+,\cdot)$的子集。<br>若存在一组向量$\vec{v_1},\vec{v_2},\ldots,\vec{v_n}\in S$，和对应的标量$a_1,a_2,\ldots,a_n\in F$，使得$\vec v=a_1\vec{v_1}+a_2\vec{v_2}+\cdots+a_n\vec{v_n}$，则称$\vec v$是$S$的线性组合。  </p>
+<p>一组向量线性无关$\leftrightarrow$这组向量中没有向量可以用其他向量的线性组合所表示</p>
+<h3 id="张成（linear-span）"><a href="#张成（linear-span）" class="headerlink" title="张成（linear span）"></a><a href="https://en.wikipedia.org/wiki/Linear_span" target="_blank" rel="noopener">张成（linear span）</a></h3><p>令$S$是向量空间$(F,V,+,\cdot)$中的一组向量$\vec{v_1},\vec{v_2},\ldots,\vec{v_n}$。<br>$S$所有线性组合所构成的集合为$S$的张成，记为$span(S)$。  </p>
+<p>形象地理解，张成就是一组向量扩展形成的空间。<br>如，两个不平行向量可以构成平面空间。  </p>
+<h3 id="基（basis）"><a href="#基（basis）" class="headerlink" title="基（basis）)"></a><a href="https://en.wikipedia.org/wiki/Basis_(linear_algebra" target="_blank" rel="noopener">基（basis）</a>)</h3><p>若向量集合$V$中一组向量$\frak B$线性无关且能张成$V$，则称$\frak B$是$V$的一组基。  </p>
+<p>基与张成是相对的概念。<br>如，平面空间的基可以是任意两个不平行向量。  </p>
+<p>$\frak B$中的元素称为基向量。如果基中的元素有限，则称向量空间为有限维向量空间，将元素的个数称为向量空间的维度数。  </p>
+<h4 id="基的性质"><a href="#基的性质" class="headerlink" title="基的性质"></a>基的性质</h4><p>若$\frak B$是向量集合$V$的基，则$\frak B$具有以下性质：  </p>
+<ul>
+<li>$\frak B$的任何真子集无法张成$V$。  </li>
+<li>$V$中不含有其他包含$\frak B$的线性无关集合。  </li>
+<li>$V$中所有向量都可以唯一地表示为$\frak B$中向量的线性组合。  </li>
+</ul>
+<h4 id="基的构造方式"><a href="#基的构造方式" class="headerlink" title="基的构造方式"></a>基的构造方式</h4><p>随意选出一组向量$\vec{v_1},\vec{v_2},\ldots,\vec{v_n}$，依次检验每一个向量$\vec{v_i}$，若$\vec{v_i}$可以被表示为其他向量的线性组合，则去掉$\vec{v_i}$。<br>当这组向量中所有元素均被检验，留下的向量构成原向量空间的一组基。  </p>
+<h2 id="线性基在信息学竞赛中的应用"><a href="#线性基在信息学竞赛中的应用" class="headerlink" title="线性基在信息学竞赛中的应用"></a>线性基在信息学竞赛中的应用</h2><p>线性基一般运用于在一类异或问题中。  </p>
+<h3 id="异或线性基的定义"><a href="#异或线性基的定义" class="headerlink" title="异或线性基的定义"></a>异或线性基的定义</h3><p>对于一组数$a_0,a_1,\ldots,a_n$，将$a_i$的二进制$(b_m\cdots b_0)_2$看做一个向量$\vec{a_i}=(b_m,\ldots,b_0)$。<br>向量组$\vec{a_0},\vec{a_1},\ldots,\vec{a_n}$可以张成一个向量集合$S=span(\vec{a_0},\vec{a_1},\ldots,\vec{a_n})$，加上异或运算与标量乘法即可形成向量空间$V=(\lbrace 0,1\rbrace,S,\bigoplus,\cdot)$。  </p>
+<h3 id="异或线性基的构造"><a href="#异或线性基的构造" class="headerlink" title="异或线性基的构造"></a>异或线性基的构造</h3><p>我们可以用上述<em>基的构造方式</em>的方法构造一组基。<br>即，每次判断$\vec{a_i}$是否属于$span(\vec{a_1},\ldots,\vec{a_{j-1}})$，若属于就不将$\vec{a_i}$加入基$\frak B$，否则加入。<br>注意，当$i=1$时判断$\vec{a_1}$是否等于$\vec0$。  </p>
+<p>我们可以用类似高斯消元的方法判断向量能否被前面的向量张成。  </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">add</span><span class="params">(LL num)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> j=MAX_BASE; j&gt;=<span class="number">0</span>; j--)</span><br><span class="line">		<span class="keyword">if</span>(num&gt;&gt;j&amp;<span class="number">1</span>) &#123;</span><br><span class="line">			<span class="keyword">if</span>(b[j]) &#123; <span class="comment">//该位存在基向量</span></span><br><span class="line">				num^=b[j];</span><br><span class="line">				<span class="keyword">continue</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			b[j]=num;</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> k=j<span class="number">-1</span>; k&gt;=<span class="number">0</span>; k--)<span class="keyword">if</span>(b[j]&gt;&gt;k&amp;<span class="number">1</span>)b[j]^=b[k];</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> k=j+<span class="number">1</span>; k&lt;=MAX_BASE; k++)<span class="keyword">if</span>(b[k]&gt;&gt;j&amp;<span class="number">1</span>)b[k]^=b[j];</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">build</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;a)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> num:a)add(num);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们依次解释每一句代码的用途。<br>假设加入的数为$num$，以下所描述的第$j$位表示二进制的第$j$位，基第$j$位上的向量为$\vec{b_j}$。<br>称基矩阵为每一位的基向量二进制展开后得到的矩阵。  </p>
+<ol>
+<li>从高到低位依次检验第$j$位，若第$j$位为$1$则执行下列操作。</li>
+<li><p>若第$j$位上已存在一个基向量$\vec{b_j}$，则将$num$异或$\vec{b_j}$。<br>若该位已存在基向量，那么我们不能将$num$作为基向量放入该位，考虑将其放在更低的位。<br>为什么要将$num$异或$\vec{b_j}$呢？首先，这样做是正确的，因为无论是否将其异或$\vec{b_j}$，张成是不会变的。对于解题来说，我们可以得到$num\bigoplus\vec{b_j}$这个数。其次，将其异或$\vec{b_j}$是为了使得基矩阵有优秀的上三角性质。  </p>
+</li>
+<li><p>若第$j$位不存在基向量，且$num$当前第$j$位为$1$，此时应该将$num$作为基向量置入第$j$位。  </p>
+</li>
+<li>为了维护一个近似对角矩阵，对于第$j$位后面的位$k$，若$num$第$k$位为$1$，则将$num$异或$\vec{b_k}$，同样用$num$异或前面位的向量。  </li>
+</ol>
+<p>我们举一个例子。<br>假设$n=6,a=\lbrace7,16,3,6,13,2\rbrace$<br>一开始基矩阵为空：  </p>
+<script type="math/tex; mode=display">
+\begin{bmatrix}
+0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0
+\end{bmatrix}</script><p>加入$7=(111)_2$，矩阵变为：  </p>
+<script type="math/tex; mode=display">
+\begin{bmatrix}
+0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 1 & 1 & 1 \\
+0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0
+\end{bmatrix}</script><p>加入$16=(10000)_2$：  </p>
+<script type="math/tex; mode=display">
+\begin{bmatrix}
+1 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 1 & 1 & 1 \\
+0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0
+\end{bmatrix}</script><p>加入$3=(11)_2$：  </p>
+<script type="math/tex; mode=display">
+\begin{bmatrix}
+1 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 1 & 1 & 1 \\
+0 & 0 & 0 & 1 & 1 \\
+0 & 0 & 0 & 0 & 0
+\end{bmatrix}</script><p>为了维护近似对角矩阵，消去第三行的后两位，得到：  </p>
+<script type="math/tex; mode=display">
+\begin{bmatrix}
+1 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 1 & 0 & 0 \\
+0 & 0 & 0 & 1 & 1 \\
+0 & 0 & 0 & 0 & 0
+\end{bmatrix}</script><p>加入$6=(110)_2$，第三行已经有数，$6$被异或为$(010)_2=2$，第四行同样也有数，$2$被异或为$(001)_2=1$。  </p>
+<p>然后，矩阵变为：  </p>
+<script type="math/tex; mode=display">
+\begin{bmatrix}
+1 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 1 & 0 & 0 \\
+0 & 0 & 0 & 1 & 1 \\
+0 & 0 & 0 & 0 & 1
+\end{bmatrix}</script><p>用最后一行异或上面行得到：  </p>
+<script type="math/tex; mode=display">
+\begin{bmatrix}
+1 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 1 & 0 & 0 \\
+0 & 0 & 0 & 1 & 0 \\
+0 & 0 & 0 & 0 & 1
+\end{bmatrix}</script><p>加入$13=(1101)_2$，第二行没有数，直接加入，矩阵变为：  </p>
+<script type="math/tex; mode=display">
+\begin{bmatrix}
+1 & 0 & 0 & 0 & 0 \\
+0 & 1 & 1 & 0 & 1 \\
+0 & 0 & 1 & 0 & 0 \\
+0 & 0 & 0 & 1 & 0 \\
+0 & 0 & 0 & 0 & 1
+\end{bmatrix}</script><p>用下面的数异或第二行的数，得到矩阵：  </p>
+<script type="math/tex; mode=display">
+\begin{bmatrix}
+1 & 0 & 0 & 0 & 0 \\
+0 & 1 & 0 & 0 & 0 \\
+0 & 0 & 1 & 0 & 0 \\
+0 & 0 & 0 & 1 & 0 \\
+0 & 0 & 0 & 0 & 1
+\end{bmatrix}</script><p>接下来的数就加不进线性基了。<br>为什么称为类对角矩阵？<br>因为形成的矩阵不一定是一个对角矩阵，有可能非对角线也有$1$。  </p>
+<h3 id="异或线性基的性质"><a href="#异或线性基的性质" class="headerlink" title="异或线性基的性质"></a>异或线性基的性质</h3><p>对于最后得到的矩阵，若第$i$行主对角线上为$1$，我们称第$i$位存在于线性基中。  </p>
+<p>对于存在线性基的二进制位，有重要性质：<br><strong>对于任意存在线性基的二进制位$i$，至多有一个$\vec{b_j}$满足第$i$位为$1$</strong><br>证明：<br>我们用归纳法证明。  </p>
+<ul>
+<li>对于第一个加入线性基的向量，显然其所在的列只有一个$1$。  </li>
+<li>对于后加入线性基第$i$行的向量，对于$i$行后的所有行显然不会在第$i$列有数$1$，对于$i$前所有行若有$1$，经过异或操作可以将其消去。对于$i$行的其他位置所有的$1$都会被其下面行所消掉。因此，新加入一个向量同样满足性质。  </li>
+</ul>
+<p>利用数学归纳法可得，性质成立。  </p>
+<p><strong>注意：上述过程我们将矩阵消成了类对角矩阵，如果只消成上三角矩阵则不具备该性质，但我们仍能知道哪些二进制位存在于线性基中。有时为了代码简便或时间效率，只消成上三角矩阵。</strong></p>
+<h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><h3 id="求最大异或和"><a href="#求最大异或和" class="headerlink" title="求最大异或和"></a>求最大异或和</h3><p><a href="/loj113-maxxor/">LibreOJ113 最大异或和</a><br>先求出线性基，然后将线性基全部异或起来即可。<br>正确性显然，此时的异或与或等价。  </p>
+<h3 id="求k小异或和"><a href="#求k小异或和" class="headerlink" title="求k小异或和"></a>求k小异或和</h3><p><a href="/loj114-kthxor/">LibreOJ113 k大异或和</a><br>我们可以利用二进制的思想得到$k$小异或和。  </p>
+<h3 id="每个异或和出现次数"><a href="#每个异或和出现次数" class="headerlink" title="每个异或和出现次数"></a>每个异或和出现次数</h3><p><a href="/bzoj2844-albus/">bzoj2844 albus就是要第一个出场</a><br>线性基有优秀的性质。<br>每个异或和出现次数均为$2^{n-\left|\frak B\right|}$。</p>
+<h3 id="求子集异或和的和"><a href="#求子集异或和的和" class="headerlink" title="求子集异或和的和"></a>求子集异或和的和</h3><p><a href="/bzoj3811-malygos/">bzoj3811 玛里苟斯</a><br>因为线性基大小$\le63$，当线性基大小$\approx 20$时可以考虑枚举子集，再结合上述每个异或和出现次数即可得出答案。  </p>
+<h2 id="模板"><a href="#模板" class="headerlink" title="模板"></a>模板</h2><p><strong>注意：线性基常常涉及long long范围，因此尽量不要使用1ll&lt;&lt;BASE，常常忘记ll，使用右移更不容易错。</strong><br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> LL;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxn=<span class="number">20005</span>,MAX_BASE=<span class="number">60</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Linear_Bases</span> &#123;</span></span><br><span class="line">	LL b[MAX_BASE+<span class="number">5</span>];</span><br><span class="line">	Linear_Bases() &#123;</span><br><span class="line">		fill(b,b+MAX_BASE+<span class="number">1</span>,<span class="number">0</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">add</span><span class="params">(LL num)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j=MAX_BASE; j&gt;=<span class="number">0</span>; j--)</span><br><span class="line">			<span class="keyword">if</span>(num&gt;&gt;j&amp;<span class="number">1</span>) &#123;</span><br><span class="line">				<span class="keyword">if</span>(b[j]) &#123; <span class="comment">//该位存在基</span></span><br><span class="line">					num^=b[j];</span><br><span class="line">					<span class="keyword">continue</span>;</span><br><span class="line">				&#125;</span><br><span class="line">				b[j]=num;</span><br><span class="line">				<span class="keyword">for</span>(<span class="keyword">int</span> k=j<span class="number">-1</span>; k&gt;=<span class="number">0</span>; k--)<span class="keyword">if</span>(b[j]&gt;&gt;k&amp;<span class="number">1</span>)b[j]^=b[k];</span><br><span class="line">				<span class="keyword">for</span>(<span class="keyword">int</span> k=j+<span class="number">1</span>; k&lt;=MAX_BASE; k++)<span class="keyword">if</span>(b[k]&gt;&gt;j&amp;<span class="number">1</span>)b[k]^=b[j];</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">build</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;a)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> num:a)add(num);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">merge</span><span class="params">(<span class="keyword">const</span> Linear_Bases&amp; b)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;=MAX_BASE; i++)</span><br><span class="line">			<span class="keyword">if</span>(b.b[i])add(b.b[i]);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function">LL <span class="title">cal</span><span class="params">()</span> </span>&#123; <span class="comment">//最大异或和</span></span><br><span class="line">		LL ans=<span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;=MAX_BASE; i++)ans^=b[i];</span><br><span class="line">		<span class="keyword">return</span> ans;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li>维基百科</li>
+<li><a href="https://blog.sengxian.com/algorithms/linear-basis" target="_blank" rel="noopener">线性基学习笔记 - sengxian</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/euler-theorem-notes/" rel="bookmark">（扩展）欧拉定理学习笔记</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/bzoj4184-shallot/" rel="bookmark">「bzoj4184」shallot葱苗 - 线段树分治+线性基</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/bzoj3811-malygos/" rel="bookmark">「bzoj3811」玛里苟斯 - 分类讨论+线性基</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/SCOI2016-luckynumber/" rel="bookmark">「SCOI2016」幸运数字 - 线性基+倍增</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/bzoj2844-albus/" rel="bookmark">「bzoj2844」albus就是要第一个出场 - 线性基</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div>姥爷们赏瓶冰阔落吧~</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="Bill Yang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="Bill Yang 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Bill Yang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.bill.moe/linear-bases-notes/" title="线性基学习笔记">https://blog.bill.moe/linear-bases-notes/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/线性基/" rel="tag"><i class="fa fa-tag"></i> 线性基</a>
+              <a href="/tags/学习笔记/" rel="tag"><i class="fa fa-tag"></i> 学习笔记</a>
+          </div>
+
+        
+  <div class="post-widgets">
+    <div class="wp_rating">
+      <div id="wpac-rating"></div>
+    </div>
+  </div>
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/SCOI2016-luckynumber/" rel="prev" title="「SCOI2016」幸运数字 - 线性基+倍增">
+      <i class="fa fa-chevron-left"></i> 「SCOI2016」幸运数字 - 线性基+倍增
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/bzoj3811-malygos/" rel="next" title="「bzoj3811」玛里苟斯 - 分类讨论+线性基">
+      「bzoj3811」玛里苟斯 - 分类讨论+线性基 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一些记号"><span class="nav-number">1.</span> <span class="nav-text">一些记号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定义（们）"><span class="nav-number">2.</span> <span class="nav-text">定义（们）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#向量空间（vector-space）"><span class="nav-number">2.1.</span> <span class="nav-text">向量空间（vector space）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线性相关（linearly-dependent）与线性无关（linearly-independent）"><span class="nav-number">2.2.</span> <span class="nav-text">线性相关（linearly dependent）与线性无关（linearly independent）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线性组合（linear-combination）"><span class="nav-number">2.3.</span> <span class="nav-text">线性组合（linear combination）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#张成（linear-span）"><span class="nav-number">2.4.</span> <span class="nav-text">张成（linear span）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基（basis）"><span class="nav-number">2.5.</span> <span class="nav-text">基（basis）)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#基的性质"><span class="nav-number">2.5.1.</span> <span class="nav-text">基的性质</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#基的构造方式"><span class="nav-number">2.5.2.</span> <span class="nav-text">基的构造方式</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线性基在信息学竞赛中的应用"><span class="nav-number">3.</span> <span class="nav-text">线性基在信息学竞赛中的应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#异或线性基的定义"><span class="nav-number">3.1.</span> <span class="nav-text">异或线性基的定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#异或线性基的构造"><span class="nav-number">3.2.</span> <span class="nav-text">异或线性基的构造</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#异或线性基的性质"><span class="nav-number">3.3.</span> <span class="nav-text">异或线性基的性质</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应用"><span class="nav-number">4.</span> <span class="nav-text">应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#求最大异或和"><span class="nav-number">4.1.</span> <span class="nav-text">求最大异或和</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#求k小异或和"><span class="nav-number">4.2.</span> <span class="nav-text">求k小异或和</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#每个异或和出现次数"><span class="nav-number">4.3.</span> <span class="nav-text">每个异或和出现次数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#求子集异或和的和"><span class="nav-number">4.4.</span> <span class="nav-text">求子集异或和的和</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模板"><span class="nav-number">5.</span> <span class="nav-text">模板</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">6.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Bill Yang"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Bill Yang</p>
+  <div class="site-description" itemprop="description">这辈子都不可能更新的</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">675</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">234</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=935683004" title="QQ → tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=935683004" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i>QQ</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ym13883407586@outlook.com" title="E-Mail → mailto:ym13883407586@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/BillYang2016" title="GitHub → https://github.com/BillYang2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://coding.net/u/Bill_Yang_2016" title="Coding → https://coding.net/u/Bill_Yang_2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-git-square"></i>Coding</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://music.163.com/#/user/home?nickname=Bill_Yang2016" title="网易云音乐 → http://music.163.com/#/user/home?nickname=Bill_Yang2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-music"></i>网易云音乐</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://space.bilibili.com/233682260/#/" title="bilibili → https://space.bilibili.com/233682260/#/" rel="noopener" target="_blank"><i class="fa fa-fw fa-youtube-play"></i>bilibili</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → /atom.xml"><i class="fa fa-fw fa-rss"></i>RSS</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      我的朋友们
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://pointedpoints.github.io/" title="http://pointedpoints.github.io/" rel="noopener" target="_blank">pointedpoints</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://keke046.coding.me/" title="https://keke046.coding.me/" rel="noopener" target="_blank">KEKE046</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://imperfect_zx.coding.me/" title="https://imperfect_zx.coding.me/" rel="noopener" target="_blank">Imperfect</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://achen.world/" title="https://achen.world/" rel="noopener" target="_blank">Achen</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://metakari.one/" title="https://metakari.one/" rel="noopener" target="_blank">Metakar1</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://39.106.98.75/" title="http://39.106.98.75/" rel="noopener" target="_blank">魏启大陆</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/friends/" title="/friends/">更多朋友们</a>
+        </li>
+    </ul>
+  </div>
+<!-- none-select-br -->
+
+<p></p>
+
+<!-- hitokoto -->
+
+<div class="hitokoto-title">
+	<i class="fa fa-paragraph"></i>
+	<b>一言</b>
+</div>
+
+<div id="hitokoto">:D 获取中...</div>
+<i id="hitofrom">:D 获取中...</i>
+
+<script src="https://cdn.jsdelivr.net/npm/bluebird@3/js/browser/bluebird.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/whatwg-fetch@2.0.3/fetch.min.js"></script>
+<script>
+  fetch('https://v1.hitokoto.cn')
+    .then(function (res){
+      return res.json();
+    })
+    .then(function (data) {
+      var hitokoto = document.getElementById('hitokoto');
+      hitokoto.innerText = '\xa0\xa0\xa0\xa0\xa0\xa0\xa0' + data.hitokoto;
+      var hitofrom = document.getElementById('hitofrom');
+      hitofrom.innerText = "——" + data.from + '\xa0'; 
+    })
+    .catch(function (err) {
+      console.error(err);
+    })
+</script>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Bill Yang 以 <a class="theme-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a> 协议发布</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+  <script>
+  if (CONFIG.page.isPost) {
+    wpac_init = window.wpac_init || [];
+    wpac_init.push({
+      widget: 'Rating',
+      id: 10154,
+      el: 'wpac-rating',
+      color: 'fc6423'
+    });
+    (function() {
+      if ('WIDGETPACK_LOADED' in window) return;
+      WIDGETPACK_LOADED = true;
+      var mc = document.createElement('script');
+      mc.type = 'text/javascript';
+      mc.async = true;
+      mc.src = '//embed.widgetpack.com/widget.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+    })();
+  }
+  </script>
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout: 3000,
+        priority: true,
+        ignores: [uri => uri.includes('#'),uri => uri == 'https://blog.bill.moe/linear-bases-notes/',]
+      });
+      });
+  </script>
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: true,
+      notify: false,
+      appId: 'JYwxXHHRe8RNGu498SnK9B3N-gzGzoHsz',
+      appKey: 'JBz9GW9kidjPp7gW5Y6VIgfe',
+      placeholder: "吹雪は猫~",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: 'zh-cn' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

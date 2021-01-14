@@ -1,0 +1,43 @@
+<svg width="420" height="210" xmlns="http://www.w3.org/2000/svg">
+ <!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ -->
+
+ <g>
+  <title>background</title>
+  <rect fill="#fff" id="canvas_background" height="212" width="422" y="-1" x="-1"/>
+  <g display="none" id="canvasGrid">
+   <rect fill="url(#gridpattern)" stroke-width="0" y="0" x="0" height="100%" width="100%" id="svg_19"/>
+  </g>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <text xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="18" id="svg_2" y="146" x="10" fill-opacity="null" stroke-opacity="null" stroke-width="0" stroke="#000" fill="#000000">孤立点</text>
+  <ellipse ry="18" rx="18" id="svg_3" cy="107.5" cx="34" stroke-width="1.5" stroke="#000" fill="#fff"/>
+  <ellipse ry="18" rx="18" id="svg_5" cy="107.5" cx="111" stroke-width="1.5" stroke="#000" fill="#fff"/>
+  <line stroke-linecap="null" stroke-linejoin="null" id="svg_6" y2="109" x2="93" y1="109" x1="52" fill-opacity="null" stroke-opacity="null" stroke-width="1.5" stroke="#000" fill="none"/>
+  <ellipse ry="18" rx="18" id="svg_7" cy="107.5" cx="188" stroke-width="1.5" stroke="#000" fill="#fff"/>
+  <line stroke-linecap="null" stroke-linejoin="null" id="svg_8" y2="109" x2="170" y1="109" x1="129" fill-opacity="null" stroke-opacity="null" stroke-width="3.5" stroke="#000" fill="none"/>
+  <ellipse ry="18" rx="18" id="svg_9" cy="34.5" cx="245" stroke-width="1.5" stroke="#000" fill="#fff"/>
+  <ellipse ry="18" rx="18" id="svg_10" cy="180.5" cx="245" stroke-width="1.5" stroke="#000" fill="#fff"/>
+  <line stroke="#000" stroke-linecap="null" stroke-linejoin="null" id="svg_11" y2="46" x2="232.000002" y1="96.999999" x1="202.000001" fill-opacity="null" stroke-opacity="null" stroke-width="1.5" fill="none"/>
+  <line stroke="#000" stroke-linecap="null" stroke-linejoin="null" id="svg_12" y2="171.000001" x2="230.999999" y1="121" x1="201" fill-opacity="null" stroke-opacity="null" stroke-width="1.5" fill="none"/>
+  <ellipse ry="18" rx="18" id="svg_13" cy="67.5" cx="327" stroke-width="1.5" stroke="#000" fill="#fff"/>
+  <ellipse ry="18" rx="18" id="svg_14" cy="147.5" cx="327" stroke-width="1.5" stroke="#000" fill="#fff"/>
+  <line stroke="#000" stroke-linecap="null" stroke-linejoin="null" id="svg_15" y2="59" x2="311" y1="44" x1="261" fill-opacity="null" stroke-opacity="null" stroke-width="3.5" fill="none"/>
+  <line stroke-linecap="null" stroke-linejoin="null" id="svg_16" y2="156" x2="311" y1="177" x1="263" fill-opacity="null" stroke-opacity="null" stroke-width="3.5" stroke="#000" fill="none"/>
+  <line stroke-linecap="null" stroke-linejoin="null" id="svg_17" y2="129" x2="327" y1="85" x1="327" fill-opacity="null" stroke-opacity="null" stroke-width="1.5" stroke="#000" fill="none"/>
+  <line stroke-linecap="null" stroke-linejoin="null" id="svg_18" y2="55" x2="73" y1="90" x1="44" fill-opacity="null" stroke-opacity="null" stroke-width="1.5" stroke="#000" fill="none"/>
+  <line stroke-linecap="null" stroke-linejoin="null" id="svg_20" y2="92" x2="99" y1="56" x1="73" fill-opacity="null" stroke-opacity="null" stroke-width="1.5" stroke="#000" fill="none"/>
+  <text xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="18" id="svg_21" y="48" x="47" fill-opacity="null" stroke-opacity="null" stroke-width="0" stroke="#000" fill="#000000">match</text>
+  <line stroke="#000" stroke-linecap="null" stroke-linejoin="null" id="svg_22" y2="59" x2="143.000001" y1="91.000002" x1="119" fill-opacity="null" stroke-opacity="null" stroke-width="1.5" fill="none"/>
+  <line stroke-linecap="null" stroke-linejoin="null" id="svg_23" y2="91" x2="175" y1="59" x1="142" fill-opacity="null" stroke-opacity="null" stroke-width="1.5" stroke="#000" fill="none"/>
+  <text xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="18" id="svg_26" y="48" x="127" fill-opacity="null" stroke-opacity="null" stroke-width="0" stroke="#000" fill="#000000">pre</text>
+  <line fill="none" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="117" y1="86" x2="120" y2="92" id="svg_24" stroke-linejoin="null" stroke-linecap="null" stroke="#000"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="120" y1="91" x2="124" y2="91" id="svg_27" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="351" y1="73" x2="378" y2="111" id="svg_28" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="348" y1="150" x2="377" y2="111" id="svg_29" stroke-linejoin="null" stroke-linecap="null"/>
+  <text fill="#000000" stroke="#000" stroke-width="0" stroke-opacity="null" fill-opacity="null" x="380" y="114" id="svg_30" font-size="18" font-family="Helvetica, Arial, sans-serif" text-anchor="start" xml:space="preserve">pre</text>
+  <ellipse stroke="#000" opacity="0.5" ry="98.499996" rx="101.500005" id="svg_1" cy="107.499996" cx="261.000005" stroke-width="1.5" fill="#00ff00"/>
+  <line stroke-linecap="null" stroke-linejoin="null" id="svg_4" y2="165" x2="169.5" y1="165" x1="25.5" stroke-opacity="null" stroke-width="1.5" stroke="#000" fill="none"/>
+  <text xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="18" id="svg_25" y="186" x="78.5" stroke-opacity="null" stroke-width="0" stroke="#000" fill="#000000">花茎</text>
+ </g>
+</svg>

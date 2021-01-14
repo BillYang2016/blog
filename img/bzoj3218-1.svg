@@ -1,0 +1,42 @@
+<svg width="290" height="290" xmlns="http://www.w3.org/2000/svg">
+ <!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ -->
+
+ <g>
+  <title>background</title>
+  <rect x="-1" y="-1" width="292" height="292" id="canvas_background" fill="#fff"/>
+  <g id="canvasGrid" display="none">
+   <rect id="svg_21" width="100%" height="100%" x="0" y="0" stroke-width="0" fill="url(#gridpattern)"/>
+  </g>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <ellipse fill="#fff" stroke="#000" stroke-width="1.5" cx="144" cy="34" id="svg_1" rx="21.5" ry="21.5"/>
+  <text fill="#000000" stroke="#000" stroke-width="0" x="135.5" y="42.5" id="svg_2" font-size="24" font-family="Helvetica, Arial, sans-serif" text-anchor="start" xml:space="preserve">S</text>
+  <ellipse fill="#fff" stroke="#000" stroke-width="1.5" cx="144" cy="255" id="svg_3" rx="21.5" ry="21.5"/>
+  <text fill="#000000" stroke="#000" stroke-width="0" x="136.5" y="264.5" id="svg_4" font-size="24" font-family="Helvetica, Arial, sans-serif" text-anchor="start" xml:space="preserve">T</text>
+  <ellipse fill="#fff" stroke="#000" stroke-width="1.5" cx="34" cy="141" id="svg_5" rx="21.5" ry="21.5"/>
+  <ellipse fill="#fff" stroke="#000" stroke-width="1.5" cx="144" cy="141" id="svg_6" rx="21.5" ry="21.5"/>
+  <ellipse fill="#fff" stroke="#000" stroke-width="1.5" cx="254" cy="141" id="svg_7" rx="21.5" ry="21.5"/>
+  <text fill="#000000" stroke="#000" stroke-width="0" stroke-opacity="null" fill-opacity="null" x="30.5" y="149.5" id="svg_8" font-size="24" font-family="Helvetica, Arial, sans-serif" text-anchor="start" xml:space="preserve">i</text>
+  <text fill="#000000" stroke="#000" stroke-width="0" stroke-opacity="null" fill-opacity="null" x="252.5" y="148.5" id="svg_9" font-size="24" font-family="Helvetica, Arial, sans-serif" text-anchor="start" xml:space="preserve">j</text>
+  <text fill="#000000" stroke="#000" stroke-width="0" stroke-opacity="null" fill-opacity="null" x="139.5" y="149.5" id="svg_10" font-size="24" font-family="Helvetica, Arial, sans-serif" text-anchor="start" xml:space="preserve">i'</text>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="130.5" y1="50.5" x2="45.5" y2="120.5" id="svg_11" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="43.499999" y1="161.500001" x2="125.5" y2="243.5" id="svg_12" stroke-linejoin="null" stroke-linecap="null" stroke="#000"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="160.5" y1="49.5" x2="238.5" y2="122.5" id="svg_13" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="247.5" y1="162.5" x2="165.5" y2="248.5" id="svg_14" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="54.5" y1="143.5" x2="123.5" y2="143.5" id="svg_15" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="166.5" y1="142.5" x2="231.5" y2="143" id="svg_16" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="114.5" y1="136.5" x2="121.5" y2="143.5" id="svg_17" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="223.5" y1="136.5" x2="232.5" y2="143.5" id="svg_18" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="122.5" y1="144.5" x2="115.5" y2="150.5" id="svg_19" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="232.5" y1="142.5" x2="224" y2="151" id="svg_20" stroke-linejoin="null" stroke-linecap="null"/>
+  <text xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="24" id="svg_22" y="90.5" x="59.5" stroke-width="0" stroke="#000" fill="#000000">bi</text>
+  <text xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="24" id="svg_23" y="62.5" x="6.5" stroke-width="0" stroke="#000" fill="#000000">选择白色</text>
+  <text xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="24" id="svg_24" y="232.5" x="5.5" stroke-width="0" stroke="#000" fill="#000000">选择黑色</text>
+  <text xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="24" id="svg_25" y="90.5" x="207.5" stroke-width="0" stroke="#000" fill="#000000">bj</text>
+  <text xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="24" id="svg_26" y="209.5" x="52.5" stroke-width="0" stroke="#000" fill="#000000">wi</text>
+  <text xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="24" id="svg_27" y="215.5" x="213.5" stroke-width="0" stroke="#000" fill="#000000">wj</text>
+  <text xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="24" id="svg_28" y="136.5" x="178.5" stroke-width="0" stroke="#000" fill="#000000">inf</text>
+  <text xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="24" id="svg_29" y="136.5" x="75.5" stroke-width="0" stroke="#000" fill="#000000">pi</text>
+ </g>
+</svg>

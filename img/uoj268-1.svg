@@ -1,0 +1,36 @@
+<svg width="340" height="310" xmlns="http://www.w3.org/2000/svg">
+ <!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ -->
+ <g>
+  <title>background</title>
+  <rect fill="#fff" id="canvas_background" height="312" width="342" y="-1" x="-1"/>
+  <g display="none" overflow="visible" y="0" x="0" height="100%" width="100%" id="canvasGrid">
+   <rect fill="url(#gridpattern)" stroke-width="0" y="0" x="0" height="100%" width="100%"/>
+  </g>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <ellipse ry="10" rx="10" id="svg_1" cy="36" cx="57" stroke-width="1.5" stroke="#000" fill="#fff"/>
+  <ellipse ry="10" rx="10" id="svg_2" cy="193" cx="201" stroke-width="1.5" stroke="#000" fill="#fff"/>
+  <line stroke-linecap="null" stroke-linejoin="null" id="svg_3" y2="185" x2="194.5" y1="44" x1="64.5" fill-opacity="null" stroke-opacity="null" stroke-width="1.5" stroke="#000" fill="none"/>
+  <text transform="rotate(48 198.49999999999991,69.50000000000003) " xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="24" id="svg_4" y="78" x="150.5" fill-opacity="null" stroke-opacity="null" stroke-width="0" stroke="#000" fill="#000000">重链区间</text>
+  <ellipse ry="10" rx="10" id="svg_5" cy="68" cx="86" stroke-width="1.5" stroke="#000" fill="#fff"/>
+  <ellipse ry="10" rx="10" id="svg_6" cy="160" cx="170" stroke-width="1.5" stroke="#000" fill="#fff"/>
+  <ellipse ry="10" rx="10" id="svg_7" cy="97" cx="70" stroke-width="1.5" stroke="#000" fill="#fff"/>
+  <line stroke-linecap="null" stroke-linejoin="null" id="svg_8" y2="38" x2="149.5" y1="24" x1="81.5" fill-opacity="null" stroke-opacity="null" stroke-width="1.5" stroke="#000" fill="none"/>
+  <line stroke-linecap="null" stroke-linejoin="null" id="svg_10" y2="176" x2="204.5" y1="116" x1="215.5" fill-opacity="null" stroke-opacity="null" stroke-width="1.5" stroke="#000" fill="none"/>
+  <line stroke-linecap="null" stroke-linejoin="null" id="svg_11" y2="115" x2="129.5" y1="105" x1="140.5" fill-opacity="null" stroke-opacity="null" stroke-width="1.5" stroke="#000" fill="none"/>
+  <text transform="rotate(48 122.8359374999999,122.50000000000003) " xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="24" id="svg_12" y="131" x="103.5" fill-opacity="null" stroke-opacity="null" stroke-width="0" stroke="#000" fill="#000000">mid</text>
+  <ellipse ry="10" rx="10" id="svg_13" cy="190" cx="160" stroke-width="1.5" stroke="#000" fill="#fff"/>
+  <line stroke-linecap="null" stroke-linejoin="null" id="svg_14" y2="217" x2="39.5" y1="107" x1="67.5" fill-opacity="null" stroke-opacity="null" stroke-width="1.5" stroke="#000" fill="none"/>
+  <line stroke-linecap="null" stroke-linejoin="null" id="svg_15" y2="289" x2="142.5" y1="200" x1="159.5" fill-opacity="null" stroke-opacity="null" stroke-width="1.5" stroke="#000" fill="none"/>
+  <line stroke-dasharray="2,2" stroke-linecap="null" stroke-linejoin="null" id="svg_16" y2="78" x2="82.5" y1="88" x1="73.5" fill-opacity="null" stroke-opacity="null" stroke-width="1.5" stroke="#000" fill="none"/>
+  <line stroke-linecap="null" stroke-linejoin="null" id="svg_17" y2="169" x2="166.5" y1="180" x1="163.5" fill-opacity="null" stroke-opacity="null" stroke-dasharray="2,2" stroke-width="1.5" stroke="#000" fill="none"/>
+  <text style="cursor: move;" xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="24" id="svg_18" y="169" x="7.5" stroke-opacity="null" stroke-width="0" stroke="#000" fill="#00ffff">重链∑a</text>
+  <text xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="24" id="svg_21" y="245" x="113.5" stroke-opacity="null" stroke-width="0" stroke="#000" fill="#ff0000">重链∑a</text>
+  <text xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="24" id="svg_22" y="63" x="98.5" stroke-opacity="null" stroke-width="0" stroke="#000" fill="#00ffff">b</text>
+  <text transform="rotate(48 125.7265625,86.5) " xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="24" id="svg_24" y="95" x="110.5" stroke-opacity="null" stroke-width="0" stroke="#000" fill="#00ffff">∑a</text>
+  <text transform="rotate(48 160.72656249999997,124.50000000000004) " xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="24" id="svg_25" y="133" x="145.5" stroke-opacity="null" stroke-width="0" stroke="#000" fill="#ff0000">∑a</text>
+  <text xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="24" id="svg_26" y="55" x="263.5" stroke-opacity="null" stroke-width="0" stroke="#000" fill="#ff0000">rmax</text>
+  <text xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="24" id="svg_27" y="29" x="263.5" stroke-opacity="null" stroke-width="0" stroke="#000" fill="#00ffff">lmax</text>
+ </g>
+</svg>

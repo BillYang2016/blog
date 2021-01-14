@@ -1,0 +1,32 @@
+<svg width="290" height="260" xmlns="http://www.w3.org/2000/svg">
+ <!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ -->
+ <g>
+  <title>background</title>
+  <rect fill="#fff" id="canvas_background" height="262" width="292" y="-1" x="-1"/>
+  <g display="none" overflow="visible" y="0" x="0" height="100%" width="100%" id="canvasGrid">
+   <rect fill="url(#gridpattern)" stroke-width="0" y="0" x="0" height="100%" width="100%"/>
+  </g>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <rect id="svg_1" height="235" width="257" y="15" x="17.5" stroke-width="1.5" stroke="#000" fill="#fff"/>
+  <line stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_2" y2="250" x2="274.5" y1="15" x1="17.5" stroke-width="1.5" stroke="#000" fill="none"/>
+  <text stroke="#000" transform="matrix(0.9871244430541992,0,0,1,4.229620456695557,0) " xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="24" id="svg_3" y="44" x="14.45652" stroke-width="0" fill="#000000">1 1 1 1 1 1 1 1 1 1 1 1 1</text>
+  <ellipse ry="10" rx="9.5" id="svg_4" cy="135" cx="138" stroke-width="1.5" stroke="#000" fill="#fff"/>
+  <ellipse ry="10" rx="9.5" id="svg_5" cy="116" cx="114" stroke-width="1.5" stroke="#000" fill="#fff"/>
+  <ellipse ry="10" rx="9.5" id="svg_6" cy="95" cx="93" stroke-width="1.5" stroke="#000" fill="#fff"/>
+  <ellipse ry="10" rx="9.5" id="svg_7" cy="75" cx="71" stroke-width="1.5" stroke="#000" fill="#fff"/>
+  <ellipse ry="10" rx="9.5" id="svg_8" cy="54" cx="48" stroke-width="1.5" stroke="#000" fill="#fff"/>
+  <ellipse ry="10" rx="9.5" id="svg_9" cy="110" cx="138" stroke-width="1.5" stroke="#000" fill="#fff"/>
+  <ellipse ry="10" rx="9.5" id="svg_10" cy="84" cx="138" stroke-width="1.5" stroke="#000" fill="#fff"/>
+  <ellipse ry="10" rx="9.5" id="svg_11" cy="58" cx="138" stroke-width="1.5" stroke="#000" fill="#fff"/>
+  <text xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="20" id="svg_12" y="140" x="133.5" fill-opacity="null" stroke-opacity="null" stroke-width="0" stroke="#000" fill="#000000">x</text>
+  <line stroke-linecap="null" stroke-linejoin="null" id="svg_13" y2="67" x2="62.5" y1="61" x1="55.5" fill-opacity="null" stroke-opacity="null" stroke-width="1.5" stroke="#000" fill="none"/>
+  <line stroke-linecap="null" stroke-linejoin="null" id="svg_14" y2="88" x2="84.5" y1="82" x1="77.5" fill-opacity="null" stroke-opacity="null" stroke-width="1.5" stroke="#000" fill="none"/>
+  <line stroke-linecap="null" stroke-linejoin="null" id="svg_15" y2="108" x2="107.5" y1="102" x1="100.5" fill-opacity="null" stroke-opacity="null" stroke-width="1.5" stroke="#000" fill="none"/>
+  <line stroke-linecap="null" stroke-linejoin="null" id="svg_16" y2="130" x2="128.5" y1="124" x1="121.5" fill-opacity="null" stroke-opacity="null" stroke-width="1.5" stroke="#000" fill="none"/>
+  <line stroke-linecap="null" stroke-linejoin="null" id="svg_17" y2="73" x2="137.5" y1="67" x1="137.5" fill-opacity="null" stroke-opacity="null" stroke-width="1.5" stroke="#000" fill="none"/>
+  <line stroke-linecap="null" stroke-linejoin="null" id="svg_18" y2="99" x2="137.5" y1="93" x1="137.5" fill-opacity="null" stroke-opacity="null" stroke-width="1.5" stroke="#000" fill="none"/>
+  <line stroke-linecap="null" stroke-linejoin="null" id="svg_19" y2="124" x2="137.5" y1="118" x1="137.5" fill-opacity="null" stroke-opacity="null" stroke-width="1.5" stroke="#000" fill="none"/>
+ </g>
+</svg>

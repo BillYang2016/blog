@@ -1,0 +1,154 @@
+<svg width="780" height="410" xmlns="http://www.w3.org/2000/svg">
+ <!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ -->
+
+ <g>
+  <title>background</title>
+  <rect fill="#fff" id="canvas_background" height="412" width="782" y="-1" x="-1"/>
+  <g display="none" id="canvasGrid">
+   <rect fill="url(#gridpattern)" stroke-width="0" y="0" x="0" height="100%" width="100%" id="svg_21"/>
+  </g>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <line fill="none" stroke="#000" stroke-width="1.5" x1="65.5" y1="43.5" x2="397.5" y2="44" id="svg_30" stroke-linejoin="undefined" stroke-linecap="undefined"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" x1="66.5" y1="43.5" x2="66.5" y2="37.5" id="svg_31" stroke-linejoin="undefined" stroke-linecap="undefined"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" x1="397.5" y1="44.5" x2="397.5" y2="38" id="svg_32" stroke-linejoin="undefined" stroke-linecap="undefined"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" x1="65.5" y1="101.5" x2="230" y2="102" id="svg_33" stroke-linejoin="undefined" stroke-linecap="undefined"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" x1="66.5" y1="101.5" x2="66.5" y2="95.5" id="svg_34" stroke-linejoin="undefined" stroke-linecap="undefined"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" x1="229.5" y1="102.5" x2="229.5" y2="96" id="svg_35" stroke-linejoin="undefined" stroke-linecap="undefined"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" x1="233.5" y1="101.5" x2="398" y2="102" id="svg_36" stroke-linejoin="undefined" stroke-linecap="undefined"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" x1="234.5" y1="101.5" x2="234.5" y2="95.5" id="svg_37" stroke-linejoin="undefined" stroke-linecap="undefined"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" x1="397.5" y1="102.5" x2="397.5" y2="96" id="svg_38" stroke-linejoin="undefined" stroke-linecap="undefined"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" x1="65.5" y1="157.5" x2="146" y2="158" id="svg_39" stroke-linejoin="undefined" stroke-linecap="undefined"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" x1="66.5" y1="157.5" x2="66.5" y2="151.5" id="svg_40" stroke-linejoin="undefined" stroke-linecap="undefined"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" x1="145.5" y1="158.5" x2="145.5" y2="152" id="svg_41" stroke-linejoin="undefined" stroke-linecap="undefined"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" x1="150.5" y1="157.5" x2="231" y2="158" id="svg_42" stroke-linejoin="undefined" stroke-linecap="undefined"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" x1="149.5" y1="157.5" x2="149.5" y2="151.5" id="svg_43" stroke-linejoin="undefined" stroke-linecap="undefined"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" x1="230.5" y1="158.5" x2="230.5" y2="152" id="svg_44" stroke-linejoin="undefined" stroke-linecap="undefined"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" x1="234.5" y1="157.5" x2="315" y2="158" id="svg_45" stroke-linejoin="undefined" stroke-linecap="undefined"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" x1="235.5" y1="157.5" x2="235.5" y2="151.5" id="svg_46" stroke-linejoin="undefined" stroke-linecap="undefined"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" x1="314.5" y1="158.5" x2="314.5" y2="152" id="svg_47" stroke-linejoin="undefined" stroke-linecap="undefined"/>
+  <ellipse fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" cx="82.5" cy="209" id="svg_51" rx="14" ry="13.5"/>
+  <ellipse fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" cx="215.5" cy="209" id="svg_54" rx="14" ry="13.5"/>
+  <ellipse fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" cx="256.5" cy="209" id="svg_55" rx="14" ry="13.5"/>
+  <text fill="#000000" stroke="#000" stroke-width="0" stroke-opacity="null" fill-opacity="null" x="76.5" y="216.5" id="svg_60" font-size="20" font-family="Helvetica, Arial, sans-serif" text-anchor="start" xml:space="preserve">1</text>
+  <text fill="#000000" stroke="#000" stroke-width="0" stroke-opacity="null" fill-opacity="null" x="209.5" y="216.5" id="svg_63" font-size="20" font-family="Helvetica, Arial, sans-serif" text-anchor="start" xml:space="preserve">4</text>
+  <text fill="#000000" stroke="#000" stroke-width="0" stroke-opacity="null" fill-opacity="null" x="250.5" y="216.5" id="svg_64" font-size="20" font-family="Helvetica, Arial, sans-serif" text-anchor="start" xml:space="preserve">5</text>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="231.5" y1="47.5" x2="145.5" y2="85.5" id="svg_69" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="147.5" y1="77.5" x2="146.5" y2="85.5" id="svg_70" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="146.5" y1="85.5" x2="154.5" y2="86.5" id="svg_71" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="148" y1="109.5" x2="101.5" y2="147.5" id="svg_72" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="103.5" y1="139.5" x2="102.5" y2="147.5" id="svg_73" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="102.5" y1="147.5" x2="110.5" y2="148.5" id="svg_74" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="315" y1="109.5" x2="268.5" y2="147.5" id="svg_75" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="270.5" y1="139.5" x2="269.5" y2="147.5" id="svg_76" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="269.5" y1="147.5" x2="277.5" y2="148.5" id="svg_77" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="231.5" y1="48.5" x2="320.5" y2="82.5" id="svg_78" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="319.5" y1="75" x2="320.5" y2="83.5" id="svg_79" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="320.5" y1="83.5" x2="314.5" y2="86.5" id="svg_80" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="148" y1="110.5" x2="189.5" y2="144.5" id="svg_81" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="188.5" y1="137" x2="189.5" y2="145.5" id="svg_82" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="189.5" y1="145.5" x2="183.5" y2="148.5" id="svg_83" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="109" y1="160" x2="84.5" y2="193.5" id="svg_87" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="84.5" y1="185.5" x2="83.5" y2="193.5" id="svg_88" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="83.5" y1="193.5" x2="91.5" y2="194.5" id="svg_89" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="282" y1="160" x2="257.5" y2="193.5" id="svg_93" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="257.5" y1="185.5" x2="256.5" y2="193.5" id="svg_94" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="256.5" y1="193.5" x2="264.5" y2="194.5" id="svg_95" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="195" y1="160" x2="210.5" y2="193.5" id="svg_105" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="211.5" y1="186" x2="212.5" y2="194.5" id="svg_106" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="212.5" y1="194.5" x2="204" y2="193" id="svg_107" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="82.5" y1="223.5" x2="82.5" y2="253.5" id="svg_111" stroke-linejoin="null" stroke-linecap="null"/>
+  <ellipse fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" cx="82.5" cy="266" id="svg_112" rx="14" ry="13.5"/>
+  <text fill="#000000" stroke="#000" stroke-width="0" stroke-opacity="null" fill-opacity="null" x="77.5" y="273.5" id="svg_113" font-size="20" font-family="Helvetica, Arial, sans-serif" text-anchor="start" xml:space="preserve">3</text>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="77.5" y1="246.5" x2="81" y2="251.5" id="svg_114" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="82.5" y1="252.5" x2="88.5" y2="247.5" id="svg_115" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="214.5" y1="223.5" x2="214.5" y2="253.5" id="svg_126" stroke-linejoin="null" stroke-linecap="null"/>
+  <ellipse fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" cx="214.5" cy="266" id="svg_127" rx="14" ry="13.5"/>
+  <text fill="#000000" stroke-width="0" stroke-opacity="null" fill-opacity="null" x="208.5" y="273.5" id="svg_128" font-size="20" font-family="Helvetica, Arial, sans-serif" text-anchor="start" xml:space="preserve" stroke="#000">1</text>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="209.5" y1="246.5" x2="213" y2="251.5" id="svg_129" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="214.5" y1="252.5" x2="220.5" y2="247.5" id="svg_130" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="257.5" y1="223.5" x2="257.5" y2="253.5" id="svg_131" stroke-linejoin="null" stroke-linecap="null"/>
+  <ellipse fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" cx="257.5" cy="266" id="svg_132" rx="14" ry="13.5"/>
+  <text fill="#000000" stroke-width="0" stroke-opacity="null" fill-opacity="null" x="252.5" y="273.5" id="svg_133" font-size="20" font-family="Helvetica, Arial, sans-serif" text-anchor="start" xml:space="preserve" stroke="#000">2</text>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="252.5" y1="246.5" x2="256" y2="251.5" id="svg_134" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="257.5" y1="252.5" x2="263.5" y2="247.5" id="svg_135" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="82.5" y1="279.5" x2="82.5" y2="309.5" id="svg_151" stroke-linejoin="null" stroke-linecap="null"/>
+  <ellipse fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" cx="82.5" cy="322" id="svg_152" rx="14" ry="13.5"/>
+  <text fill="#000000" stroke="#000" stroke-width="0" stroke-opacity="null" fill-opacity="null" x="75.5" y="329.5" id="svg_153" font-size="20" font-family="Helvetica, Arial, sans-serif" text-anchor="start" xml:space="preserve">3'</text>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="77.5" y1="302.5" x2="81" y2="307.5" id="svg_154" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="82.5" y1="308.5" x2="88.5" y2="303.5" id="svg_155" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="214.5" y1="279.5" x2="214.5" y2="309.5" id="svg_166" stroke-linejoin="null" stroke-linecap="null"/>
+  <ellipse fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" cx="214.5" cy="322" id="svg_167" rx="14" ry="13.5"/>
+  <text fill="#000000" stroke="#000" stroke-width="0" stroke-opacity="null" fill-opacity="null" x="207.5" y="329.5" id="svg_168" font-size="20" font-family="Helvetica, Arial, sans-serif" text-anchor="start" xml:space="preserve">1'</text>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="209.5" y1="302.5" x2="213" y2="307.5" id="svg_169" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="214.5" y1="308.5" x2="220.5" y2="303.5" id="svg_170" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="257.5" y1="279.5" x2="257.5" y2="309.5" id="svg_171" stroke-linejoin="null" stroke-linecap="null"/>
+  <ellipse fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" cx="257.5" cy="322" id="svg_172" rx="14" ry="13.5"/>
+  <text fill="#000000" stroke="#000" stroke-width="0" stroke-opacity="null" fill-opacity="null" x="250.5" y="329.5" id="svg_173" font-size="20" font-family="Helvetica, Arial, sans-serif" text-anchor="start" xml:space="preserve">2'</text>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="252.5" y1="302.5" x2="256" y2="307.5" id="svg_174" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="257.5" y1="308.5" x2="263.5" y2="303.5" id="svg_175" stroke-linejoin="null" stroke-linecap="null"/>
+  <text fill="#000000" stroke="#000" stroke-width="0" stroke-opacity="null" fill-opacity="null" x="20.5" y="214.5" id="svg_191" font-size="20" font-family="Helvetica, Arial, sans-serif" text-anchor="start" xml:space="preserve">权值</text>
+  <text fill="#000000" stroke-width="0" stroke-opacity="null" fill-opacity="null" x="20.5" y="272.5" id="svg_192" font-size="20" font-family="Helvetica, Arial, sans-serif" text-anchor="start" xml:space="preserve" stroke="#000">编号</text>
+  <text fill="#000000" stroke-width="0" stroke-opacity="null" fill-opacity="null" x="20.5" y="329.5" id="svg_193" font-size="20" font-family="Helvetica, Arial, sans-serif" text-anchor="start" xml:space="preserve" stroke="#000">拆点</text>
+  <ellipse fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" cx="214.5" cy="389" id="svg_213" rx="14" ry="13.5"/>
+  <text fill="#000000" stroke="#000" stroke-width="0" stroke-opacity="null" fill-opacity="null" x="207.5" y="396.5" id="svg_214" font-size="20" font-family="Helvetica, Arial, sans-serif" text-anchor="start" xml:space="preserve">S</text>
+  <ellipse fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" cx="257.5" cy="389" id="svg_215" rx="14" ry="13.5"/>
+  <text fill="#000000" stroke="#000" stroke-width="0" stroke-opacity="null" fill-opacity="null" x="250.5" y="396.5" id="svg_216" font-size="20" font-family="Helvetica, Arial, sans-serif" text-anchor="start" xml:space="preserve">T</text>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="248.5" y1="277.5" x2="215.5" y2="375.5" id="svg_221" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="248.5" y1="277.5" x2="242.5" y2="280.5" id="svg_222" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="248.5" y1="277.5" x2="253.5" y2="284.5" id="svg_223" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="257.5" y1="336" x2="257.5" y2="375.5" id="svg_225" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="252.5" y1="368.5" x2="256" y2="373.5" id="svg_226" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="257.5" y1="374.5" x2="263.5" y2="369.5" id="svg_227" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="196.5" y1="362.5" x2="208.5" y2="377.5" id="svg_228" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="267.5" y1="380.5" x2="280.5" y2="369.5" id="svg_229" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="202.5" y1="383.5" x2="188.5" y2="375.5" id="svg_230" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="222.5" y1="378.5" x2="232.5" y2="368.5" id="svg_232" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="248.5" y1="379.5" x2="240.5" y2="368.5" id="svg_233" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" x1="679.5" y1="157.5" x2="679.5" y2="151.5" id="svg_49" stroke-linejoin="undefined" stroke-linecap="undefined"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="696.5" y1="223.5" x2="696.5" y2="253.5" id="svg_141" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="691.5" y1="246.5" x2="695" y2="251.5" id="svg_144" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="696.5" y1="279.5" x2="696.5" y2="309.5" id="svg_181" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="691.5" y1="302.5" x2="695" y2="307.5" id="svg_184" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" x1="678.5" y1="157.5" x2="759" y2="158" id="svg_48" stroke-linejoin="undefined" stroke-linecap="undefined"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" x1="758.5" y1="158.5" x2="758.5" y2="152" id="svg_50" stroke-linejoin="undefined" stroke-linecap="undefined"/>
+  <ellipse fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" cx="695.5" cy="209" id="svg_57" rx="14" ry="13.5"/>
+  <text fill="#000000" stroke="#000" stroke-width="0" stroke-opacity="null" fill-opacity="null" x="689.5" y="216.5" id="svg_67" font-size="20" font-family="Helvetica, Arial, sans-serif" text-anchor="start" xml:space="preserve">7</text>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="679" y1="110.5" x2="720.5" y2="144.5" id="svg_84" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="719.5" y1="137" x2="720.5" y2="145.5" id="svg_85" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="720.5" y1="145.5" x2="714.5" y2="148.5" id="svg_86" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="722" y1="160" x2="697.5" y2="193.5" id="svg_96" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="697.5" y1="185.5" x2="696.5" y2="193.5" id="svg_97" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="696.5" y1="193.5" x2="704.5" y2="194.5" id="svg_98" stroke-linejoin="null" stroke-linecap="null"/>
+  <ellipse fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" cx="696.5" cy="266" id="svg_142" rx="14" ry="13.5"/>
+  <text fill="#000000" stroke="#000" stroke-width="0" stroke-opacity="null" fill-opacity="null" x="691.5" y="273.5" id="svg_143" font-size="20" font-family="Helvetica, Arial, sans-serif" text-anchor="start" xml:space="preserve">4</text>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="696.5" y1="252.5" x2="702.5" y2="247.5" id="svg_145" stroke-linejoin="null" stroke-linecap="null"/>
+  <ellipse fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" cx="696.5" cy="322" id="svg_182" rx="14" ry="13.5"/>
+  <text fill="#000000" stroke="#000" stroke-width="0" stroke-opacity="null" fill-opacity="null" x="689.5" y="329.5" id="svg_183" font-size="20" font-family="Helvetica, Arial, sans-serif" text-anchor="start" xml:space="preserve">4'</text>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="696.5" y1="308.5" x2="702.5" y2="303.5" id="svg_185" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" x1="426.5" y1="43.5" x2="758.5" y2="44" id="svg_269" stroke-linejoin="undefined" stroke-linecap="undefined"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" x1="427.5" y1="43.5" x2="427.5" y2="37.5" id="svg_270" stroke-linejoin="undefined" stroke-linecap="undefined"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" x1="758.5" y1="44.5" x2="758.5" y2="38" id="svg_271" stroke-linejoin="undefined" stroke-linecap="undefined"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" x1="594.5" y1="101.5" x2="759" y2="102" id="svg_280" stroke-linejoin="undefined" stroke-linecap="undefined"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" x1="595.5" y1="101.5" x2="595.5" y2="95.5" id="svg_281" stroke-linejoin="undefined" stroke-linecap="undefined"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" x1="758.5" y1="102.5" x2="758.5" y2="96" id="svg_282" stroke-linejoin="undefined" stroke-linecap="undefined"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="592.5" y1="48.5" x2="681.5" y2="82.5" id="svg_283" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="680.5" y1="75" x2="681.5" y2="83.5" id="svg_284" stroke-linejoin="null" stroke-linecap="null"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="681.5" y1="83.5" x2="675.5" y2="86.5" id="svg_285" stroke-linejoin="null" stroke-linecap="null"/>
+  <line stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_286" y2="33.5" x2="288.5" y1="12.5" x1="413.5" fill-opacity="null" stroke-opacity="null" stroke-width="1.5" stroke="#000" fill="none"/>
+  <line stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_287" y2="33.5" x2="536" y1="12.5" x1="413.5" fill-opacity="null" stroke-opacity="null" stroke-width="1.5" stroke="#000" fill="none"/>
+  <line stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_288" y2="34.5" x2="288.5" y1="26.5" x1="290.5" fill-opacity="null" stroke-opacity="null" stroke-width="1.5" stroke="#000" fill="none"/>
+  <line stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_289" y2="38" x2="296" y1="34.5" x1="288.5" fill-opacity="null" stroke-opacity="null" stroke-width="1.5" stroke="#000" fill="none"/>
+  <line stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_290" y2="85.5" x2="369.5" y1="64.5" x1="494.5" fill-opacity="null" stroke-opacity="null" stroke-width="1.5" stroke="#000" fill="none"/>
+  <line stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_291" y2="85.5" x2="617" y1="64.5" x1="494.5" fill-opacity="null" stroke-opacity="null" stroke-width="1.5" stroke="#000" fill="none"/>
+  <line stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_292" y2="86.5" x2="369.5" y1="78.5" x1="371.5" fill-opacity="null" stroke-opacity="null" stroke-width="1.5" stroke="#000" fill="none"/>
+  <line stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_293" y2="90" x2="377" y1="86.5" x1="369.5" fill-opacity="null" stroke-opacity="null" stroke-width="1.5" stroke="#000" fill="none"/>
+  <line stroke-linecap="null" stroke-linejoin="null" id="svg_294" y2="162.5" x2="294.5" y1="321.5" x1="682.5" fill-opacity="null" stroke-opacity="null" stroke-width="1.5" stroke="#000" fill="none"/>
+  <line stroke-linecap="null" stroke-linejoin="null" id="svg_295" y2="169.5" x2="297.5" y1="162.5" x1="295.5" fill-opacity="null" stroke-opacity="null" stroke-width="1.5" stroke="#000" fill="none"/>
+  <line stroke-linecap="null" stroke-linejoin="null" id="svg_296" y2="162.5" x2="303.5" y1="162.5" x1="295.5" fill-opacity="null" stroke-opacity="null" stroke-width="1.5" stroke="#000" fill="none"/>
+  <line stroke="#000" stroke-linecap="null" stroke-linejoin="null" id="svg_297" y2="163.5" x2="206.5" y1="320.500002" x1="678.499982" fill-opacity="null" stroke-opacity="null" stroke-width="1.5" fill="none"/>
+  <line stroke-linecap="null" stroke-linejoin="null" id="svg_298" y2="170.5" x2="209.5" y1="163.5" x1="207.5" fill-opacity="null" stroke-opacity="null" stroke-width="1.5" stroke="#000" fill="none"/>
+  <line stroke-linecap="null" stroke-linejoin="null" id="svg_299" y2="163.5" x2="215.5" y1="163.5" x1="207.5" fill-opacity="null" stroke-opacity="null" stroke-width="1.5" stroke="#000" fill="none"/>
+ </g>
+</svg>

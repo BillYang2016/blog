@@ -1,0 +1,28 @@
+<svg width="120" height="310" xmlns="http://www.w3.org/2000/svg">
+ <!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ -->
+ <g>
+  <title>background</title>
+  <rect fill="#fff" id="canvas_background" height="312" width="122" y="-1" x="-1"/>
+  <g display="none" overflow="visible" y="0" x="0" height="100%" width="100%" id="canvasGrid">
+   <rect fill="url(#gridpattern)" stroke-width="0" y="0" x="0" height="100%" width="100%"/>
+  </g>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <rect id="svg_1" height="191" width="40" y="57.5" x="20.5" stroke-width="1.5" stroke="#000" fill="#fff"/>
+  <ellipse ry="16" rx="16" id="svg_2" cy="77.5" cx="40.5" stroke-width="1.5" stroke="#000" fill="#00ffff"/>
+  <ellipse ry="16" rx="16" id="svg_3" cy="114.5" cx="40.5" stroke-width="1.5" stroke="#000" fill="#00ffff"/>
+  <ellipse ry="16" rx="16" id="svg_4" cy="152.5" cx="40.5" stroke-width="1.5" stroke="#000" fill="#00ffff"/>
+  <ellipse ry="16" rx="16" id="svg_5" cy="190.5" cx="40.5" stroke-width="1.5" stroke="#000" fill="#00ffff"/>
+  <ellipse ry="16" rx="16" id="svg_6" cy="228.5" cx="40.5" stroke-width="1.5" stroke="#000" fill="#00ffff"/>
+  <ellipse ry="16" rx="16" id="svg_7" cy="269.5" cx="40.5" stroke-width="1.5" stroke="#000" fill="#fff"/>
+  <ellipse ry="16" rx="16" id="svg_8" cy="269.5" cx="83.5" stroke-width="1.5" stroke="#000" fill="#ff0000"/>
+  <ellipse ry="16" rx="16" id="svg_9" cy="77.5" cx="83.5" stroke-width="1.5" stroke="#000" fill="#ff0000"/>
+  <ellipse ry="16" rx="16" id="svg_10" cy="35.5" cx="40.5" stroke-width="1.5" stroke="#000" fill="#ffffff"/>
+  <ellipse ry="16" rx="16" id="svg_11" cy="35.5" cx="83.5" stroke-width="1.5" stroke="#000" fill="#ffffff"/>
+  <ellipse ry="16" rx="16" id="svg_12" cy="115.5" cx="83.5" stroke-width="1.5" stroke="#000" fill="#ffffff"/>
+  <ellipse ry="16" rx="16" id="svg_13" cy="154.5" cx="83.5" stroke-width="1.5" stroke="#000" fill="#ffffff"/>
+  <ellipse ry="16" rx="16" id="svg_14" cy="191.5" cx="83.5" stroke-width="1.5" stroke="#000" fill="#ffffff"/>
+  <ellipse ry="16" rx="16" id="svg_15" cy="229.5" cx="83.5" stroke-width="1.5" stroke="#000" fill="#ffffff"/>
+ </g>
+</svg>

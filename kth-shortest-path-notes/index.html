@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.png">
+  <link rel="mask-icon" href="/images/logo.png" color="#222">
+  <meta name="google-site-verification" content="ghOTm3Im1Awef9otcmhxaBXZs5PlL-aApB3Zeo2qVrg">
+  <meta name="baidu-site-verification" content="PcyS4kW5Yu">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-bounce.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://blog.bill.moe').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},
+    path: 'search.xml',
+    motion: {"enable":true,"async":true,"transition":{"post_block":"swoopIn","post_header":"shrinkIn","post_body":"shrinkIn","coll_header":"expandIn","sidebar":"bounceIn"}}
+  };
+</script>
+
+  <meta name="description" content="$k$短路问题$k$短路是一类经典问题，问题描述为：    给出一张任意图，询问图中$s\rightarrow t$的任意路径中长度第$k$小的。其中路径的长度定义为构成路径的边的权值和。">
+<meta name="keywords" content="学习笔记,可并堆,可持久化,k短路,左偏树">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用可持久化可并堆解决$k$短路问题">
+<meta property="og:url" content="https://blog.bill.moe/kth-shortest-path-notes/index.html">
+<meta property="og:site_name" content="Bill Yang&#39;s Blog">
+<meta property="og:description" content="$k$短路问题$k$短路是一类经典问题，问题描述为：    给出一张任意图，询问图中$s\rightarrow t$的任意路径中长度第$k$小的。其中路径的长度定义为构成路径的边的权值和。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://blog.bill.moe/img/kth-path-1.svg">
+<meta property="og:image" content="https://blog.bill.moe/img/kth-path-2.svg">
+<meta property="og:updated_time" content="2019-06-10T02:32:52.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用可持久化可并堆解决$k$短路问题">
+<meta name="twitter:description" content="$k$短路问题$k$短路是一类经典问题，问题描述为：    给出一张任意图，询问图中$s\rightarrow t$的任意路径中长度第$k$小的。其中路径的长度定义为构成路径的边的权值和。">
+<meta name="twitter:image" content="https://blog.bill.moe/img/kth-path-1.svg">
+
+<link rel="canonical" href="https://blog.bill.moe/kth-shortest-path-notes/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+<!-- jquery -->
+
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<!-- 打字礼花及震动特效 -->
+
+<div id="append_parent"></div><div id="ajaxwaitid"></div>
+<script type="text/javascript" src="/lib/activate-power-mode/activate-power-mode.js"></script>
+<script>
+	POWERMODE.colorful = true;
+	POWERMODE.shake = false;
+	document.body.addEventListener('input',POWERMODE);
+</script>
+
+<!-- live2d -->
+
+<div class="waifu">
+	<div class="waifu-tips"></div>
+	<canvas id="live2d" width="240" height="350" class="live2d"></canvas>
+	<div class="hide-button">隐藏</div>
+</div>
+<script async src="/lib/poster-girl/waifu-tips.js"></script>
+<script src="/lib/poster-girl/live2d.js"></script>
+<script type="text/javascript">
+	loadlive2d("live2d", "/live2d/assets/kanna.model.json");
+</script>
+  <title>使用可持久化可并堆解决$k$短路问题 | Bill Yang's Blog</title>
+  
+    <script>
+      function sendPageView() {
+        if (CONFIG.hostname !== location.hostname) return;
+        var uid = localStorage.getItem('uid') || (Math.random() + '.' + Math.random());
+        localStorage.setItem('uid', uid);
+        navigator.sendBeacon('https://www.google-analytics.com/collect', new URLSearchParams({
+          v  : 1,
+          tid: 'UA-157912381-1',
+          cid: uid,
+          t  : 'pageview',
+          dp : encodeURIComponent(location.pathname)
+        }));
+      }
+      document.addEventListener('pjax:complete', sendPageView);
+      sendPageView();
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?d538e1e81ada366563b03354efffd84c";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Bill Yang's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">路终会有尽头，但视野总能看到更远的地方。</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">10</span></a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-friends">
+
+    <a href="/friends" rel="section"><i class="fa fa-fw fa-users"></i>友链</a>
+
+  </li>
+        <li class="menu-item menu-item-board">
+
+    <a href="/board/" rel="section"><i class="fa fa-fw fa-sticky-note-o"></i>留言板</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">676</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">234</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.bill.moe/kth-shortest-path-notes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Bill Yang">
+      <meta itemprop="description" content="这辈子都不可能更新的">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bill Yang's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          使用可持久化可并堆解决$k$短路问题
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-02-05 20:38:10" itemprop="dateCreated datePublished" datetime="2018-02-05T20:38:10+08:00">2018-02-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-06-10 10:32:52" itemprop="dateModified" datetime="2019-06-10T10:32:52+08:00">2019-06-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OI/" itemprop="url" rel="index">
+                    <span itemprop="name">OI</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/kth-shortest-path-notes/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/kth-shortest-path-notes/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="k-短路问题"><a href="#k-短路问题" class="headerlink" title="$k$短路问题"></a>$k$短路问题</h2><p>$k$短路是一类经典问题，问题描述为：  </p>
+<blockquote>
+<p>给出一张任意图，询问图中$s\rightarrow t$的任意路径中长度第$k$小的。<br>其中路径的长度定义为构成路径的边的权值和。  </p>
+</blockquote>
+<a id="more"></a>
+<h2 id="经典-A-算法"><a href="#经典-A-算法" class="headerlink" title="经典$A^*$算法"></a>经典$A^*$算法</h2><p>$k$短路可以使用$A^*$算法解决，算法思想极为简单。  </p>
+<p>首先使用<code>dijkstra</code>或<code>SPFA</code>算法求出原图以$t$为根的最短路树。<br>以到达终点的最短路作为估价函数$h$，以已经经过的路径长度作为$g$，使用$f=g+h$作为估价用小根堆维护。  </p>
+<p>实现起来也很简单，介于本文题目，此处不详述，下面给出主要代码：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> n;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Edge</span> &#123;</span></span><br><span class="line">	<span class="keyword">int</span> from,to,dist;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">SPFA</span> &#123;</span></span><br><span class="line">	<span class="keyword">int</span> m;</span><br><span class="line">	<span class="built_in">vector</span>&lt;Edge&gt; edges[maxn];</span><br><span class="line">	<span class="keyword">int</span> dist[maxn],inque[maxn];</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">AddEdge</span><span class="params">(<span class="keyword">int</span> from,<span class="keyword">int</span> to,<span class="keyword">int</span> dist)</span> </span>&#123;</span><br><span class="line">		edges[from].push_back((Edge) &#123;from,to,dist&#125;);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> s)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=n; i++)dist[i]=INT_MAX/<span class="number">2</span>;</span><br><span class="line">		<span class="built_in">queue</span>&lt;<span class="keyword">int</span>&gt;Q;</span><br><span class="line">		Q.push(s);</span><br><span class="line">		dist[s]=<span class="number">0</span>;</span><br><span class="line">		inque[s]=<span class="number">1</span>;</span><br><span class="line">		<span class="keyword">while</span>(!Q.empty()) &#123;</span><br><span class="line">			<span class="keyword">int</span> Now=Q.front();</span><br><span class="line">			Q.pop();</span><br><span class="line">			inque[Now]=<span class="number">0</span>;</span><br><span class="line">			<span class="keyword">for</span>(Edge&amp; e:edges[Now]) &#123;</span><br><span class="line">				<span class="keyword">int</span> Next=e.to;</span><br><span class="line">				<span class="keyword">if</span>(dist[Next]&gt;dist[Now]+e.dist) &#123;</span><br><span class="line">					dist[Next]=dist[Now]+e.dist;</span><br><span class="line">					<span class="keyword">if</span>(!inque[Next]) &#123;</span><br><span class="line">						inque[Next]=<span class="number">1</span>;</span><br><span class="line">						Q.push(Next);</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125; spfa;</span><br><span class="line"></span><br><span class="line"><span class="built_in">vector</span>&lt;Edge&gt; edges[maxn];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">AddEdge</span><span class="params">(<span class="keyword">int</span> from,<span class="keyword">int</span> to,<span class="keyword">int</span> dist)</span> </span>&#123;</span><br><span class="line">	edges[from].push_back((Edge) &#123;from,to,dist&#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">HeapNode</span> &#123;</span></span><br><span class="line">	<span class="keyword">int</span> f,g,u;</span><br><span class="line">	<span class="keyword">bool</span> <span class="keyword">operator</span> &lt; (<span class="keyword">const</span> HeapNode&amp; b) <span class="keyword">const</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> f&gt;b.f;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> m,s,t,k,cnt=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">Astar</span><span class="params">()</span> </span>&#123; <span class="comment">//A* k短路</span></span><br><span class="line">	<span class="keyword">if</span>(spfa.dist[s]==INT_MAX/<span class="number">2</span>)<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">	priority_queue&lt;HeapNode&gt;Q;</span><br><span class="line">	Q.push((HeapNode) &#123;</span><br><span class="line">		spfa.dist[s],<span class="number">0</span>,s</span><br><span class="line">	&#125;);</span><br><span class="line">	<span class="keyword">while</span>(!Q.empty()) &#123;</span><br><span class="line">		HeapNode Now=Q.top();</span><br><span class="line">		Q.pop();</span><br><span class="line">		<span class="keyword">if</span>(Now.u==t)cnt++;</span><br><span class="line">		<span class="keyword">if</span>(cnt==k)<span class="keyword">return</span> Now.g;</span><br><span class="line">		<span class="keyword">for</span>(Edge&amp; e:edges[Now.u]) &#123;</span><br><span class="line">			<span class="keyword">int</span> Next=e.to;</span><br><span class="line">			Q.push((HeapNode) &#123;</span><br><span class="line">				Now.g+e.dist+spfa.dist[Next],Now.g+e.dist,Next</span><br><span class="line">			&#125;);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="可持久化可并堆"><a href="#可持久化可并堆" class="headerlink" title="可持久化可并堆"></a>可持久化可并堆</h2><h3 id="一些记号"><a href="#一些记号" class="headerlink" title="一些记号"></a>一些记号</h3><p>在后文中，将会采用以下记号，其意义如下。  </p>
+<ul>
+<li>原图为$G(V,E)$，其中$V$为点集，$E$为边集。  </li>
+<li>所求问题的起点为$s$，终点为$t$。  </li>
+<li>对于有向边$e(u\rightarrow v)$，记$head(e)$为$u$，$tail(e)$为$v$，该有向边的长度为$len(e)$。  </li>
+<li>对于路径$p$，记$len(p)$为路径长度。  </li>
+<li>对于两点$u,v\in V$，记$dist(u,v)$为两点间最短路径长度。  </li>
+</ul>
+<h3 id="转化问题"><a href="#转化问题" class="headerlink" title="转化问题"></a>转化问题</h3><p>首先使用<code>dijkstra</code>或<code>SPFA</code>算法求出原图以$t$为根的任意一棵最短路径树，记为$T$。  </p>
+<p>对于一条$E$中的边$e$，记$\delta(e)=len(e)+dist(tail(e),t)-dist(head(e),t)$。<br>形象地理解$\delta(e)$的含义为加入这条边后对$s\rightarrow t$路径长度所引起的变化。<br>显然对于$e\in E$，有$\delta(e)\ge0$，对于$e\in T$，有$\delta(e)=0$。  </p>
+<p>对于一条$s\rightarrow t$的路径$p$，记$side(p)$为$e\in(E\backslash T)\bigcap p$组成的有序集合，顺序为从$s\rightarrow t$所经过的顺序。<br>形象地理解$side(p)$的含义为从路径$p$上非树边组成的集合。  </p>
+<p>显然$len(p)=dist(s,t)+\sum\limits_{e\in side(p)}\delta(e)=dist(s,t)+\sum\limits_{e\in p}\delta(e)$。  </p>
+<p>对于一条合法的$side(p)$其中相邻的两条边$e,f$（$e$的顺序比$f$小），有$head(f)=tail(e)$或$head(f)$是$tail(e)$在$T$的祖先。<br>可以得到：一个合法的$side(p)$与原图中的一条路径一一对应。<br>证明不难，留给读者思考。  </p>
+<p>由于$dist(s,t)$是定值，现在问题转化为求前$k$小的$\sum\limits_{e\in p}\delta(e)$。  </p>
+<h3 id="算法步骤"><a href="#算法步骤" class="headerlink" title="算法步骤"></a>算法步骤</h3><p>考虑，使用一个小根堆维护路径$p$，并通过路径$p$得到其长度$len(p)$更新答案。<br>根据求$k$大的套路，我们只需要状态的扩展满足以下两点要求，就可以保证堆所弹出的第$k$条路径即为$k$短路。  </p>
+<ol>
+<li>从当前状态扩展到的下一状态合法。  </li>
+<li>扩展的阶段一定满足答案从小到大递增。  </li>
+</ol>
+<p>考虑，若当前状态有一条合法路径$p$，如图所示：<br><img src="/img/kth-path-1.svg" alt><br>我们可以通过选择一条$head(e)$在当前路径的最后一条非树边后的非树边更新当前的$p$与$side(p)$集合。<br>现在这条非树边$e$是新的最后一条非树边，故$tail(e)\rightarrow t$是树上的路径。<br>现在满足了第一个条件，状态合法。  </p>
+<p>考虑，我们每次扩展状态时考虑两种转移：  </p>
+<ul>
+<li>在最后一条非树边后接一条$\delta(e)$最小的非树边</li>
+<li>将当前的最后一条非树边去掉，用一个$\delta(e)$稍大的非树边替换。  </li>
+</ul>
+<p>这样我们可以保证扩展的阶段从小到大递增，故满足第二个条件。  </p>
+<p>因此算法步骤为：  </p>
+<ul>
+<li>通过最短路算法构造出$T$。  </li>
+<li>用最短路计算并更新答案。  </li>
+<li>选出一条$head(e)$在$s$到$t$的最短路径上的非树边$e$，入堆。  </li>
+<li>从堆顶弹出一条路径，计算并更新答案。  </li>
+<li>在当前路径最后一条非树边后添加一条非树边。  </li>
+<li>弹出最后一条非树边，使用一条稍大的非树边替换其。  </li>
+</ul>
+<h3 id="实现方法"><a href="#实现方法" class="headerlink" title="实现方法"></a>实现方法</h3><p>目前我们的瓶颈在于如何快速的找到$head(e)$在$x\rightarrow t$的最短路上的边，并且能够找到其中$\delta(e)$最小的一条边$e$，并且能够在弹出最小后找到次小。<br>不难想到，堆可以完成问题所需的询问操作。<br>但，若对于所有$x$，需要在堆中加入$head(e)$在$x\rightarrow t$最短路上的所有$e$，时间效率极低。<br>不妨考虑使用可持久化可并堆来解决这个问题。<br>每一个结点$x$的堆从其$T$的父亲$father(x)$处继承父亲的堆，并在父亲堆的基础上加入$head(e)=x$的所有非树边。  </p>
+<p>这样便可以很快的预处理出所需用到的堆，问题解决。  </p>
+<h3 id="关于环"><a href="#关于环" class="headerlink" title="关于环"></a>关于环</h3><p>初学者可能觉得这个算法只能解决DAG上的$k$短路问题，因为若有环可以重复选某一条非树边来更新$k$短，其实不然。<br>我们发现，若构成环，如图：<br><img src="/img/kth-path-2.svg" alt><br>令人惊讶的是，这样的$side(p)$序列竟然仍然满足一一对应关系，图中即为的$side(p)$序列所对应的$p$为：$s\rightarrow v\rightarrow a\rightarrow u\rightarrow v\rightarrow b\rightarrow u\rightarrow t$。<br>并且在加入这条非树边后，问题又回到了最后一个点在$v$的情况。<br>因此，环也能被考虑到，本算法的应用范围扩展到任意图的任意$k$短路径。  </p>
+<h3 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h3><script type="math/tex; mode=display">O(T(\text{最短路})+n\log n+k\log n)</script><p>这是一个优秀的多项式算法，比非多项式算法$A^*$不知道高到哪里去了。<br>然而在具体实现时，因为常数原因，当$k$很小时，可并堆速度会慢一些。只有当$k$较大，才能体现出本算法的优越性。  </p>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxn=<span class="number">1005</span>;</span><br><span class="line"> </span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Tree</span> &#123;</span></span><br><span class="line">	Tree *ls,*rs;</span><br><span class="line">	<span class="keyword">int</span> dist;</span><br><span class="line">	<span class="keyword">int</span> val,back;</span><br><span class="line">	Tree(<span class="keyword">int</span> d=<span class="number">0</span>,<span class="keyword">int</span> v=<span class="number">0</span>,<span class="keyword">int</span> b=<span class="number">0</span>):dist(d),val(v),back(b) &#123;</span><br><span class="line">		ls=rs=<span class="literal">NULL</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Left_Side_Tree</span> &#123;</span></span><br><span class="line">	<span class="function">Tree* <span class="title">merge</span><span class="params">(Tree *x,Tree *y)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(!x||!y)<span class="keyword">return</span> x?x:y;</span><br><span class="line">		<span class="keyword">if</span>(x-&gt;val&gt;y-&gt;val)swap(x,y);</span><br><span class="line">		Tree *New=<span class="keyword">new</span> Tree;</span><br><span class="line">		*New=*x;</span><br><span class="line">		New-&gt;rs=merge(New-&gt;rs,y);</span><br><span class="line">		<span class="keyword">if</span>(!New-&gt;ls||New-&gt;rs-&gt;dist&gt;New-&gt;ls-&gt;dist)swap(New-&gt;ls,New-&gt;rs);</span><br><span class="line">		<span class="keyword">if</span>(New-&gt;rs)New-&gt;dist=New-&gt;rs-&gt;dist+<span class="number">1</span>;</span><br><span class="line">		<span class="keyword">return</span> New;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function">Tree* <span class="title">push</span><span class="params">(Tree *x,<span class="keyword">int</span> v,<span class="keyword">int</span> b)</span> </span>&#123;</span><br><span class="line">		Tree *New=<span class="keyword">new</span> Tree(<span class="number">0</span>,v,b);</span><br><span class="line">		<span class="keyword">return</span> merge(x,New);</span><br><span class="line">	&#125;</span><br><span class="line">&#125; heap;</span><br><span class="line"> </span><br><span class="line">Tree *root[maxn];</span><br><span class="line"> </span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Edge</span> &#123;</span></span><br><span class="line">	<span class="keyword">int</span> from,to,dist;</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">int</span> n,m,s,t,k,father[maxn],father_e[maxn],dist[maxn];</span><br><span class="line"><span class="keyword">bool</span> vst[maxn];</span><br><span class="line"><span class="built_in">vector</span>&lt;Edge&gt; edges,fedges;</span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; G[maxn],fG[maxn];</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">AddEdge</span><span class="params">(<span class="keyword">int</span> x,<span class="keyword">int</span> y,<span class="keyword">int</span> v)</span> </span>&#123;</span><br><span class="line">	edges.push_back((Edge) &#123;x,y,v&#125;);</span><br><span class="line">	G[x].push_back(edges.size()<span class="number">-1</span>);</span><br><span class="line">	fedges.push_back((Edge) &#123;y,x,v&#125;);</span><br><span class="line">	fG[y].push_back(fedges.size()<span class="number">-1</span>);</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pii pair<span class="meta-string">&lt;int,int&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> mp make_pair</span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Dijkstra</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=n; i++)dist[i]=INT_MAX/<span class="number">2</span>,vst[i]=<span class="number">0</span>;</span><br><span class="line">	dist[t]=<span class="number">0</span>;</span><br><span class="line">	father_e[t]=<span class="number">-1</span>;</span><br><span class="line">	priority_queue&lt;pii,<span class="built_in">vector</span>&lt;pii&gt;,greater&lt;pii&gt; &gt; Q;</span><br><span class="line">	Q.push(mp(<span class="number">0</span>,t));</span><br><span class="line">	<span class="keyword">while</span>(!Q.empty()) &#123;</span><br><span class="line">		<span class="keyword">int</span> Now=Q.top().second;</span><br><span class="line">		Q.pop();</span><br><span class="line">		<span class="keyword">if</span>(vst[Now])<span class="keyword">continue</span>;</span><br><span class="line">		vst[Now]=<span class="number">1</span>;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> id:fG[Now]) &#123;</span><br><span class="line">			Edge&amp; e=fedges[id];</span><br><span class="line">			<span class="keyword">int</span> Next=e.to;</span><br><span class="line">			<span class="keyword">if</span>(dist[Next]&gt;dist[Now]+e.dist) &#123;</span><br><span class="line">				dist[Next]=dist[Now]+e.dist;</span><br><span class="line">				father[Next]=Now;</span><br><span class="line">				father_e[Next]=id; <span class="comment">//重边!!!</span></span><br><span class="line">				Q.push(mp(dist[Next],Next)); </span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Dfs</span><span class="params">(<span class="keyword">int</span> Now)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(father[Now])root[Now]=root[father[Now]];</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> id:G[Now]) &#123;</span><br><span class="line">		<span class="keyword">if</span>(id==father_e[Now])<span class="keyword">continue</span>;</span><br><span class="line">		Edge&amp; e=edges[id];</span><br><span class="line">		<span class="keyword">int</span> Next=e.to;</span><br><span class="line">		root[Now]=heap.push(root[Now],e.dist+dist[Next]-dist[Now],Next);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> id:fG[Now]) &#123;</span><br><span class="line">		Edge&amp; e=fedges[id];</span><br><span class="line">		<span class="keyword">int</span> Next=e.to;</span><br><span class="line">		<span class="keyword">if</span>(id==father_e[Next])Dfs(Next);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="meta">#<span class="meta-keyword">undef</span> pii</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pii pair<span class="meta-string">&lt;int,Tree *&gt;</span></span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">solve</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	Dijkstra();</span><br><span class="line">	<span class="keyword">if</span>(dist[t]==INT_MAX/<span class="number">2</span>)<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">	k--;</span><br><span class="line">	<span class="keyword">if</span>(!k)<span class="keyword">return</span> dist[t];</span><br><span class="line">	Dfs(t);</span><br><span class="line">	priority_queue&lt;pii,<span class="built_in">vector</span>&lt;pii&gt;,greater&lt;pii&gt; &gt; Q;</span><br><span class="line">	<span class="keyword">if</span>(root[s])Q.push(mp(dist[s]+root[s]-&gt;val,root[s]));</span><br><span class="line">	<span class="keyword">while</span>(!Q.empty()) &#123;</span><br><span class="line">		pii Now=Q.top();</span><br><span class="line">		<span class="keyword">int</span> len=Now.first;</span><br><span class="line">		Tree *rt=Now.second;</span><br><span class="line">		Q.pop();</span><br><span class="line">		k--;</span><br><span class="line">		<span class="keyword">if</span>(!k)retur len;</span><br><span class="line">		Tree *next=root[rt-&gt;back],*ls=rt-&gt;ls,*rs=rt-&gt;rs;</span><br><span class="line">		<span class="keyword">if</span>(next)Q.push(mp(len+next-&gt;val,next));</span><br><span class="line">		<span class="keyword">if</span>(ls)Q.push(mp(len+ls-&gt;val-rt-&gt;val,ls));</span><br><span class="line">		<span class="keyword">if</span>(rs)Q.push(mp(len+rs-&gt;val-rt-&gt;val,rs));</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/SDOI2010-magic/" rel="bookmark">「SDOI2010」魔法猪学院 - $k$短路（可持久化可并堆）</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/treap-notes/" rel="bookmark">非旋转treap与可持久化平衡树学习笔记</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/linear-bases-notes/" rel="bookmark">线性基学习笔记</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/computation-geometry-notes/" rel="bookmark">计算几何基础整合（Point类）</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/simpson-notes/" rel="bookmark">自适应Simpson（辛普森）学习笔记</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div>姥爷们赏瓶冰阔落吧~</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="Bill Yang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="Bill Yang 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Bill Yang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.bill.moe/kth-shortest-path-notes/" title="使用可持久化可并堆解决$k$短路问题">https://blog.bill.moe/kth-shortest-path-notes/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/学习笔记/" rel="tag"><i class="fa fa-tag"></i> 学习笔记</a>
+              <a href="/tags/可并堆/" rel="tag"><i class="fa fa-tag"></i> 可并堆</a>
+              <a href="/tags/可持久化/" rel="tag"><i class="fa fa-tag"></i> 可持久化</a>
+              <a href="/tags/k短路/" rel="tag"><i class="fa fa-tag"></i> k短路</a>
+              <a href="/tags/左偏树/" rel="tag"><i class="fa fa-tag"></i> 左偏树</a>
+          </div>
+
+        
+  <div class="post-widgets">
+    <div class="wp_rating">
+      <div id="wpac-rating"></div>
+    </div>
+  </div>
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/Codeforces-round460-div2-F-Game/" rel="prev" title="「Codeforces Round 460 div2」F. A Game With Numbers - 博弈论+NP点+拓扑排序">
+      <i class="fa fa-chevron-left"></i> 「Codeforces Round 460 div2」F. A Game With Numbers - 博弈论+NP点+拓扑排序
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/long-chain-subdivision-notes/" rel="next" title="长链剖分学习总结">
+      长链剖分学习总结 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#k-短路问题"><span class="nav-number">1.</span> <span class="nav-text">$k$短路问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#经典-A-算法"><span class="nav-number">2.</span> <span class="nav-text">经典$A^*$算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可持久化可并堆"><span class="nav-number">3.</span> <span class="nav-text">可持久化可并堆</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一些记号"><span class="nav-number">3.1.</span> <span class="nav-text">一些记号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#转化问题"><span class="nav-number">3.2.</span> <span class="nav-text">转化问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#算法步骤"><span class="nav-number">3.3.</span> <span class="nav-text">算法步骤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现方法"><span class="nav-number">3.4.</span> <span class="nav-text">实现方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于环"><span class="nav-number">3.5.</span> <span class="nav-text">关于环</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#时间复杂度"><span class="nav-number">3.6.</span> <span class="nav-text">时间复杂度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码"><span class="nav-number">3.7.</span> <span class="nav-text">代码</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Bill Yang"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Bill Yang</p>
+  <div class="site-description" itemprop="description">这辈子都不可能更新的</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">676</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">234</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=935683004" title="QQ → tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=935683004" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i>QQ</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ym13883407586@outlook.com" title="E-Mail → mailto:ym13883407586@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/BillYang2016" title="GitHub → https://github.com/BillYang2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://coding.net/u/Bill_Yang_2016" title="Coding → https://coding.net/u/Bill_Yang_2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-git-square"></i>Coding</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://music.163.com/#/user/home?nickname=Bill_Yang2016" title="网易云音乐 → http://music.163.com/#/user/home?nickname=Bill_Yang2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-music"></i>网易云音乐</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://space.bilibili.com/233682260/#/" title="bilibili → https://space.bilibili.com/233682260/#/" rel="noopener" target="_blank"><i class="fa fa-fw fa-youtube-play"></i>bilibili</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → /atom.xml"><i class="fa fa-fw fa-rss"></i>RSS</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      我的朋友们
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://pointedpoints.github.io/" title="http://pointedpoints.github.io/" rel="noopener" target="_blank">pointedpoints</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://keke046.coding.me/" title="https://keke046.coding.me/" rel="noopener" target="_blank">KEKE046</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://imperfect_zx.coding.me/" title="https://imperfect_zx.coding.me/" rel="noopener" target="_blank">Imperfect</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://achen.world/" title="https://achen.world/" rel="noopener" target="_blank">Achen</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://metakari.one/" title="https://metakari.one/" rel="noopener" target="_blank">Metakar1</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://39.106.98.75/" title="http://39.106.98.75/" rel="noopener" target="_blank">魏启大陆</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/friends/" title="/friends/">更多朋友们</a>
+        </li>
+    </ul>
+  </div>
+<!-- none-select-br -->
+
+<p></p>
+
+<!-- hitokoto -->
+
+<div class="hitokoto-title">
+	<i class="fa fa-paragraph"></i>
+	<b>一言</b>
+</div>
+
+<div id="hitokoto">:D 获取中...</div>
+<i id="hitofrom">:D 获取中...</i>
+
+<script src="https://cdn.jsdelivr.net/npm/bluebird@3/js/browser/bluebird.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/whatwg-fetch@2.0.3/fetch.min.js"></script>
+<script>
+  fetch('https://v1.hitokoto.cn')
+    .then(function (res){
+      return res.json();
+    })
+    .then(function (data) {
+      var hitokoto = document.getElementById('hitokoto');
+      hitokoto.innerText = '\xa0\xa0\xa0\xa0\xa0\xa0\xa0' + data.hitokoto;
+      var hitofrom = document.getElementById('hitofrom');
+      hitofrom.innerText = "——" + data.from + '\xa0'; 
+    })
+    .catch(function (err) {
+      console.error(err);
+    })
+</script>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Bill Yang 以 <a class="theme-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a> 协议发布</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+  <script>
+  if (CONFIG.page.isPost) {
+    wpac_init = window.wpac_init || [];
+    wpac_init.push({
+      widget: 'Rating',
+      id: 10154,
+      el: 'wpac-rating',
+      color: 'fc6423'
+    });
+    (function() {
+      if ('WIDGETPACK_LOADED' in window) return;
+      WIDGETPACK_LOADED = true;
+      var mc = document.createElement('script');
+      mc.type = 'text/javascript';
+      mc.async = true;
+      mc.src = '//embed.widgetpack.com/widget.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+    })();
+  }
+  </script>
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout: 3000,
+        priority: true,
+        ignores: [uri => uri.includes('#'),uri => uri == 'https://blog.bill.moe/kth-shortest-path-notes/',]
+      });
+      });
+  </script>
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: true,
+      notify: false,
+      appId: 'JYwxXHHRe8RNGu498SnK9B3N-gzGzoHsz',
+      appKey: 'JBz9GW9kidjPp7gW5Y6VIgfe',
+      placeholder: "吹雪は猫~",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: 'zh-cn' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

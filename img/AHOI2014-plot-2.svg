@@ -1,0 +1,33 @@
+<svg width="640" height="270" xmlns="http://www.w3.org/2000/svg">
+ <!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ -->
+
+ <g>
+  <title>background</title>
+  <rect x="-1" y="-1" width="642" height="272" id="canvas_background" fill="#fff"/>
+  <g id="canvasGrid" display="none">
+   <rect id="svg_8" width="100%" height="100%" x="0" y="0" stroke-width="0" fill="url(#gridpattern)"/>
+  </g>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <rect fill="#fff" stroke="#000" stroke-width="1.5" x="42" y="53.5" width="260" height="204" id="svg_1"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" x1="42" y1="92.5" x2="301" y2="92.5" id="svg_2" stroke-linejoin="undefined" stroke-linecap="undefined"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="77" y1="53.5" x2="77" y2="258.5" id="svg_3" stroke-linejoin="undefined" stroke-linecap="undefined"/>
+  <text fill="#000000" stroke="#000" stroke-width="0" stroke-opacity="null" fill-opacity="null" x="177" y="185.5" id="svg_4" font-size="24" font-family="Helvetica, Arial, sans-serif" text-anchor="start" xml:space="preserve">A</text>
+  <text fill="#000000" stroke="#000" stroke-width="0" stroke-opacity="null" fill-opacity="null" x="175" y="82.5" id="svg_5" font-size="24" font-family="Helvetica, Arial, sans-serif" text-anchor="start" xml:space="preserve">C</text>
+  <text style="cursor: move;" fill="#000000" stroke="#000" stroke-width="0" stroke-opacity="null" fill-opacity="null" x="48" y="183.5" id="svg_6" font-size="24" font-family="Helvetica, Arial, sans-serif" text-anchor="start" xml:space="preserve">B</text>
+  <text fill="#000000" stroke="#000" stroke-width="0" stroke-opacity="null" fill-opacity="null" x="44" y="80.5" id="svg_7" font-size="20" font-family="Helvetica, Arial, sans-serif" text-anchor="start" xml:space="preserve">ans</text>
+  <text xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="24" id="svg_9" y="38" x="16.5" stroke-width="0" stroke="#000" fill="#000000">矩阵a</text>
+  <line fill="none" stroke="#000" stroke-width="1.5" x1="316" y1="140" x2="358" y2="140" id="svg_10" stroke-linejoin="undefined" stroke-linecap="undefined"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" x1="355" y1="132" x2="358" y2="140" id="svg_11" stroke-linejoin="undefined" stroke-linecap="undefined"/>
+  <line fill="none" stroke="#000" stroke-width="1.5" x1="355" y1="148" x2="358" y2="140" id="svg_12" stroke-linejoin="undefined" stroke-linecap="undefined"/>
+  <rect fill="#fff" stroke="#000" stroke-width="1.5" x="380" y="34.5" width="260" height="204" id="svg_13" transform="rotate(90 510,136.50000000000006) "/>
+  <line fill="none" stroke="#000" stroke-width="1.5" x1="323" y1="136.5" x2="582" y2="136.5" id="svg_14" stroke-linejoin="undefined" stroke-linecap="undefined" transform="rotate(90 452.5,136.50000000000006) "/>
+  <line fill="none" stroke="#000" stroke-width="1.5" stroke-opacity="null" fill-opacity="null" x1="511" y1="-57.5" x2="511" y2="147" id="svg_15" stroke-linejoin="undefined" stroke-linecap="undefined" transform="rotate(90 511,44.750000000000036) "/>
+  <text fill="#000000" stroke="#000" stroke-width="0" stroke-opacity="null" fill-opacity="null" x="509" y="163.5" id="svg_16" font-size="24" font-family="Helvetica, Arial, sans-serif" text-anchor="start" xml:space="preserve">A^T</text>
+  <text fill="#000000" stroke="#000" stroke-width="0" stroke-opacity="null" fill-opacity="null" x="415" y="163.5" id="svg_17" font-size="18" font-family="Helvetica, Arial, sans-serif" text-anchor="start" xml:space="preserve">C^T</text>
+  <text style="cursor: move;" fill="#000000" stroke="#000" stroke-width="0" stroke-opacity="null" fill-opacity="null" x="517" y="33.5" id="svg_18" font-size="18" font-family="Helvetica, Arial, sans-serif" text-anchor="start" xml:space="preserve">B^T</text>
+  <text fill="#000000" stroke="#000" stroke-width="0" stroke-opacity="null" fill-opacity="null" x="414" y="34.5" id="svg_19" font-size="20" font-family="Helvetica, Arial, sans-serif" text-anchor="start" xml:space="preserve">ans</text>
+  <text xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="24" id="svg_20" y="43" x="308.5" stroke-width="0" stroke="#000" fill="#000000">矩阵a^T</text>
+ </g>
+</svg>

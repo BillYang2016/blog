@@ -317,9 +317,9 @@
     
       <category term="AC自动机" scheme="https://blog.bill.moe/tags/AC%E8%87%AA%E5%8A%A8%E6%9C%BA/"/>
     
-      <category term="后缀自动机" scheme="https://blog.bill.moe/tags/%E5%90%8E%E7%BC%80%E8%87%AA%E5%8A%A8%E6%9C%BA/"/>
-    
       <category term="单纯形" scheme="https://blog.bill.moe/tags/%E5%8D%95%E7%BA%AF%E5%BD%A2/"/>
+    
+      <category term="后缀自动机" scheme="https://blog.bill.moe/tags/%E5%90%8E%E7%BC%80%E8%87%AA%E5%8A%A8%E6%9C%BA/"/>
     
       <category term="比赛酱油记" scheme="https://blog.bill.moe/tags/%E6%AF%94%E8%B5%9B%E9%85%B1%E6%B2%B9%E8%AE%B0/"/>
     
@@ -360,13 +360,13 @@
       <category term="ACM" scheme="https://blog.bill.moe/categories/ACM/"/>
     
     
-      <category term="贪心" scheme="https://blog.bill.moe/tags/%E8%B4%AA%E5%BF%83/"/>
-    
       <category term="高斯消元" scheme="https://blog.bill.moe/tags/%E9%AB%98%E6%96%AF%E6%B6%88%E5%85%83/"/>
     
-      <category term="矩阵树定理" scheme="https://blog.bill.moe/tags/%E7%9F%A9%E9%98%B5%E6%A0%91%E5%AE%9A%E7%90%86/"/>
+      <category term="贪心" scheme="https://blog.bill.moe/tags/%E8%B4%AA%E5%BF%83/"/>
     
       <category term="线段树" scheme="https://blog.bill.moe/tags/%E7%BA%BF%E6%AE%B5%E6%A0%91/"/>
+    
+      <category term="矩阵树定理" scheme="https://blog.bill.moe/tags/%E7%9F%A9%E9%98%B5%E6%A0%91%E5%AE%9A%E7%90%86/"/>
     
       <category term="二分" scheme="https://blog.bill.moe/tags/%E4%BA%8C%E5%88%86/"/>
     
@@ -437,9 +437,9 @@
     
       <category term="动态规划" scheme="https://blog.bill.moe/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/"/>
     
-      <category term="最小生成树" scheme="https://blog.bill.moe/tags/%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91/"/>
-    
       <category term="线段树" scheme="https://blog.bill.moe/tags/%E7%BA%BF%E6%AE%B5%E6%A0%91/"/>
+    
+      <category term="最小生成树" scheme="https://blog.bill.moe/tags/%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91/"/>
     
       <category term="状态压缩" scheme="https://blog.bill.moe/tags/%E7%8A%B6%E6%80%81%E5%8E%8B%E7%BC%A9/"/>
     

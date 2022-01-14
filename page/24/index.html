@@ -195,7 +195,7 @@
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">10</span></a>
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">11</span></a>
 
   </li>
         <li class="menu-item menu-item-about">
@@ -215,12 +215,12 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">675</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">677</span></a>
 
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">234</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">235</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -271,6 +271,204 @@
             
 
   <div class="posts-expand">
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.bill.moe/bzoj2886-path/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Bill Yang">
+      <meta itemprop="description" content="这辈子都不可能更新的">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bill Yang's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/bzoj2886-path/" class="post-title-link" itemprop="url">「bzoj2886」最短路 - 组合数学+找规律</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-01-12 00:00:19" itemprop="dateCreated datePublished" datetime="2018-01-12T00:00:19+08:00">2018-01-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-06-10 09:10:56" itemprop="dateModified" datetime="2019-06-10T09:10:56+08:00">2019-06-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OI/" itemprop="url" rel="index">
+                    <span itemprop="name">OI</span>
+                  </a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/bzoj2886-path/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/bzoj2886-path/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="题目大意"><a href="#题目大意" class="headerlink" title="题目大意"></a>题目大意</h2><blockquote>
+<p>&ensp;&ensp;&ensp;&ensp;小Y最近学得了最短路算法，一直想找个机会好好练习一下。话虽这么说，OJ上最短路的题目都被他刷光了。正巧他的好朋友小A正在研究一类奇怪的图，他也想凑上去求下它的最短路。<br>&ensp;&ensp;&ensp;&ensp;小A研究的图可以这么看：在一个二维平面上有任意点$(x,y)$（$0\le x\le N,0\le y\le M$,且$x,y$均为整数），且$(x,y)$向$(x-1,y)$（必须满足$1\le x$）和$(x,y-1)$（必须满足$1\le y$）连一条边权为$0$的双向边。<br>&ensp;&ensp;&ensp;&ensp;每个点都有一个非负点权，不妨设$(x,y)$的权值为$F[x][y]$，则有：<br>&ensp;&ensp;&ensp;&ensp;1.$x=0$或$y=0$：$F[x][y]=1$；<br>&ensp;&ensp;&ensp;&ensp;2.其他情况：$F[x][y]=F[x-1][y]+F[x][y-1]$。<br>&ensp;&ensp;&ensp;&ensp;现在，小Y想知道$(0,0)$到$(N,M)$的最短路，即使得经过的点的权值之和最小。为了炫耀自己学过最短路算法，他决定和你进行一场比赛，看谁的程序跑得快。然则小Y没有学过高精度算法，所以他希望输出答案时只输出答案模$1000000007$后的值。  </p>
+</blockquote>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/bzoj2886-path/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.bill.moe/WC2010-sort/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Bill Yang">
+      <meta itemprop="description" content="这辈子都不可能更新的">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bill Yang's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/WC2010-sort/" class="post-title-link" itemprop="url">「WC2010」排序机 - 提交答案题</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-01-11 23:21:09" itemprop="dateCreated datePublished" datetime="2018-01-11T23:21:09+08:00">2018-01-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-06-10 09:10:56" itemprop="dateModified" datetime="2019-06-10T09:10:56+08:00">2019-06-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OI/" itemprop="url" rel="index">
+                    <span itemprop="name">OI</span>
+                  </a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/WC2010-sort/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/WC2010-sort/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="题目大意"><a href="#题目大意" class="headerlink" title="题目大意"></a>题目大意</h2><blockquote>
+<p>&ensp;&ensp;&ensp;&ensp;轮换$g:(q_1\,\,q_2\,\,q_3\cdots q_k)$是一个从$\lbrace1,2,\ldots,n\rbrace$到$\lbrace1,2,\ldots,n\rbrace$的一一映射，它将$q_1$映射为$q_2$，$q_2$映射为$q_3$，$\ldots$，$q_k$映射为$q_1$，而在$q_1,q_2,\ldots,q_k$中没有出现的整数映射到自身。即：$g(q_1)=q_2,g(q_2)=q_3,\ldots,g(q_k)=q_1$，而对于在$q_1,q_2,\ldots,q_k$中没有出现的$x$，$g(x)=x$。定义将轮换$g$应用到一个$\lbrace1,2,\ldots,n\rbrace$的排列$(p_1,p_2,\ldots,p_n)$上的结果为：$g(p_1,p_2,\ldots,p_n)=(g(p_1),g(p_2),\ldots,g(p_n))$例如，对排列$(3,1,5,4,2)$应用轮换$(1\,\,3\,\,4)$进行变换后可得到排列$(4,3,5,1,2)$。给定$\lbrace1,2,\ldots,n\rbrace$的一个排列$(p_1,p_2,\ldots,p_n)$和一些轮换，请给出一种使用尽量 少的轮换次数将该排列变换为$(1,2,\ldots,n)$的方法。每个轮换可以使用多次。 </p>
+</blockquote>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/WC2010-sort/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
         
   
   
@@ -1074,204 +1272,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blog.bill.moe/bzoj2960-plane/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Bill Yang">
-      <meta itemprop="description" content="这辈子都不可能更新的">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Bill Yang's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/bzoj2960-plane/" class="post-title-link" itemprop="url">「bzoj2960」跨平面 - 对偶图+最小树形图</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-01-10 00:14:46" itemprop="dateCreated datePublished" datetime="2018-01-10T00:14:46+08:00">2018-01-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-06-10 09:10:56" itemprop="dateModified" datetime="2019-06-10T09:10:56+08:00">2019-06-10</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/OI/" itemprop="url" rel="index">
-                    <span itemprop="name">OI</span>
-                  </a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/bzoj2960-plane/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/bzoj2960-plane/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="题目大意"><a href="#题目大意" class="headerlink" title="题目大意"></a>题目大意</h2><blockquote>
-<p><img src="https://oj.bashu.com.cn/images/3717-1.jpg" alt></p>
-</blockquote>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/bzoj2960-plane/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blog.bill.moe/SHOI2003-pacman/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Bill Yang">
-      <meta itemprop="description" content="这辈子都不可能更新的">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Bill Yang's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/SHOI2003-pacman/" class="post-title-link" itemprop="url">「SHOI2003」吃豆豆 - 拆点+费用流</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-01-10 00:11:15" itemprop="dateCreated datePublished" datetime="2018-01-10T00:11:15+08:00">2018-01-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-06-10 09:10:56" itemprop="dateModified" datetime="2019-06-10T09:10:56+08:00">2019-06-10</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/OI/" itemprop="url" rel="index">
-                    <span itemprop="name">OI</span>
-                  </a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/SHOI2003-pacman/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/SHOI2003-pacman/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="题目大意"><a href="#题目大意" class="headerlink" title="题目大意"></a>题目大意</h2><blockquote>
-<p><img src="https://oj.bashu.com.cn/code/images/3281.jpg" alt>  </p>
-</blockquote>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/SHOI2003-pacman/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1344,20 +1344,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">675</span>
+          <span class="site-state-item-count">677</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">234</span>
+        <span class="site-state-item-count">235</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1467,7 +1467,7 @@
 <div class="copyright">
   
   &copy; 2017 – 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.png">
+  <link rel="mask-icon" href="/images/logo.png" color="#222">
+  <meta name="google-site-verification" content="ghOTm3Im1Awef9otcmhxaBXZs5PlL-aApB3Zeo2qVrg">
+  <meta name="baidu-site-verification" content="PcyS4kW5Yu">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-bounce.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://blog.bill.moe').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},
+    path: 'search.xml',
+    motion: {"enable":true,"async":true,"transition":{"post_block":"swoopIn","post_header":"shrinkIn","post_body":"shrinkIn","coll_header":"expandIn","sidebar":"bounceIn"}}
+  };
+</script>
+
+  <meta name="description" content="最近大概花了10天的时间把罚抄的原作打完了，然后花了2天的时间看完了罚抄动画。花一点时间把我的心情和一些分析记录在这里，每一份属于我的感动都是不能丢失的。（改天把ATRI的补一下吧）">
+<meta name="keywords" content="杂谈">
+<meta property="og:type" content="article">
+<meta property="og:title" content="「Rewrite」罚抄Terra毕业感想及动画分析">
+<meta property="og:url" content="https://blog.bill.moe/rewrite-analysis/index.html">
+<meta property="og:site_name" content="Bill Yang&#39;s Blog">
+<meta property="og:description" content="最近大概花了10天的时间把罚抄的原作打完了，然后花了2天的时间看完了罚抄动画。花一点时间把我的心情和一些分析记录在这里，每一份属于我的感动都是不能丢失的。（改天把ATRI的补一下吧）">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://blog.bill.moe/rewrite-analysis/rewrite.png">
+<meta property="og:image" content="https://blog.bill.moe/rewrite-analysis/kotori.jpg">
+<meta property="og:image" content="https://blog.bill.moe/rewrite-analysis/sizuru.jpeg">
+<meta property="og:image" content="https://blog.bill.moe/rewrite-analysis/sakura.jpg">
+<meta property="og:image" content="https://blog.bill.moe/rewrite-analysis/lucia.jpg">
+<meta property="og:image" content="https://blog.bill.moe/rewrite-analysis/akane.jpg">
+<meta property="og:image" content="https://blog.bill.moe/rewrite-analysis/moon.jpg">
+<meta property="og:image" content="https://blog.bill.moe/rewrite-analysis/terra2.jpeg">
+<meta property="og:image" content="https://blog.bill.moe/rewrite-analysis/terra1.png">
+<meta property="og:image" content="https://blog.bill.moe/rewrite-analysis/canoe1.png">
+<meta property="og:image" content="https://blog.bill.moe/rewrite-analysis/canoe2.png">
+<meta property="og:image" content="https://blog.bill.moe/rewrite-analysis/canoe3.png">
+<meta property="og:image" content="https://blog.bill.moe/rewrite-analysis/face.jpg">
+<meta property="og:updated_time" content="2021-05-10T00:50:00.841Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="「Rewrite」罚抄Terra毕业感想及动画分析">
+<meta name="twitter:description" content="最近大概花了10天的时间把罚抄的原作打完了，然后花了2天的时间看完了罚抄动画。花一点时间把我的心情和一些分析记录在这里，每一份属于我的感动都是不能丢失的。（改天把ATRI的补一下吧）">
+<meta name="twitter:image" content="https://blog.bill.moe/rewrite-analysis/rewrite.png">
+
+<link rel="canonical" href="https://blog.bill.moe/rewrite-analysis/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+<!-- jquery -->
+
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<!-- 打字礼花及震动特效 -->
+
+<div id="append_parent"></div><div id="ajaxwaitid"></div>
+<script type="text/javascript" src="/lib/activate-power-mode/activate-power-mode.js"></script>
+<script>
+	POWERMODE.colorful = true;
+	POWERMODE.shake = false;
+	document.body.addEventListener('input',POWERMODE);
+</script>
+
+<!-- live2d -->
+
+<div class="waifu">
+	<div class="waifu-tips"></div>
+	<canvas id="live2d" width="240" height="350" class="live2d"></canvas>
+	<div class="hide-button">隐藏</div>
+</div>
+<script async src="/lib/poster-girl/waifu-tips.js"></script>
+<script src="/lib/poster-girl/live2d.js"></script>
+<script type="text/javascript">
+	loadlive2d("live2d", "/live2d/assets/kanna.model.json");
+</script>
+  <title>「Rewrite」罚抄Terra毕业感想及动画分析 | Bill Yang's Blog</title>
+  
+    <script>
+      function sendPageView() {
+        if (CONFIG.hostname !== location.hostname) return;
+        var uid = localStorage.getItem('uid') || (Math.random() + '.' + Math.random());
+        localStorage.setItem('uid', uid);
+        navigator.sendBeacon('https://www.google-analytics.com/collect', new URLSearchParams({
+          v  : 1,
+          tid: 'UA-157912381-1',
+          cid: uid,
+          t  : 'pageview',
+          dp : encodeURIComponent(location.pathname)
+        }));
+      }
+      document.addEventListener('pjax:complete', sendPageView);
+      sendPageView();
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?d538e1e81ada366563b03354efffd84c";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Bill Yang's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">路终会有尽头，但视野总能看到更远的地方。</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">11</span></a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-friends">
+
+    <a href="/friends" rel="section"><i class="fa fa-fw fa-users"></i>友链</a>
+
+  </li>
+        <li class="menu-item menu-item-board">
+
+    <a href="/board/" rel="section"><i class="fa fa-fw fa-sticky-note-o"></i>留言板</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">677</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">235</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.bill.moe/rewrite-analysis/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Bill Yang">
+      <meta itemprop="description" content="这辈子都不可能更新的">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bill Yang's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          「Rewrite」罚抄Terra毕业感想及动画分析
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-01-14 17:30:17" itemprop="dateCreated datePublished" datetime="2021-01-14T17:30:17+08:00">2021-01-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-05-10 08:50:00" itemprop="dateModified" datetime="2021-05-10T08:50:00+08:00">2021-05-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/杂谈/" itemprop="url" rel="index">
+                    <span itemprop="name">杂谈</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/rewrite-analysis/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/rewrite-analysis/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>最近大概花了10天的时间把罚抄的原作打完了，然后花了2天的时间看完了罚抄动画。<br>花一点时间把我的心情和一些分析记录在这里，每一份属于我的感动都是不能丢失的。（改天把ATRI的补一下吧）<br><img src="/rewrite-analysis/rewrite.png" alt></p>
+<a id="more"></a>
+<h2 id="个人线分析"><a href="#个人线分析" class="headerlink" title="个人线分析"></a>个人线分析</h2><h3 id="小鸟线"><a href="#小鸟线" class="headerlink" title="小鸟线"></a>小鸟线</h3><p><img src="/rewrite-analysis/kotori.jpg" alt></p>
+<blockquote>
+<p>我可能与自己的欲望…恋爱了…  </p>
+</blockquote>
+<p>除去Terra和Moon线以外，个人最喜欢的是小鸟线。小鸟线以青梅竹马的角度揭示了这个残酷的世界，虽然世界仍有未知仍有危险，但已与这两人无关。失去了一切的小鸟孤独了生活了10年，最终连魔物化的父母亲都失去了，但在最后守住了瑚太郎。<br>Rewrite的本质是虐鸟，但好在小鸟线给出了一个相对圆满的结局，并在后续我们可以推断二人成功结婚并拥有了家庭，给小鸟痛苦的经历画上了一个句号。（但在所有个人线中世界的危机都没有得到解决）  </p>
+<h3 id="静流线"><a href="#静流线" class="headerlink" title="静流线"></a>静流线</h3><p><img src="/rewrite-analysis/sizuru.jpeg" alt></p>
+<blockquote>
+<p>瑚太郎，好温暖…  </p>
+</blockquote>
+<p>静流线给我带来了一段时间的感动，这条线并不是好结局（可能是五条个人线中唯一一条不是好结局的线路），最终世界毁灭了，男主因为过度改写在新世界里变为了一棵大树。但在这条线背后实际上也是在虐鸟啊，可怜的小鸟（</p>
+<h3 id="千早线"><a href="#千早线" class="headerlink" title="千早线"></a>千早线</h3><p><img src="/rewrite-analysis/sakura.jpg" alt></p>
+<blockquote>
+<p>“武士道”是为自己而死的道路，而“骑士道”则是为了别人而死的道路哦  </p>
+</blockquote>
+<p><del>千早线</del>咲夜线石锤<br>本线讲述了千早和咲夜如同家人般陪伴的故事，最终咲夜帅气地离开了千早，并将千早托付给了瑚太郎。<br>这条线不太虐，因为虐的是咲夜，展示了咲夜的过去，以及咲夜的强大。<br>作为上一个世界的rewriter，咲夜对瑚太郎的能力了若指掌，最终在咲夜的训练下，瑚太郎也成为了一个独当一面的rewriter。  </p>
+<h3 id="露西娅线"><a href="#露西娅线" class="headerlink" title="露西娅线"></a>露西娅线</h3><p><img src="/rewrite-analysis/lucia.jpg" alt></p>
+<blockquote>
+<p>向日葵一定是幸福的象征，幸福一定会覆盖世界的  </p>
+</blockquote>
+<p>和主线几乎无关的一条个人线，基本上是名侦探瑚太郎。<br>个人不太喜欢这条线，最终核弹爆炸前为男主笨拙的情感表达感到着急。<br>没有提到主线，最终也算是happy end，也没带来什么感动点。</p>
+<h3 id="朱音线"><a href="#朱音线" class="headerlink" title="朱音线"></a>朱音线</h3><p><img src="/rewrite-analysis/akane.jpg" alt></p>
+<blockquote>
+<p>欢迎，吉普赛人，来到我神秘的房间  </p>
+</blockquote>
+<p>千里朱音作为学院的魔女，一直都是一个神秘人物。<br>朱音在key社官方rewrite人气评选中取得了第一名（你们明明就是馋她的胸）<br>朱音线气氛一直很压抑，介绍了圣女的传承以及千早线没能详细说明的盖亚内部情况。<br>朱音毁灭世界后，瑚太郎帮朱音挡住了舆论的攻击成为了“替死鬼”，二人最终被放逐，在人工来世的边境过上了幸福的二人生活，也算是happy end吧。  </p>
+<h2 id="Moon线"><a href="#Moon线" class="headerlink" title="Moon线"></a>Moon线</h2><p><img src="/rewrite-analysis/moon.jpg" alt></p>
+<blockquote>
+<p>希望有一天还能与你相见 天王寺瑚太朗</p>
+</blockquote>
+<p>Moon线第一遍因为搞不懂一些男主晦涩的哲学发言，因此疯狂跳过去看剧情，后来发现Moon线很值得推敲：<a href="http://www.keyfc.net/bbs/showtopic.aspx?topicid=53928&amp;page=end" target="_blank" rel="noopener">看这里</a><br>最终的保卫篝总决战很燃很催泪，咲夜因为带着所有认知来到月世界因此无法前往新世界。<br>当我最终得知篝是一对双子、一切都是发生在月球上的模拟时，给我带来了极大的震撼。生命需要有与孤独为伴的力量，这句话送给了新世界的瑚太郎以及月篝自己，将借来的全部归还，自己重回孤独中。月篝归还的奥罗拉在飞向地球的过程中伴随着男主的旁白和BGM的渡りの诗（麻子只写了曲没写词，词留给CANOE了），一不小心眼泪就出来了。  </p>
+<blockquote>
+<p>如果哪天，有人能够抵达天际的话…<br>但至少希望…<br>希望他能发现，月球上有一位少女…<br>希望他能去到那独自一人蹲坐在那里的她的身边…<br>希望他能够靠近她…<br>从灵魂深处…如此祈愿…  </p>
+</blockquote>
+<h2 id="Terra线"><a href="#Terra线" class="headerlink" title="Terra线"></a>Terra线</h2><blockquote>
+<p>作为一个单独的个体，你已经算做得很好的了  </p>
+</blockquote>
+<p>从Terra线开始就是在地球上发生的真实线了。<br>瑚太郎在第一次遇见地篝的时候选择了逃跑而不是接近篝，因此避免了给篝杀死、被小鸟所救后昏迷的十年（与世界的联系提前了十年）<br>瑚太郎背叛了家庭，背叛了守卫者，背叛了自己的战友，背叛了恩师，背叛了盖亚，背叛了小鸟，他背叛了一切，甚至不愿意在自己组件的组织露面。<br>他用自己的方式战斗，用自己的方式生存，用自己的方式成功，丢弃了人生的所有，堵上了全部，才到达了结局。<br>Terra线的瑚太郎注定是孤独的，以前的瑚太郎是个人主义的，只愿意维持自己人际关系的小圈子，不愿意做出改变。然而月篝在他的灵魂中刻下了“希望有一天还能与你相见”这一段话，将他从自己的生活圈拉出来与世界做了绑定。（不过吉野也有帮助，在Moon线中提到）<br>然而就算燃烧自己燃烧到了极限的瑚太郎，最终来到地篝的身边，却无法避免已经开始的毁灭，只能将篝杀死来阻止毁灭。</p>
+<p><img src="/rewrite-analysis/terra2.jpeg" alt></p>
+<blockquote>
+<p>人们太过重视保护星球，以至于一直忽视了一件事。<br>那就是，纵使我们把这颗母星的资源吃尽，纵使我们要做更过分的事。<br>我们也必须，在宇宙中繁衍开来。</p>
+</blockquote>
+<p>在瑚太郎与小鸟的对话中，我们也可以窥探出Rewrite的主题：<br><img src="/rewrite-analysis/terra1.png" alt></p>
+<p>整个Rewrite的主题是希望、延续。<br>而追寻希望的代价、整个Terra线故事的核心：是孤独，生命必须要有与孤独为伴的力量。</p>
+<blockquote>
+<p>我们踏上了去往远方的旅程，<br>同时也踏上了名为孤独的船，<br>但我们并不会因孤独而气馁，<br>因为我们怀抱着远大的目标，<br>内心燃烧着名为希望的篝火，<br>引领着我们走向未知的前方。  </p>
+</blockquote>
+<p>Terra线的ED《CANOE》，独木舟就是对Rewrite的高度总结<br><img src="/rewrite-analysis/canoe1.png" alt><br><img src="/rewrite-analysis/canoe2.png" alt><br><img src="/rewrite-analysis/canoe3.png" alt>  </p>
+<p>致，给我带来了深刻感动与震撼的《Rewrite》</p>
+<h2 id="为什么Rewrite动画做得不好？"><a href="#为什么Rewrite动画做得不好？" class="headerlink" title="为什么Rewrite动画做得不好？"></a>为什么Rewrite动画做得不好？</h2><p>罚抄动画为什么被称为“同人作品”？ 以下是个人分析：<br>罚抄一度被认为是最不可能被动画化的key社作品，然而因为有罚厨天冲所以诞生了这么一个神奇的东西<br>罚抄的各个线并不是完全平行的（正如小鸟线解决静流杀死了键引出了对静流身份的猜测），而是通过一条线一条线逐渐拼凑出真女主篝，因此想要将篝融入其他女主的日常必然是失败的（第一季评价）<br>其次罚抄是key社文本量最大的作品，半年番不足以支撑整个宏大的世界观架构，没有个人线的支撑就切入moon线是无力的，最终许多感人和震撼的点都被删减（第二季评价）<br>如今在评论区和弹幕看到当初原作党和动漫党之间的争执颇有感慨，原作党想要让新人看到罚抄的魅力，而动漫党只想好好看动漫（然而看不懂），动漫都吸引不了他们那自然不愿意玩原作。<br>只能说动画做出来实属遗憾。</p>
+<h2 id="罚厨表情包献上"><a href="#罚厨表情包献上" class="headerlink" title="罚厨表情包献上"></a>罚厨表情包献上</h2><p><img src="/rewrite-analysis/face.jpg" alt></p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2020-10-animation-rating/" rel="bookmark">2020年10月新番评价（观前观后对比）</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/talks-bilibili/" rel="bookmark">将用户看做有温度的人 —— 浅谈哔哩哔哩及其社区经济</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/sc-fic-waiting-in-stars/" rel="bookmark">「科幻文」「定期更新」在星空等你</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/talks-idol/" rel="bookmark">关于偶像行业的一些杂谈</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div>姥爷们赏瓶冰阔落吧~</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="Bill Yang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="Bill Yang 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Bill Yang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.bill.moe/rewrite-analysis/" title="「Rewrite」罚抄Terra毕业感想及动画分析">https://blog.bill.moe/rewrite-analysis/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/杂谈/" rel="tag"><i class="fa fa-tag"></i> 杂谈</a>
+          </div>
+
+        
+  <div class="post-widgets">
+    <div class="wp_rating">
+      <div id="wpac-rating"></div>
+    </div>
+  </div>
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020-10-animation-rating/" rel="prev" title="2020年10月新番评价（观前观后对比）">
+      <i class="fa fa-chevron-left"></i> 2020年10月新番评价（观前观后对比）
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/entrylib/" rel="next" title="「Mirai 插件开发」EntryLib 词条库 开发心得">
+      「Mirai 插件开发」EntryLib 词条库 开发心得 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#个人线分析"><span class="nav-number">1.</span> <span class="nav-text">个人线分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#小鸟线"><span class="nav-number">1.1.</span> <span class="nav-text">小鸟线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#静流线"><span class="nav-number">1.2.</span> <span class="nav-text">静流线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#千早线"><span class="nav-number">1.3.</span> <span class="nav-text">千早线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#露西娅线"><span class="nav-number">1.4.</span> <span class="nav-text">露西娅线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#朱音线"><span class="nav-number">1.5.</span> <span class="nav-text">朱音线</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Moon线"><span class="nav-number">2.</span> <span class="nav-text">Moon线</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Terra线"><span class="nav-number">3.</span> <span class="nav-text">Terra线</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么Rewrite动画做得不好？"><span class="nav-number">4.</span> <span class="nav-text">为什么Rewrite动画做得不好？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#罚厨表情包献上"><span class="nav-number">5.</span> <span class="nav-text">罚厨表情包献上</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Bill Yang"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Bill Yang</p>
+  <div class="site-description" itemprop="description">这辈子都不可能更新的</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">677</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">235</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=935683004" title="QQ → tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=935683004" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i>QQ</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ym13883407586@outlook.com" title="E-Mail → mailto:ym13883407586@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/BillYang2016" title="GitHub → https://github.com/BillYang2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://coding.net/u/Bill_Yang_2016" title="Coding → https://coding.net/u/Bill_Yang_2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-git-square"></i>Coding</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://music.163.com/#/user/home?nickname=Bill_Yang2016" title="网易云音乐 → http://music.163.com/#/user/home?nickname=Bill_Yang2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-music"></i>网易云音乐</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://space.bilibili.com/233682260/#/" title="bilibili → https://space.bilibili.com/233682260/#/" rel="noopener" target="_blank"><i class="fa fa-fw fa-youtube-play"></i>bilibili</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → /atom.xml"><i class="fa fa-fw fa-rss"></i>RSS</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      我的朋友们
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://pointedpoints.github.io/" title="http://pointedpoints.github.io/" rel="noopener" target="_blank">pointedpoints</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://keke046.coding.me/" title="https://keke046.coding.me/" rel="noopener" target="_blank">KEKE046</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://imperfect_zx.coding.me/" title="https://imperfect_zx.coding.me/" rel="noopener" target="_blank">Imperfect</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://achen.world/" title="https://achen.world/" rel="noopener" target="_blank">Achen</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://metakari.one/" title="https://metakari.one/" rel="noopener" target="_blank">Metakar1</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://39.106.98.75/" title="http://39.106.98.75/" rel="noopener" target="_blank">魏启大陆</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/friends/" title="/friends/">更多朋友们</a>
+        </li>
+    </ul>
+  </div>
+<!-- none-select-br -->
+
+<p></p>
+
+<!-- hitokoto -->
+
+<div class="hitokoto-title">
+	<i class="fa fa-paragraph"></i>
+	<b>一言</b>
+</div>
+
+<div id="hitokoto">:D 获取中...</div>
+<i id="hitofrom">:D 获取中...</i>
+
+<script src="https://cdn.jsdelivr.net/npm/bluebird@3/js/browser/bluebird.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/whatwg-fetch@2.0.3/fetch.min.js"></script>
+<script>
+  fetch('https://v1.hitokoto.cn')
+    .then(function (res){
+      return res.json();
+    })
+    .then(function (data) {
+      var hitokoto = document.getElementById('hitokoto');
+      hitokoto.innerText = '\xa0\xa0\xa0\xa0\xa0\xa0\xa0' + data.hitokoto;
+      var hitofrom = document.getElementById('hitofrom');
+      hitofrom.innerText = "——" + data.from + '\xa0'; 
+    })
+    .catch(function (err) {
+      console.error(err);
+    })
+</script>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Bill Yang 以 <a class="theme-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a> 协议发布</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+  <script>
+  if (CONFIG.page.isPost) {
+    wpac_init = window.wpac_init || [];
+    wpac_init.push({
+      widget: 'Rating',
+      id: 10154,
+      el: 'wpac-rating',
+      color: 'fc6423'
+    });
+    (function() {
+      if ('WIDGETPACK_LOADED' in window) return;
+      WIDGETPACK_LOADED = true;
+      var mc = document.createElement('script');
+      mc.type = 'text/javascript';
+      mc.async = true;
+      mc.src = '//embed.widgetpack.com/widget.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+    })();
+  }
+  </script>
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout: 3000,
+        priority: true,
+        ignores: [uri => uri.includes('#'),uri => uri == 'https://blog.bill.moe/rewrite-analysis/',]
+      });
+      });
+  </script>
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: true,
+      notify: false,
+      appId: 'JYwxXHHRe8RNGu498SnK9B3N-gzGzoHsz',
+      appKey: 'JBz9GW9kidjPp7gW5Y6VIgfe',
+      placeholder: "吹雪は猫~",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: 'zh-cn' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

@@ -195,7 +195,7 @@
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">10</span></a>
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">11</span></a>
 
   </li>
         <li class="menu-item menu-item-about">
@@ -215,12 +215,12 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">675</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">677</span></a>
 
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">234</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">235</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -271,6 +271,326 @@
             
 
   <div class="posts-expand">
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.bill.moe/multiplicative-function-sieves-notes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Bill Yang">
+      <meta itemprop="description" content="这辈子都不可能更新的">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bill Yang's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/multiplicative-function-sieves-notes/" class="post-title-link" itemprop="url">积性函数线性筛/杜教筛/洲阁筛学习笔记</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-01-22 16:21:39" itemprop="dateCreated datePublished" datetime="2018-01-22T16:21:39+08:00">2018-01-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-06-19 09:29:14" itemprop="dateModified" datetime="2019-06-19T09:29:14+08:00">2019-06-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OI/" itemprop="url" rel="index">
+                    <span itemprop="name">OI</span>
+                  </a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/multiplicative-function-sieves-notes/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/multiplicative-function-sieves-notes/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="数论函数"><a href="#数论函数" class="headerlink" title="数论函数"></a>数论函数</h2><p>定义域为正整数的函数，值域为复数的函数。  </p>
+<h3 id="积性函数"><a href="#积性函数" class="headerlink" title="积性函数"></a>积性函数</h3><p>规定$f(1)=1$，当$(a,b)=1$时满足$f(ab)=f(a)f(b)$的函数。  </p>
+<h3 id="完全积性函数"><a href="#完全积性函数" class="headerlink" title="完全积性函数"></a>完全积性函数</h3><p>完全积性函数是积性函数。<br>满足$\forall a,b$，$f(ab)=f(a)f(b)$。  </p>
+<h3 id="常见的积性函数"><a href="#常见的积性函数" class="headerlink" title="常见的积性函数"></a>常见的积性函数</h3><script type="math/tex; mode=display">e(n)=[n=1]\quad\text{（完全积性）}</script><script type="math/tex; mode=display">id(n)=n\quad\text{（完全积性）}</script><script type="math/tex; mode=display">id_k(n)=n^k\quad\text{（完全积性）}</script><script type="math/tex; mode=display">1(n)=1\quad\text{（完全积性）}</script><script type="math/tex; mode=display">d(n)=\sum_{i\mid n}1</script><script type="math/tex; mode=display">\sigma(n)=\sum_{i\mid n}i</script><script type="math/tex; mode=display">\sigma_k(n)=\sum_{i\mid n}i^k</script><script type="math/tex; mode=display">\mu(n)=\begin{cases}0 & \exists d\gt1,d^2\mid n \\ (-1)^k & n=\prod_{i=1}^kp_i\end{cases}</script><script type="math/tex; mode=display">\varphi(n)=\sum_{i=1}^n[(i,n)=1]</script><h3 id="狄利克雷卷积"><a href="#狄利克雷卷积" class="headerlink" title="狄利克雷卷积"></a>狄利克雷卷积</h3><p>定义两个数论函数$f,g$的狄利克雷卷积为：  </p>
+<script type="math/tex; mode=display">(f*g)(n)=\sum_{d\mid n}f(d)g(\frac nd)</script><h4 id="性质"><a href="#性质" class="headerlink" title="性质"></a>性质</h4><p>交换律：$f*g=g*f$<br>结合律：$(f*g)*h=f*(g*h)$<br>分配率：$f*(g+h)=f*g+f*h$<br>单位元：$f*e=e*f=f$（$e$是单位函数）</p>
+<h4 id="常见的狄利克雷卷积"><a href="#常见的狄利克雷卷积" class="headerlink" title="常见的狄利克雷卷积"></a>常见的狄利克雷卷积</h4><script type="math/tex; mode=display">d(n)=\sum_{d\mid n}1\quad\Leftrightarrow\quad d=1*1</script><script type="math/tex; mode=display">\sigma(n)=\sum_{d\mid n}d\quad\Leftrightarrow\quad \sigma=d*1</script><script type="math/tex; mode=display">\varphi(n)=\sum_{d\mid n}\mu(d)\frac nd\quad\Leftrightarrow\quad\varphi=\mu*id</script><script type="math/tex; mode=display">e(n)=\sum_{d\mid n}\mu(d)\quad\Leftrightarrow\quad e=\mu*1</script><h3 id="积性函数的性质"><a href="#积性函数的性质" class="headerlink" title="积性函数的性质"></a>积性函数的性质</h3><p>若$f(x),g(x)$均为积性函数，则：  </p>
+<p>$h(x)=f(x^p)$为积性函数。<br>$h(x)=f^p(x)$为积性函数。<br>相乘$h(x)=f(x)g(x)$为积性函数。<br>狄利克雷卷积$h(x)=\sum\limits_{d\mid x}f(d)g(\frac xd)$为积性函数。  </p>
+<h2 id="线性筛"><a href="#线性筛" class="headerlink" title="线性筛"></a>线性筛</h2><p>线性筛可以在严格线性的时间内求出积性函数$f(1\rightarrow n)$的值。  </p>
+<h3 id="要求"><a href="#要求" class="headerlink" title="要求"></a>要求</h3><p>$f$是一个积性函数。  </p>
+<h3 id="线性筛的思想"><a href="#线性筛的思想" class="headerlink" title="线性筛的思想"></a>线性筛的思想</h3><script type="math/tex; mode=display">n=\prod_{i=1}^kp_i^{a_i}</script><p>使用最小的$p_1$去筛掉其他的数。  </p>
+<p>将$n$分为三类考虑。  </p>
+<ol>
+<li>$n$是质数，根据定义得到$f(i)$的值。  </li>
+<li>$\frac n{p_1}\bmod p_1=0$，说明$\frac n{p_1}$与$n$的质因子集相同，考虑其变化。  </li>
+<li>$\frac n{p_1}\bmod p_1\neq0$，说明$\frac n{p_1}$与$p_1$互素，利用积性函数的性质得到$f(n)=f(\frac n{p_1})f(p_1)$。  </li>
+</ol>
+<h3 id="素数线性筛"><a href="#素数线性筛" class="headerlink" title="素数线性筛"></a>素数线性筛</h3><p>保证每个合数被其最小的素数筛掉，因此时间复杂度是线性的。<br>当满足$i\bmod p[j]=0$时，说明$p[j]$整除$i$，那么$p[j]$必然整除$i\cdot p[j+1]$，因此无需继续筛。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> vst[maxn],Prime[maxn],cnt=<span class="number">0</span>; <span class="comment">//prime</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Prime_Sieve</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">2</span>; i&lt;=n; i++) &#123;</span><br><span class="line">		<span class="keyword">if</span>(!vst[i])Prime[++cnt]=i;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">1</span>; j&lt;=cnt&amp;&amp;i*Prime[j]&lt;=n; j++) &#123;</span><br><span class="line">			vst[i*Prime[j]]=<span class="number">1</span>;</span><br><span class="line">			<span class="keyword">if</span>(i%Prime[j]==<span class="number">0</span>)<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="欧拉函数"><a href="#欧拉函数" class="headerlink" title="欧拉函数"></a>欧拉函数</h3><p>欧拉函数$\varphi(n)$定义为在$n$以内与$n$互质的正整数个数。  </p>
+<h4 id="欧拉函数的性质"><a href="#欧拉函数的性质" class="headerlink" title="欧拉函数的性质"></a>欧拉函数的性质</h4><blockquote>
+<p>若$n=p^k$，其中$p$是素数，$\varphi(n)=p^k-p^{k-1}$。  </p>
+</blockquote>
+<p>证明：<br>小于$p^k$的正整数有$p^k-1$个，其中和$p^k$不互质的正整数为$\lbrace p,2p,\ldots,(p^{k-1}-1)p\rbrace$，共$p^{k-1}-1$个数，因此$\varphi(n)=p^k-p^{k-1}$。  </p>
+<blockquote>
+<p>若$(p,q)=1$，则$\varphi(pq)=\varphi(p)\varphi(q)$。  </p>
+</blockquote>
+<p>证明：<br>根据上述，$\varphi$是积性函数，因此显然。  </p>
+<blockquote>
+<p>设$n=\prod_{i=1}^kp_i^{a_i}$，其中$p_i$是素数，$\varphi(n)=n\prod_{i=1}^k(1-\frac 1{p_i})$。  </p>
+</blockquote>
+<p>证明：<br>由上述两式显然。  </p>
+<h4 id="欧拉函数线性筛"><a href="#欧拉函数线性筛" class="headerlink" title="欧拉函数线性筛"></a>欧拉函数线性筛</h4><p>设$p_1$是$n$的最小质因子，$n’=\frac{n}{p_1}$，在线性筛中，$n$通过$n’\times p_1$被筛掉。  </p>
+<ul>
+<li>当$n’\bmod p_1=0$，即$a_1\gt1$时，$n’$含有$n$的所有质因子，则有：  <script type="math/tex; mode=display">
+\begin{aligned}
+\varphi(n)&=n\prod_{i=1}^k\frac{p_i-1}{p_i} \\
+&=p_1\times n'\prod_{i=1}^k\frac{p_i-1}{p_i} \\
+&=p_1\times\varphi(n')
+\end{aligned}</script></li>
+<li>当$n’\bmod p_1\neq0$，即$a_1=1$时，$n’$与$p_1$互素，而欧拉函数是积性函数，故：  <script type="math/tex; mode=display">
+\begin{aligned}
+\varphi(n)&=\varphi(p_1)\times\varphi(n') \\
+&=(p_1-1)\varphi(n')
+\end{aligned}</script></li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxn=<span class="number">1000005</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> vst[maxn],Prime[maxn],cnt=<span class="number">0</span>; <span class="comment">//prime</span></span><br><span class="line"><span class="keyword">int</span> Phi[maxn]; <span class="comment">//phi</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Phi_Table</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">	Phi[<span class="number">1</span>]=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">2</span>; i&lt;=n; i++) &#123;</span><br><span class="line">		<span class="keyword">if</span>(!vst[i]) &#123;</span><br><span class="line">			Prime[++cnt]=i;</span><br><span class="line">			Phi[i]=i<span class="number">-1</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">1</span>; j&lt;=cnt&amp;&amp;i*Prime[j]&lt;=n; j++) &#123;</span><br><span class="line">			vst[i*Prime[j]]=<span class="number">1</span>;</span><br><span class="line">			<span class="keyword">if</span>(i%Prime[j]==<span class="number">0</span>) &#123;</span><br><span class="line">				Phi[i*Prime[j]]=Phi[i]*Prime[j];</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			Phi[i*Prime[j]]=Phi[i]*Phi[Prime[j]];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="莫比乌斯函数"><a href="#莫比乌斯函数" class="headerlink" title="莫比乌斯函数"></a>莫比乌斯函数</h3><p>设$n=\prod_{i=1}^kp_i^{a_i}$</p>
+<script type="math/tex; mode=display">\mu(n)=\begin{cases}1 & n=1 \\ (-1)^k & \forall i\in[1,k],a_i=1 \\0 & \exists i\in[1,k],a_i>1\end{cases}</script><h4 id="莫比乌斯函数线性筛"><a href="#莫比乌斯函数线性筛" class="headerlink" title="莫比乌斯函数线性筛"></a>莫比乌斯函数线性筛</h4><p>当$n$为素数时，根据定义有$\mu(n)=-1$。  </p>
+<p>设$p_1$是$n$的最小质因子，$n’=\frac{n}{p_1}$，在线性筛中，$n$通过$n’\times p_1$被筛掉。  </p>
+<ul>
+<li>当$n’\bmod p_1=0$，即$a_1\gt1$时，由定义可知：  <script type="math/tex; mode=display">\mu(n)=0</script></li>
+<li>当$n’\bmod p_1\neq0$，即$a_1=1$时，$n’$与$p_1$互素，而欧拉函数是积性函数，故：  </li>
+</ul>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\mu(n)&=\mu(p_1)\times \mu(n') \\
+&=-1\times \mu(n')
+\end{aligned}</script><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxn=<span class="number">1000005</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> vst[maxn],Prime[maxn],cnt=<span class="number">0</span>; <span class="comment">//prime</span></span><br><span class="line"><span class="keyword">int</span> Mobius[maxn]; <span class="comment">//mobius</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Mobius_Table</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">	Mobius[<span class="number">1</span>]=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">2</span>; i&lt;=n; i++) &#123;</span><br><span class="line">		<span class="keyword">if</span>(!vst[i]) &#123;</span><br><span class="line">			Prime[++cnt]=i;</span><br><span class="line">			Mobius[i]=<span class="number">-1</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">1</span>; j&lt;=cnt&amp;&amp;i*Prime[j]&lt;=n; j++) &#123;</span><br><span class="line">			vst[i*Prime[j]]=<span class="number">1</span>;</span><br><span class="line">			<span class="keyword">if</span>(i%Prime[j]==<span class="number">0</span>) &#123;</span><br><span class="line">				Mobius[i*Prime[j]]=<span class="number">0</span>;</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			Mobius[i*Prime[j]]=-Mobius[i];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="约数个数函数"><a href="#约数个数函数" class="headerlink" title="约数个数函数"></a>约数个数函数</h3><p>约数个数函数$d(n)$定义为$n$的约数个数。  </p>
+<script type="math/tex; mode=display">d(n)=\sum_{i\mid n}1</script><h4 id="约数个数公式"><a href="#约数个数公式" class="headerlink" title="约数个数公式"></a>约数个数公式</h4><p>若$n=\prod_{i=1}^kp_i^{a_i}$，则：  </p>
+<script type="math/tex; mode=display">d(n)=\prod_{i=1}^k(a_i+1)</script><h4 id="约数个数线性筛"><a href="#约数个数线性筛" class="headerlink" title="约数个数线性筛"></a>约数个数线性筛</h4><p>当$n$为素数时，根据定义有$d(n)=2$。  </p>
+<p>设$p_1$是$n$的最小质因子，$n’=\frac{n}{p_1}$，在线性筛中，$n$通过$n’\times p_1$被筛掉。  </p>
+<ul>
+<li>当$n’\bmod p_1=0$，即$a_1\gt1$时，设$last$为$n’$中$p_1$的指数，由约数个数公式可知：  <script type="math/tex; mode=display">d(n)=d(n')\times\frac{last+2}{last+1}</script></li>
+<li>当$n’\bmod p_1\neq0$，即$a_1=1$时，$n’$与$p_1$互素，而约数个数函数是积性函数，故：  <script type="math/tex; mode=display">
+\begin{aligned}
+d(n)&=d(p_1)\times d(n') \\
+&=2d(n')
+\end{aligned}</script></li>
+</ul>
+<p>在实现时，使用<code>Min_Divnum[i]</code>来记录$n’=i$时的$last$。  </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxn=<span class="number">1000005</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> vst[maxn],Prime[maxn],cnt=<span class="number">0</span>; <span class="comment">//prime</span></span><br><span class="line"><span class="keyword">int</span> d[maxn],Min_Divnum[maxn]; <span class="comment">//divisors</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Divisors_Number_Table</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">2</span>; i&lt;=n; i++) &#123;</span><br><span class="line">		<span class="keyword">if</span>(!vst[i]) &#123;</span><br><span class="line">			Prime[++cnt]=i;</span><br><span class="line">			Min_Divnum[i]=<span class="number">1</span>;</span><br><span class="line">			d[i]=<span class="number">2</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">1</span>; j&lt;=cnt&amp;&amp;i*Prime[j]&lt;=n; j++) &#123;</span><br><span class="line">			vst[i*Prime[j]]=<span class="number">1</span>;</span><br><span class="line">			<span class="keyword">if</span>(i%Prime[j]==<span class="number">0</span>) &#123;</span><br><span class="line">				Min_Divnum[i*Prime[j]]=Min_Divnum[i]+<span class="number">1</span>;</span><br><span class="line">				d[i*Prime[j]]=d[i]/(Min_Divnum[i]+<span class="number">1</span>)*(Min_Divnum[i]+<span class="number">2</span>);</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			Min_Divnum[i*Prime[j]]=<span class="number">1</span>;</span><br><span class="line">			d[i*Prime[j]]=d[i]*d[Prime[j]];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="约数和函数"><a href="#约数和函数" class="headerlink" title="约数和函数"></a>约数和函数</h3><p>约数个数函数$\sigma(n)$定义为$n$的约数个数。  </p>
+<script type="math/tex; mode=display">\sigma(n)=\sum_{i\mid n}i</script><h4 id="约数和公式"><a href="#约数和公式" class="headerlink" title="约数和公式"></a>约数和公式</h4><p>若$n=\prod_{i=1}^kp_i^{a_i}$，则：  </p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\sigma(n)&=(1+p_1+p_1^2+\cdots+p_1^{a_1})\times(1+p_2+p_2^2+\cdots+p_2^{a_2})\times\cdots\times(1+p_k+p_k^2+\cdots+p_k^{a_k}) \\
+&=\prod_{i=1}^k\sum_{j=0}^{a_i}p_i^j
+\end{aligned}</script><h4 id="约数个数线性筛-1"><a href="#约数个数线性筛-1" class="headerlink" title="约数个数线性筛"></a>约数个数线性筛</h4><p>当$n$为素数时，根据定义有$\sigma(n)=n+1$。  </p>
+<p>设$p_1$是$n$的最小质因子，$n’=\frac{n}{p_1}$，在线性筛中，$n$通过$n’\times p_1$被筛掉。  </p>
+<ul>
+<li>当$n’\bmod p_1=0$，即$a_1\gt1$时，设$last=p_1^{a_1-1}$也就是$n’$中$p_1$为底的最后一个幂，设$sum=\sum\limits_{i=0}^{a_1-1}p_1^i$，由约数个数公式可知：  <script type="math/tex; mode=display">\sigma(n)=\sigma(n')\times\frac{sum+last}{sum}</script></li>
+<li>当$n’\bmod p_1\neq0$，即$a_1=1$时，$n’$与$p_1$互素，而约数个数函数是积性函数，故：  <script type="math/tex; mode=display">
+\begin{aligned}
+\sigma(n)&=\sigma(p_1)\times \sigma(n') \\
+&=(p_1+1)\sigma(n')
+\end{aligned}</script></li>
+</ul>
+<p>在实现时，使用<code>Min_Fac_last[i]</code>和<code>Min_Fac_sum[i]</code>来记录$n’=i$时的$last$和$sum$。  </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> LL;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxn=<span class="number">1000005</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> vst[maxn],Prime[maxn],cnt=<span class="number">0</span>; <span class="comment">//prime</span></span><br><span class="line">LL f[maxn],Min_Fac_last[maxn],Min_Fac_sum[maxn]; <span class="comment">//divisors</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Divisors_Sum_Table</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">	f[<span class="number">1</span>]=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">2</span>; i&lt;=n; i++) &#123;</span><br><span class="line">		<span class="keyword">if</span>(!vst[i]) &#123;</span><br><span class="line">			Prime[++cnt]=i;</span><br><span class="line">			Min_Fac_last[i]=i;</span><br><span class="line">			f[i]=Min_Fac_sum[i]=i+<span class="number">1</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">1</span>; j&lt;=cnt&amp;&amp;i*Prime[j]&lt;=n; j++) &#123;</span><br><span class="line">			vst[i*Prime[j]]=<span class="number">1</span>;</span><br><span class="line">			<span class="keyword">if</span>(i%Prime[j]==<span class="number">0</span>) &#123;</span><br><span class="line">				Min_Fac_last[i*Prime[j]]=Min_Fac_last[i]*Prime[j];</span><br><span class="line">				Min_Fac_sum[i*Prime[j]]=Min_Fac_sum[i]+Min_Fac_last[i*Prime[j]];</span><br><span class="line">				f[i*Prime[j]]=f[i]/Min_Fac_sum[i]*Min_Fac_sum[i*Prime[j]];</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			f[i*Prime[j]]=f[i]*(Prime[j]+<span class="number">1</span>);</span><br><span class="line">			Min_Fac_last[i*Prime[j]]=Prime[j];</span><br><span class="line">			Min_Fac_sum[i*Prime[j]]=Prime[j]+<span class="number">1</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="杜教筛"><a href="#杜教筛" class="headerlink" title="杜教筛"></a>杜教筛</h2><p>杜教筛是一种可以在$O(n^\frac23)$的时间内求出特定的积性函数前缀和的方法。<br>即求出：  </p>
+<script type="math/tex; mode=display">S(n)=\sum_{i=1}^nf(i)</script><h3 id="要求-1"><a href="#要求-1" class="headerlink" title="要求"></a>要求</h3><p>能够找到另一个积性函数$g$，使得$(f*g)(x)$的前缀和与$g(x)$的前缀和都很好计算。  </p>
+<h3 id="主过程"><a href="#主过程" class="headerlink" title="主过程"></a>主过程</h3><p>考虑$(f*g)(x)$的前缀和。  </p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\sum_{i=1}^n\sum_{j\mid i}f(\frac ij)g(j)&=\sum_{j=1}^n\sum_{j\mid i}^nf(\frac ij)g(j) \\
+&=\sum_{j=1}^ng(j)\sum_{i=1}^{\lfloor\frac nj\rfloor}f(i) \\
+&=\sum_{i=1}^ng(i)S(\lfloor\frac ni\rfloor)
+\end{aligned}</script><p>因此：  </p>
+<script type="math/tex; mode=display">\sum_{i=1}^ng(i)S(\lfloor\frac ni\rfloor)-\sum_{i=2}^ng(i)S(\lfloor\frac ni\rfloor)=\sum_{i=1}^n\sum_{j\mid i}f(\frac ij)g(j)-\sum_{i=2}^ng(i)S(\lfloor\frac ni\rfloor)</script><p>即：  </p>
+<script type="math/tex; mode=display">g(1)S(n)=\sum_{i=1}^n(f*g)(i)-\sum_{i=2}^ng(i)S(\lfloor\frac ni\rfloor)</script><p>因此若$(f*g)(x)$的前缀和与$g(x)$的前缀和都很好计算，那么可以通过递归，在$O(n^\frac34)$的时间内求出$f$的前缀和。<br>进一步，若能够通过线性筛预处理$f$在$n^\frac23$内的前缀和，时间复杂度降低到$O(n^\frac23)$。  </p>
+<p>更具体的，这里分别有<a href="/51nod1239-phi/">欧拉函数</a>与<a href="/51nod1244-mobius/">莫比乌斯函数</a>杜教筛的推导。  </p>
+<h2 id="洲阁筛"><a href="#洲阁筛" class="headerlink" title="洲阁筛"></a>洲阁筛</h2><p>杜教筛在时间上虽然很快，但因为其限制条件，并不是所有积性函数都可以使用杜教筛。<br>洲阁筛可以在$O(\frac{n^\frac34}{\ln n})$的时间内求出大多数积性函数的前缀和。  </p>
+<h3 id="要求-2"><a href="#要求-2" class="headerlink" title="要求"></a>要求</h3><p>$f$是一个积性函数。<br>当$p$是质数时，$f(p^c)$是一个关于$p$的低阶多项式。  </p>
+<h3 id="洲阁筛的思想"><a href="#洲阁筛的思想" class="headerlink" title="洲阁筛的思想"></a>洲阁筛的思想</h3><p>利用$\sqrt n$以外只有$1$个素因子的性质，对素因子进行分类。<br>再利用除法向下取整只有$\sqrt n$个取值的性质，降低时间复杂度。  </p>
+<h3 id="主过程-1"><a href="#主过程-1" class="headerlink" title="主过程"></a>主过程</h3><p>将$[1,n]$中所有数按照是否有$\gt\sqrt n$的质因子分为两类，显然有：  </p>
+<script type="math/tex; mode=display">\sum_{i=1}^nf(i)=\sum_{i=1}^{\sqrt n}f(i)(\sum_{p\gt\sqrt n,p\text{是素数}}^{\lfloor\frac ni\rfloor}f(p))+\sum_{i=1,i\text{无}\gt\sqrt n\text{的质因子}}^nf(i)</script><h4 id="第一部分"><a href="#第一部分" class="headerlink" title="第一部分"></a>第一部分</h4><script type="math/tex; mode=display">\sum_{i=1}^{\sqrt n}f(i)</script><p>这一部分可以直接线性筛解决。  </p>
+<h4 id="第二部分"><a href="#第二部分" class="headerlink" title="第二部分"></a>第二部分</h4><p>对于每个$1\le i\le\sqrt n$，计算</p>
+<script type="math/tex; mode=display">\sum_{p\gt\sqrt n,p\text{是素数}}^{\lfloor\frac ni\rfloor}f(p)</script><p>将$\sqrt n$以内的素数从小到大排列为$p_1,p_2,\ldots,p_m$。<br>设$g_k(i,j)$表示$[1,j]$中与前$i$个素数互质的数的$k$次幂和。<br>这里的$k$无特别含义，仅仅用来表示其可以写作低阶多项式形式。<br>初值为$g(0,j)=\sum_{t=1}^jt^k$，那么我们需要的值即为$g_k(m,j)$（与前面所有素数互质，必然是$\sqrt n$后的素数），若能$O(1)$得到$g_k(m,j)$的值，考虑原式前半部分：  </p>
+<script type="math/tex; mode=display">\sum_{i=1}^{\sqrt n}f(i)(\sum_{p\gt\sqrt n,p\text{是素数}}^{\lfloor\frac ni\rfloor}f(p))</script><p>可用$O(\sqrt n)$的时间枚举$i$，然后$O(1)$得到第二部分。  </p>
+<p>考虑转移：  </p>
+<script type="math/tex; mode=display">g_k(i,j)=g_k(i-1,j)-p_i^kg_k(i-1,\lfloor\frac j{p_i}\rfloor)</script><p>对于一个素数，合法的$j$总数只有$O(\sqrt n)$个，因此粗略计算时间复杂度为：  </p>
+<script type="math/tex; mode=display">O(\frac{\sqrt n}{\ln\sqrt n}\cdot\sqrt n)=O(\frac n{\ln \sqrt n})</script><p>需要优化。  </p>
+<p>注意到当$p_{i+1}\gt j$时，$p_{1\cdots i}$已经可以组成所有数，因此此时未被筛掉的仅有$1$，即$g_k(i,j)=1$。<br>代入下一层递推可以发现：当$p_i\gt\lfloor\frac j{p_i}\rfloor$，即$p_i^2\gt j$时，$g_k(i,j)$的转移变为：  </p>
+<script type="math/tex; mode=display">g_k(i,j)=g_k(i-1,j)-p_i^k</script><p>从小到大枚举$i$，一旦发现对于某个$j$有$p_{i_0}^2&gt;j$便可以不再转移，之后若需要用到其在$i_1$时的值，直接用$g_k(i_0,j)-\sum\limits_{i=i_0}^{i_1-1}p_i^k$即可。  </p>
+<p>用积分可以将时间复杂度近似为$O(\frac{n^\frac34}{\log n})$</p>
+<h4 id="第三部分"><a href="#第三部分" class="headerlink" title="第三部分"></a>第三部分</h4><script type="math/tex; mode=display">\sum_{i=1,i\text{无}\gt\sqrt n\text{的质因子}}^nf(i)</script><p>同样考虑递推，为了剪枝从大的质数往小的递推。  </p>
+<p>将$\sqrt n$以内的素数从小到大排列为$p_1,p_2,\ldots,p_m$。<br>设$h(i,j)$表示$[1,j]$中只有$p_{i\cdots m}$质因子的数的$f(x)$求和。  </p>
+<p>那么初值为$h(m+1,j)=1$，要求$h(0,j)$。<br>转移方程为：  </p>
+<script type="math/tex; mode=display">h(i,j)=h(i+1,j)+\sum_{c\ge1}f(p_i^c)h(i+1,\lfloor\frac{j}{p_i^c}\rfloor)</script><p>发现$j$的取值仍只有$O(\sqrt n)$个，因此暴力计算，时间复杂度仍然为</p>
+<script type="math/tex; mode=display">O(\frac{\sqrt n}{\ln\sqrt n}\cdot\sqrt n)=O(\frac n{\ln \sqrt n})</script><p>注意到当$p_i\gt j$时，能用这些质因子组成的数只有$1$。<br>因此有$h(i,j)=1$。  </p>
+<p>类似地，当$p_i^2\gt j$时，转移变为：  </p>
+<script type="math/tex; mode=display">h(i,j)=h(i-1,j)+f(p_i)</script><p>从大到小枚举$i$，如果对于某个$j$有$p_i^2\gt j$，可以不转移，每次用的时候加入$[p_i,\min(j,\sqrt n)]$的质数的$f(p)$即可。  </p>
+<p>时间复杂度仍然为$O(\frac{n^\frac34}{\ln n})$。  </p>
+<p>嘴上AC还是不难的，现在我还没有用洲阁筛写一道题。  </p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://oi.men.ci/euler-sieve/" target="_blank" rel="noopener">线性筛法 - Menci</a>  </li>
+<li>初等数论.pdf - h10  </li>
+<li><a href="http://blog.csdn.net/alan_cty/article/details/51837101" target="_blank" rel="noopener">[51nod1239]欧拉函数之和 - alan_cty</a>  </li>
+<li><a href="http://jiruyi910387714.is-programmer.com/posts/195270.html" target="_blank" rel="noopener">论逗逼的自我修养之寒假颓废记 - jiry_2</a>  </li>
+<li><a href="http://debug18.com/posts/calculate-the-sum-of-multiplicative-function/" target="_blank" rel="noopener">洲阁筛学习 - __debug</a>  </li>
+<li><a href="http://blog.csdn.net/semiwaker/article/details/73822107" target="_blank" rel="noopener">洲阁筛学习总结 - Semiwaker</a></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.bill.moe/bzoj4175-tele/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Bill Yang">
+      <meta itemprop="description" content="这辈子都不可能更新的">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bill Yang's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/bzoj4175-tele/" class="post-title-link" itemprop="url">「bzoj4175」小G的电话本 - 后缀自动机+NTT</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-01-21 23:44:40" itemprop="dateCreated datePublished" datetime="2018-01-21T23:44:40+08:00">2018-01-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-06-10 09:10:56" itemprop="dateModified" datetime="2019-06-10T09:10:56+08:00">2019-06-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OI/" itemprop="url" rel="index">
+                    <span itemprop="name">OI</span>
+                  </a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/bzoj4175-tele/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/bzoj4175-tele/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="题目大意"><a href="#题目大意" class="headerlink" title="题目大意"></a>题目大意</h2><blockquote>
+<p>&ensp;&ensp;&ensp;&ensp;小G是一个商人，他有一个电话本。电话本上记下了许多联系人，如<code>timesqr</code>、<code>orzyhb</code>等等。不过Tony对其中的某个联系人的名字$S$特别感兴趣，他从中提取出了这个联系人的名字中的所有片段，如提取出<code>orz</code>的<code>o</code>,<code>r</code>,<code>z</code>,<code>or</code>,<code>rz</code>,<code>orz</code>等等。现在他想请你统计有多少个长度为$k$的片段对$(P[1],P[2],P[3],…,P[k])$，使得在该片段对中所有片段在$S$中出现次数之和为他的幸运数$m$？注意两个片段对不同当且仅当两个片段对的某一位的片段不同，两个片段不同当且仅当这两个片段在$S$中的位置不同。  </p>
+</blockquote>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/bzoj4175-tele/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
         
   
   
@@ -1069,204 +1389,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blog.bill.moe/bzoj4382-naszyjnika/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Bill Yang">
-      <meta itemprop="description" content="这辈子都不可能更新的">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Bill Yang's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/bzoj4382-naszyjnika/" class="post-title-link" itemprop="url">「bzoj4382」「POI2015」Podział naszyjnika - 字符串+Hash</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-01-19 23:50:32" itemprop="dateCreated datePublished" datetime="2018-01-19T23:50:32+08:00">2018-01-19</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-06-10 09:10:56" itemprop="dateModified" datetime="2019-06-10T09:10:56+08:00">2019-06-10</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/OI/" itemprop="url" rel="index">
-                    <span itemprop="name">OI</span>
-                  </a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/bzoj4382-naszyjnika/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/bzoj4382-naszyjnika/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="题目大意"><a href="#题目大意" class="headerlink" title="题目大意"></a>题目大意</h2><blockquote>
-<p>&ensp;&ensp;&ensp;&ensp;长度为$n$的一串项链，每颗珠子是$k$种颜色之一。第$i$颗与第$i-1,i+1$颗珠子相邻，第$n$颗与第$1$颗也相邻。<br>&ensp;&ensp;&ensp;&ensp;切两刀，把项链断成两条链。要求每种颜色的珠子只能出现在其中一条链中。<br>&ensp;&ensp;&ensp;&ensp;求方案数量（保证至少存在一种），以及切成的两段长度之差绝对值的最小值。  </p>
-</blockquote>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/bzoj4382-naszyjnika/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blog.bill.moe/bzoj1396-string/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Bill Yang">
-      <meta itemprop="description" content="这辈子都不可能更新的">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Bill Yang's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/bzoj1396-string/" class="post-title-link" itemprop="url">「bzoj1396」识别子串 - 后缀自动机+线段树</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-01-19 23:12:39" itemprop="dateCreated datePublished" datetime="2018-01-19T23:12:39+08:00">2018-01-19</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-06-10 09:10:56" itemprop="dateModified" datetime="2019-06-10T09:10:56+08:00">2019-06-10</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/OI/" itemprop="url" rel="index">
-                    <span itemprop="name">OI</span>
-                  </a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/bzoj1396-string/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/bzoj1396-string/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="题目大意"><a href="#题目大意" class="headerlink" title="题目大意"></a>题目大意</h2><blockquote>
-<p>&ensp;&ensp;&ensp;&ensp;XX在进行字符串研究的时候，遇到了一个十分棘手的问题。<br>&ensp;&ensp;&ensp;&ensp;在这个问题中，给定一个字符串$S$，与一个整数$K$，定义$S$的子串$T=S(i,j)$是关于第$K$位的识别子串，满足以下两个条件：<br>&ensp;&ensp;&ensp;&ensp;$1.i\le K\le j$。<br>&ensp;&ensp;&ensp;&ensp;$2.$子串$T$只在$S$中出现过一次。<br>&ensp;&ensp;&ensp;&ensp;例如，$S=banana$，$K=5$，则关于第$K$位的识别子串有<code>nana</code>，<code>anan</code>，<code>anana</code>，<code>nan</code>，<code>banan</code>和<code>banana</code>。<br>&ensp;&ensp;&ensp;&ensp;现在，给定$S$，XX希望知道对于S的每一位，最短的识别子串长度是多少，请你来帮助他。  </p>
-</blockquote>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/bzoj1396-string/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1339,20 +1461,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">675</span>
+          <span class="site-state-item-count">677</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">234</span>
+        <span class="site-state-item-count">235</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1462,7 +1584,7 @@
 <div class="copyright">
   
   &copy; 2017 – 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

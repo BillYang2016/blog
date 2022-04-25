@@ -195,7 +195,7 @@
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">11</span></a>
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">12</span></a>
 
   </li>
         <li class="menu-item menu-item-about">
@@ -215,12 +215,12 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">677</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">678</span></a>
 
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">235</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">236</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -271,6 +271,105 @@
             
 
   <div class="posts-expand">
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.bill.moe/bzoj2158-travel/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Bill Yang">
+      <meta itemprop="description" content="这辈子都不可能更新的">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bill Yang's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/bzoj2158-travel/" class="post-title-link" itemprop="url">「bzoj2158」Crash的旅行计划 - 分类讨论+线段树/平衡树</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-01-19 23:56:00" itemprop="dateCreated datePublished" datetime="2018-01-19T23:56:00+08:00">2018-01-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-06-10 09:10:56" itemprop="dateModified" datetime="2019-06-10T09:10:56+08:00">2019-06-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OI/" itemprop="url" rel="index">
+                    <span itemprop="name">OI</span>
+                  </a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/bzoj2158-travel/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/bzoj2158-travel/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="题目大意"><a href="#题目大意" class="headerlink" title="题目大意"></a>题目大意</h2><blockquote>
+<p>&ensp;&ensp;&ensp;&ensp;过不了多久，Crash就要迎来他朝思暮想的暑假。在这个暑假里，他计划着到火星上旅游。在火星上有$N$个旅游景点，Crash用$1$至$N$这$N$个正整数对这些景点标号。旅游景点之间通过双向道路相连。由于火星的环境和地球有很大的差异，建立道路的成本也相对较高。为了节约成本，只有$N-1$条道路连接着这些旅游景点，不过可以保证任何两个不同的旅游景点都通过路径相连。<br>&ensp;&ensp;&ensp;&ensp;Crash预先在互联网上查阅了这些景点的信息，根据网上的介绍，他对每个景点都有一个印象值，这个印象值为一个整数。在这个旅行中，他会选择一个景点作为旅行的开始，并沿着存在的道路到达其他景点游玩。为了使旅行不显得乏味，Crash不会经过同一个景点超过一次。Crash还给这次旅行定义了一个快乐指数，也就是他经过的所有景点的印象值之和。<br>&ensp;&ensp;&ensp;&ensp;不过Crash是个奇怪的小朋友，他对于景点的印象值会发生改变，并且他也没有决定好应该从哪个景点开始旅行。因此他希望你能写一个程序帮他完成一个简单的任务：根据当前他对每个景点的印象值，计算从某个景点开始旅行所能获得的最大的快乐指数。<br>&ensp;&ensp;&ensp;&ensp;测试数据分为$ABC$三类，对于所有的测试数据都满足：在任何时候一个景点印象值的绝对值不超过$10000$，并且输入的道路一定能满足题目描述的要求，即使得任意两个不同的景点都能通过路径相连。<br>&ensp;&ensp;&ensp;&ensp;对于$A$类数据（占20%的分数）满足：$N$和指令的条数都不超过$1000$。<br>&ensp;&ensp;&ensp;&ensp;对于$B$类数据（占40%的分数）满足：$N$和指令的条数都不超过$100000$，且输入的第$i$条道路，连接着$i$号景点和$i+1$号景点（详见样例2）。<br>&ensp;&ensp;&ensp;&ensp;对于$C$类数据（占40%的分数）满足：$N$和指令的条数都不超过$100000$，且任何一个景点到$1$号景点需要通过的道路条数不超过$40$。  </p>
+</blockquote>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/bzoj2158-travel/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
         
   
   
@@ -374,105 +473,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blog.bill.moe/bzoj1396-string/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Bill Yang">
-      <meta itemprop="description" content="这辈子都不可能更新的">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Bill Yang's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/bzoj1396-string/" class="post-title-link" itemprop="url">「bzoj1396」识别子串 - 后缀自动机+线段树</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-01-19 23:12:39" itemprop="dateCreated datePublished" datetime="2018-01-19T23:12:39+08:00">2018-01-19</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-06-10 09:10:56" itemprop="dateModified" datetime="2019-06-10T09:10:56+08:00">2019-06-10</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/OI/" itemprop="url" rel="index">
-                    <span itemprop="name">OI</span>
-                  </a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/bzoj1396-string/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/bzoj1396-string/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="题目大意"><a href="#题目大意" class="headerlink" title="题目大意"></a>题目大意</h2><blockquote>
-<p>&ensp;&ensp;&ensp;&ensp;XX在进行字符串研究的时候，遇到了一个十分棘手的问题。<br>&ensp;&ensp;&ensp;&ensp;在这个问题中，给定一个字符串$S$，与一个整数$K$，定义$S$的子串$T=S(i,j)$是关于第$K$位的识别子串，满足以下两个条件：<br>&ensp;&ensp;&ensp;&ensp;$1.i\le K\le j$。<br>&ensp;&ensp;&ensp;&ensp;$2.$子串$T$只在$S$中出现过一次。<br>&ensp;&ensp;&ensp;&ensp;例如，$S=banana$，$K=5$，则关于第$K$位的识别子串有<code>nana</code>，<code>anan</code>，<code>anana</code>，<code>nan</code>，<code>banan</code>和<code>banana</code>。<br>&ensp;&ensp;&ensp;&ensp;现在，给定$S$，XX希望知道对于S的每一位，最短的识别子串长度是多少，请你来帮助他。  </p>
-</blockquote>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/bzoj1396-string/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://blog.bill.moe/bzoj2865-string/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -549,6 +549,105 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/bzoj2865-string/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.bill.moe/bzoj1396-string/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Bill Yang">
+      <meta itemprop="description" content="这辈子都不可能更新的">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bill Yang's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/bzoj1396-string/" class="post-title-link" itemprop="url">「bzoj1396」识别子串 - 后缀自动机+线段树</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-01-19 23:12:39" itemprop="dateCreated datePublished" datetime="2018-01-19T23:12:39+08:00">2018-01-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-06-10 09:10:56" itemprop="dateModified" datetime="2019-06-10T09:10:56+08:00">2019-06-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OI/" itemprop="url" rel="index">
+                    <span itemprop="name">OI</span>
+                  </a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/bzoj1396-string/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/bzoj1396-string/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="题目大意"><a href="#题目大意" class="headerlink" title="题目大意"></a>题目大意</h2><blockquote>
+<p>&ensp;&ensp;&ensp;&ensp;XX在进行字符串研究的时候，遇到了一个十分棘手的问题。<br>&ensp;&ensp;&ensp;&ensp;在这个问题中，给定一个字符串$S$，与一个整数$K$，定义$S$的子串$T=S(i,j)$是关于第$K$位的识别子串，满足以下两个条件：<br>&ensp;&ensp;&ensp;&ensp;$1.i\le K\le j$。<br>&ensp;&ensp;&ensp;&ensp;$2.$子串$T$只在$S$中出现过一次。<br>&ensp;&ensp;&ensp;&ensp;例如，$S=banana$，$K=5$，则关于第$K$位的识别子串有<code>nana</code>，<code>anan</code>，<code>anana</code>，<code>nan</code>，<code>banan</code>和<code>banana</code>。<br>&ensp;&ensp;&ensp;&ensp;现在，给定$S$，XX希望知道对于S的每一位，最短的识别子串长度是多少，请你来帮助他。  </p>
+</blockquote>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/bzoj1396-string/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1162,107 +1261,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blog.bill.moe/codeplus1-chicken/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Bill Yang">
-      <meta itemprop="description" content="这辈子都不可能更新的">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Bill Yang's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/codeplus1-chicken/" class="post-title-link" itemprop="url">「CodePlus 2017 11月赛」大吉大利，晚上吃鸡！ - 最短路径DAG+bitset</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-01-17 23:39:34" itemprop="dateCreated datePublished" datetime="2018-01-17T23:39:34+08:00">2018-01-17</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-06-10 09:10:56" itemprop="dateModified" datetime="2019-06-10T09:10:56+08:00">2019-06-10</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/OI/" itemprop="url" rel="index">
-                    <span itemprop="name">OI</span>
-                  </a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/codeplus1-chicken/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/codeplus1-chicken/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="题目大意"><a href="#题目大意" class="headerlink" title="题目大意"></a>题目大意</h2><blockquote>
-<p>&ensp;&ensp;&ensp;&ensp;最近《绝地求生：大逃杀》风靡全球，皮皮和毛毛也迷上了这款游戏，他们经常组队玩这款游戏。<br>在游戏中，皮皮和毛毛最喜欢做的事情就是堵桥，每每有一个好时机都能收到不少的快递。<br>&ensp;&ensp;&ensp;&ensp;当然，有些时候并不能堵桥，皮皮和毛毛会选择在其他的必经之路上蹲点。<br>&ensp;&ensp;&ensp;&ensp;K博士作为一个老年人，外加有心脏病，自然是不能玩这款游戏的，但是这并不能妨碍他对这款游戏进行一些理论分析，比如最近他就对皮皮和毛毛的战士很感兴趣。  </p>
-<hr>
-<p>&ensp;&ensp;&ensp;&ensp;游戏的地图可以抽象为一张$n$个点$m$条无向边的图，节点编号为$1$到$n$，每条边具有一个正整数的长度。<br>&ensp;&ensp;&ensp;&ensp;假定大魔王都会从$S$点出发到达$T$点（$S$和$T$已知），并且只会走最短路，皮皮和毛毛会在$A$点和$B$点埋伏大魔王。<br>&ensp;&ensp;&ensp;&ensp;为了保证一定能埋伏到大魔王，同时又想留大魔王一条生路，皮皮和毛毛约定$A$点和$B$点必须满足：<br>&ensp;&ensp;&ensp;&ensp;$1.$大魔王所有可能路径中，必定会经过$A$点和$B$点中的任意一点<br>&ensp;&ensp;&ensp;&ensp;$2.$大魔王所有可能路径中，不存在一条路径同时经过$A$点和$B$点<br>&ensp;&ensp;&ensp;&ensp;K博士想知道，满足上面两个条件的$A,B$点对有多少个，交换$A,B$的顺序算相同的方案。</p>
-</blockquote>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/codeplus1-chicken/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1335,20 +1333,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">677</span>
+          <span class="site-state-item-count">678</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-count">12</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">235</span>
+        <span class="site-state-item-count">236</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

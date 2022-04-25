@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.png">
+  <link rel="mask-icon" href="/images/logo.png" color="#222">
+  <meta name="google-site-verification" content="ghOTm3Im1Awef9otcmhxaBXZs5PlL-aApB3Zeo2qVrg">
+  <meta name="baidu-site-verification" content="PcyS4kW5Yu">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-bounce.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://blog.bill.moe').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},
+    path: 'search.xml',
+    motion: {"enable":true,"async":true,"transition":{"post_block":"swoopIn","post_header":"shrinkIn","post_body":"shrinkIn","coll_header":"expandIn","sidebar":"bounceIn"}}
+  };
+</script>
+
+  <meta name="description" content="前言大家好，我是B娘，B站id是进击的Bill_Yang。雷精在发售后立即席卷环境，选手们在雷精公布后就构筑出了大量的强力卡组如双子雷精、雷精青蛙、代行雷精等。雷精可谓代替线性展开卡组的首套完全体网状展开链，强度也是有目共睹。作为一个热爱着童话动物的决斗者，在童话动物得到加强后，我立刻考虑了雷精小动物的可能性，并通过数周的实践调试，对这个可能性做出了答复。在此非常感谢童话动物交流群里的大佬们提供的">
+<meta name="keywords" content="游戏王">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浅谈被低估的雷精铁兽童话动物二星均卡组">
+<meta property="og:url" content="https://blog.bill.moe/splight-melffy/index.html">
+<meta property="og:site_name" content="Bill Yang&#39;s Blog">
+<meta property="og:description" content="前言大家好，我是B娘，B站id是进击的Bill_Yang。雷精在发售后立即席卷环境，选手们在雷精公布后就构筑出了大量的强力卡组如双子雷精、雷精青蛙、代行雷精等。雷精可谓代替线性展开卡组的首套完全体网状展开链，强度也是有目共睹。作为一个热爱着童话动物的决斗者，在童话动物得到加强后，我立刻考虑了雷精小动物的可能性，并通过数周的实践调试，对这个可能性做出了答复。在此非常感谢童话动物交流群里的大佬们提供的">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://blog.bill.moe/splight-melffy/开大车咯.jpg">
+<meta property="og:image" content="https://blog.bill.moe/splight-melffy/POTE-JP022.webp">
+<meta property="og:image" content="https://blog.bill.moe/splight-melffy/POTE-JP023.webp">
+<meta property="og:image" content="https://blog.bill.moe/splight-melffy/63410069.jpg">
+<meta property="og:image" content="https://blog.bill.moe/splight-melffy/POTE-JP045.webp">
+<meta property="og:image" content="https://blog.bill.moe/splight-melffy/POTE-JP063.webp">
+<meta property="og:image" content="https://blog.bill.moe/splight-melffy/大笨蛋.jpg">
+<meta property="og:image" content="https://blog.bill.moe/splight-melffy/deck.png">
+<meta property="og:image" content="https://blog.bill.moe/splight-melffy/救援猫终场.png">
+<meta property="og:image" content="https://blog.bill.moe/splight-melffy/青眼白龙.jpg">
+<meta property="og:image" content="https://blog.bill.moe/splight-melffy/河狸终场.png">
+<meta property="og:image" content="https://blog.bill.moe/splight-melffy/月下三动物.jpg">
+<meta property="og:image" content="https://blog.bill.moe/splight-melffy/兔女郎.jpg">
+<meta property="og:image" content="https://blog.bill.moe/splight-melffy/河狸初动.jpg">
+<meta property="og:image" content="https://blog.bill.moe/splight-melffy/童话动物轴.jpg">
+<meta property="og:image" content="https://blog.bill.moe/splight-melffy/雷精轴.jpg">
+<meta property="og:image" content="https://blog.bill.moe/splight-melffy/雷精重击.jpg">
+<meta property="og:image" content="https://blog.bill.moe/splight-melffy/铁兽轴.jpg">
+<meta property="og:image" content="https://blog.bill.moe/splight-melffy/加速link所需.jpg">
+<meta property="og:image" content="https://blog.bill.moe/splight-melffy/加速同调所需.jpg">
+<meta property="og:image" content="https://blog.bill.moe/splight-melffy/手坑.png">
+<meta property="og:image" content="https://blog.bill.moe/splight-melffy/服从小轴与指头.png">
+<meta property="og:image" content="https://blog.bill.moe/splight-melffy/side.png">
+<meta property="og:image" content="https://blog.bill.moe/splight-melffy/打牌.jpg">
+<meta property="og:image" content="https://blog.bill.moe/splight-melffy/厌月丁真.jpg">
+<meta property="og:updated_time" content="2022-04-25T19:00:44.225Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="浅谈被低估的雷精铁兽童话动物二星均卡组">
+<meta name="twitter:description" content="前言大家好，我是B娘，B站id是进击的Bill_Yang。雷精在发售后立即席卷环境，选手们在雷精公布后就构筑出了大量的强力卡组如双子雷精、雷精青蛙、代行雷精等。雷精可谓代替线性展开卡组的首套完全体网状展开链，强度也是有目共睹。作为一个热爱着童话动物的决斗者，在童话动物得到加强后，我立刻考虑了雷精小动物的可能性，并通过数周的实践调试，对这个可能性做出了答复。在此非常感谢童话动物交流群里的大佬们提供的">
+<meta name="twitter:image" content="https://blog.bill.moe/splight-melffy/开大车咯.jpg">
+
+<link rel="canonical" href="https://blog.bill.moe/splight-melffy/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+<!-- jquery -->
+
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<!-- 打字礼花及震动特效 -->
+
+<div id="append_parent"></div><div id="ajaxwaitid"></div>
+<script type="text/javascript" src="/lib/activate-power-mode/activate-power-mode.js"></script>
+<script>
+	POWERMODE.colorful = true;
+	POWERMODE.shake = false;
+	document.body.addEventListener('input',POWERMODE);
+</script>
+
+<!-- live2d -->
+
+<div class="waifu">
+	<div class="waifu-tips"></div>
+	<canvas id="live2d" width="240" height="350" class="live2d"></canvas>
+	<div class="hide-button">隐藏</div>
+</div>
+<script async src="/lib/poster-girl/waifu-tips.js"></script>
+<script src="/lib/poster-girl/live2d.js"></script>
+<script type="text/javascript">
+	loadlive2d("live2d", "/live2d/assets/kanna.model.json");
+</script>
+  <title>浅谈被低估的雷精铁兽童话动物二星均卡组 | Bill Yang's Blog</title>
+  
+    <script>
+      function sendPageView() {
+        if (CONFIG.hostname !== location.hostname) return;
+        var uid = localStorage.getItem('uid') || (Math.random() + '.' + Math.random());
+        localStorage.setItem('uid', uid);
+        navigator.sendBeacon('https://www.google-analytics.com/collect', new URLSearchParams({
+          v  : 1,
+          tid: 'UA-157912381-1',
+          cid: uid,
+          t  : 'pageview',
+          dp : encodeURIComponent(location.pathname)
+        }));
+      }
+      document.addEventListener('pjax:complete', sendPageView);
+      sendPageView();
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?d538e1e81ada366563b03354efffd84c";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Bill Yang's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">路终会有尽头，但视野总能看到更远的地方。</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">12</span></a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-friends">
+
+    <a href="/friends" rel="section"><i class="fa fa-fw fa-users"></i>友链</a>
+
+  </li>
+        <li class="menu-item menu-item-board">
+
+    <a href="/board/" rel="section"><i class="fa fa-fw fa-sticky-note-o"></i>留言板</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">678</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">236</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.bill.moe/splight-melffy/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Bill Yang">
+      <meta itemprop="description" content="这辈子都不可能更新的">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bill Yang's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          浅谈被低估的雷精铁兽童话动物二星均卡组
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-04-25 11:37:58" itemprop="dateCreated datePublished" datetime="2022-04-25T11:37:58+08:00">2022-04-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-04-26 03:00:44" itemprop="dateModified" datetime="2022-04-26T03:00:44+08:00">2022-04-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/游戏王/" itemprop="url" rel="index">
+                    <span itemprop="name">游戏王</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/splight-melffy/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/splight-melffy/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>大家好，我是B娘，B站id是进击的Bill_Yang。<br>雷精在发售后立即席卷环境，选手们在雷精公布后就构筑出了大量的强力卡组如双子雷精、雷精青蛙、代行雷精等。<br>雷精可谓代替线性展开卡组的首套完全体网状展开链，强度也是有目共睹。作为一个热爱着童话动物的决斗者，在童话动物得到加强后，我立刻考虑了雷精小动物的可能性，并通过数周的实践调试，对这个可能性做出了答复。<br>在此非常感谢童话动物交流群里的大佬们提供的思路和吊图（</p>
+<a id="more"></a>
+<h2 id="简称"><a href="#简称" class="headerlink" title="简称"></a>简称</h2><p>卫星闪灵-&gt;雷精<br>卫星闪灵启辉器-&gt;雷精到来<br>卫星闪灵·喷流灵-&gt;喷气白<br>卫星闪灵·蓝色喷流灵-&gt;蓝雷精<br>卫星闪灵·红色精灵-&gt;怪康雷精（红色雷精）<br>卫星闪灵·萝卜精灵-&gt;萝卜雷精（红色雷精）<br>卫星闪灵伽马暴-&gt;伽马<br>卫星闪灵粉碎者群集-&gt;雷精重击<br>童话动物-&gt;小动物<br>森之童话动物家族-&gt;森之<br>兴奋童话动物家族-&gt;兴奋<br>激动童话动物-&gt;激动<br>对视游戏-&gt;瞪眼  </p>
+<h2 id="童话动物强化"><a href="#童话动物强化" class="headerlink" title="童话动物强化"></a>童话动物强化</h2><p>如果仅仅是以前的童话动物投入雷精，那么不值得放上台面来讲，而如今得到强化的小动物已经拥有了一战的可能性，我们先来点评一下小动物的新卡。<br><img src="/splight-melffy/开大车咯.jpg" alt="开大车咯"></p>
+<h3 id="童话动物·小袋鼠"><a href="#童话动物·小袋鼠" class="headerlink" title="童话动物·小袋鼠"></a>童话动物·小袋鼠</h3><p><img src="/splight-melffy/POTE-JP022.webp" alt>  </p>
+<blockquote>
+<p>POTE-JP022  メルフィー・ワラビィ<br>(童话动物 小袋鼠)  效果怪兽  2  地  兽族  0/400<br>此卡名的①②效果一回合可以各用一次<br>①:对方将怪兽召唤・特殊召唤成功的场合，或是此卡成为对方怪兽攻击对象的场合可以发动，此卡回到持有者手牌。之后，可以将牌组「メルフィー・ワラビィ」以外「メルフィー」怪兽2体特殊召唤(同名卡最多一张)<br>②:我方结束阶段可以发动，此卡从手牌特殊召唤  </p>
+</blockquote>
+<p>新卡袋鼠解决了小动物初动慢的问题，以往的小动物展开方式往往是：救援猫、怀柔展开，通过森之童话动物家族检索小狗，或者拉出小狗和小猫叠放为兴奋童话动物。<br>上述第一种展开在对手回合只有小狗一个阻抗，且如果考虑小狗特招小猫来达成资源调度循环，则几乎没有阻抗。<br>上述第二种展开非常脆弱，对手交出灰流丽则近乎停牌，这个问题我们在之后的部分还会继续讨论。<br>现在可以通过森之检索小袋鼠，一卡拉出小猫小狗达成至少两阻抗，可谓非常的强力。</p>
+<h3 id="童话动物·小海豹"><a href="#童话动物·小海豹" class="headerlink" title="童话动物·小海豹"></a>童话动物·小海豹</h3><p><img src="/splight-melffy/POTE-JP023.webp" alt>  </p>
+<blockquote>
+<p>POTE-JP023  メルフィー・ラッシィ<br>(童话动物 小海豹)  协调/效果怪兽  2  水  兽族  300/100<br>此卡名的①②效果一回合可以各用一次<br>①:「メルフィー・ラッシィ」以外我方场上表侧表示兽族怪兽回到手牌的回合可以发动。此卡从手牌特殊召唤。之后，可以仅用此卡和手牌「メルフィー」怪兽为素材进行S召唤。此效果对手回合也能发动<br>②:我方结束阶段此卡在墓地存在的场合，以我方场上兽族X怪兽一体为对象可以发动。此卡塞到该怪下方重叠作为X素材  </p>
+</blockquote>
+<p>海豹是小动物本家第一张水属性怪兽，给未来的新卡强化预留了空间。<br>小海豹的效果也是非常的强力，只要小动物回到手牌的回合，就可以全时点发动二速手牌同调，且没有限制同调召唤的目标。<br>与垂耳兔飞行队相比较，新卡有长处也有短处。垂耳兔只能在对手回合以一个自己场上的怪兽为素材一起同调，可以处理掉留场的废件。海豹虽然不能处理废件，手牌同调比较亏手，然而同调的目标比较自由。<br>小海豹可以通过小猫检索，除了可以同调虹光、小动物新白以外，还可以同调飞蝗削一手，再次加速同调psy削一手或者加速同调枪管龙。<br><img src="/splight-melffy/63410069.jpg" alt></p>
+<blockquote>
+<p>调整+1只以上调整以外的怪兽<br>这张卡同调召唤成功的场合必定发动。回合玩家舍弃1张手牌。这个卡名的这个效果1回合只能使用1次。<br>对手的主要阶段可以发动。将包含这张卡的自己场上的怪兽作为素材来同调召唤。  </p>
+</blockquote>
+<h3 id="激动童话动物"><a href="#激动童话动物" class="headerlink" title="激动童话动物"></a>激动童话动物</h3><p><img src="/splight-melffy/POTE-JP045.webp" alt>  </p>
+<blockquote>
+<p>POTE-JP045  うきうきメルフィーズ<br>(激动童话动物)  同步/效果怪兽  4  地  兽族  1500/1000<br>协调+协调以外的怪兽一体以上<br>此卡名的①②效果一回合可以各用一次<br>①:此卡特殊召唤成功的场合，以场上表侧表示怪兽一体为对象可以发动。该怪兽回到持有者手牌<br>②:对方将怪兽召唤・特殊召唤成功的场合，或是此卡成为对方怪兽攻击对象的场合可以发动，此卡回到持有者EX牌组。之后，可以将EX牌组「メルフィー」X怪兽一体特殊召唤  </p>
+</blockquote>
+<p>小动物本家去除卡，诱发弹手。对手回合可以拉出兴奋，兴奋将森之放回额外，从墓地特招兽族怪兽。（月耳兔、本家等）<br>相较于虹光，新白强化了小动物本家的解场能力，是值得投入构筑的好卡。  </p>
+<h3 id="童话动物对视游戏"><a href="#童话动物对视游戏" class="headerlink" title="童话动物对视游戏"></a>童话动物对视游戏</h3><p><img src="/splight-melffy/POTE-JP063.webp" alt>  </p>
+<blockquote>
+<p>POTE-JP063  メルフィーとにらめっこ<br>(童话动物对视游戏)  永续魔法<br>此卡名的①效果一回合只能使用一次<br>①:展示手牌兽族怪兽一体可以发动。和该卡卡名不同的「メルフィー」怪兽一体从我方牌组˙墓地加入手牌，展示怪兽回到牌组最下方<br>②:对手战斗阶段开始时可以发动，手牌「メルフィー」怪兽任意数量展示，在战斗阶段期间公开<br>③:对方场上怪兽攻击力，下降此卡②效果公开怪兽攻击力˙守备力的合计值  </p>
+</blockquote>
+<p>这张卡放出来的时候我是非常激动的，对于小动物本家有很大的作用，垂耳兔是小动物卡组的纯废件，对视游戏可以洗回垂耳兔再检索袋鼠来达成处理废件+初动，这张卡本身可以通过森之来进行检索。<br>然而洗抽始终会亏一张手牌，对于雷精大轴的小动物构筑而言，投入价值不大。<br><img src="/splight-melffy/大笨蛋.jpg" alt="大笨蛋">  </p>
+<h2 id="抛弃救援猫和怀柔主动展开方式"><a href="#抛弃救援猫和怀柔主动展开方式" class="headerlink" title="抛弃救援猫和怀柔主动展开方式"></a>抛弃救援猫和怀柔主动展开方式</h2><p>以往的小动物会投入铁兽来跨入竞技的门槛，但是初动点仅有魔兽的怀柔与救援猫共6个点，如果投入铁兽人马初动点仍然有限，常常陷入卡手的状况。<br>怀柔可以一卡从卡组拉出三个二星兽族怪兽，并且没有一回合一次，可谓优质初动点。但是怀柔有兽族的强自肃，不适合如今投入雷精的构筑。<br>救援猫是一个很理想的卡片，可以从卡组调度小动物，也可以直接调度铁兽触发遗言获取更多资源。可是救援猫的通过率低得令人感叹，本身占用宝贵的通招点，灰流丽、泡影、效遮、墓指都可以让其停牌。实战中救援猫的通过率不足20%，因此是否还需要采用救援猫作为主动方式是如今构筑踏入竞技门槛所必须考虑的问题。<br>本人已经抛弃了救援猫的主动方式，卡组投入大量2星怪兽，使用河狸初动、雷精补点。雷精的特招点足够优秀，并且常常做出雷精一变三的操作，相当于一个没有自肃的怀柔。只要卡组的二星怪兽和雷精足够多，就不用担心初动问题。另，后续会提到服从小轴的投入解决救援猫占通招吃坑停牌的问题。<br>综上，本文构筑也可以被称为二星均。</p>
+<h2 id="卡组构筑"><a href="#卡组构筑" class="headerlink" title="卡组构筑"></a>卡组构筑</h2><p><img src="/splight-melffy/deck.png" alt><br>携带蜂鸟是因为蜂鸟自己是鸟兽族，并且可以通过同盟车挂给ip白嫖炸场，通过抗战拉回来可以二次炸场（来自童话动物群大佬的思路），若不喜欢也可以选择不携带或者携带其他挂件</p>
+<h2 id="主要combo"><a href="#主要combo" class="headerlink" title="主要combo"></a>主要combo</h2><h3 id="救援猫初动（最大场，不推荐）"><a href="#救援猫初动（最大场，不推荐）" class="headerlink" title="救援猫初动（最大场，不推荐）"></a>救援猫初动（最大场，不推荐）</h3><p>通招救援猫效果拉姬特和袋鼠，叠巨大雷精特招小鹿，姬特堆鸟拿克拉斯，小鹿丢手（克拉斯）拉姬特，小鹿巨大雷精变link2雷精，link2雷精拉克拉斯，各自效果拉徒花块击，link成ip和同盟车，同盟车给ip挂蜂鸟，块击效果拿抗战，盖抗战过</p>
+<p>终场：雷精link2，ip挂蜂鸟，同盟车，抗战<br><img src="/splight-melffy/救援猫终场.png" alt="救援猫终场">  </p>
+<p>对面的回合：</p>
+<ol>
+<li>ip加速狮鹫，蜂鸟炸场</li>
+<li>抗战出凶鸟除外一，蜂鸟炸场</li>
+<li>link2苏袋鼠拉猫猫狗狗，后续见河狸场阻抗</li>
+</ol>
+<p>这一套combo不吃陨石，但是因为上述原因不推荐救援猫开，可以通过其他方式将救援猫调度出来打完这套combo<br>combo过程中未引入雷精下级，因此可以通过雷精下级对上述展开进行补点，可能达成同一场面的初动很多</p>
+<h4 id="补充救援猫吃无效系"><a href="#补充救援猫吃无效系" class="headerlink" title="补充救援猫吃无效系"></a>补充救援猫吃无效系</h4><p>如果救援猫吃到了效遮或泡影，而不是灰流丽和墓指，可以通过以下方式补点继续打完整套：</p>
+<ol>
+<li>雷精到来+4手-&gt;雷精到来拉蓝雷精拉喷气白拿到来，叠巨大雷精找姬特，救援猫和姬特link2雷精，姬特堆鸟找克拉斯，link2苏姬特，姬特除外2拉块击，块击丢2手特招除外区救援猫，救援猫效果拉两只叠森之拿袋鼠，克拉斯丢袋鼠特招，克拉斯除外2拉徒花，姬特和克拉斯变ip，块击徒花变同盟车挂蜂鸟，块击拿抗战</li>
+<li>克拉斯+4手-&gt;克拉斯丢手特招和救援猫变link2雷精，雷精苏克拉斯除外2出块击，块击丢2特招，救援猫效果后略，后续展开需要注意铁兽自肃</li>
+</ol>
+<h4 id="服从小轴特招救援猫"><a href="#服从小轴特招救援猫" class="headerlink" title="服从小轴特招救援猫"></a>服从小轴特招救援猫</h4><p>要求对手的墓地有怪兽，天声的服从宣言增殖的G  </p>
+<ol>
+<li>对手如果将增殖的G加入我方手牌，那多是一件美事啊</li>
+<li>对手如果将增殖的G特招到我方场上，则随便补充一个通招或特招</li>
+</ol>
+<p>两个2星叠放招财猫人偶，招财猫人偶拔掉增殖的G，将增殖的G特招到对方场上。触发招财猫人偶效果，从卡组/手牌/墓地特招救援猫展开  </p>
+<p>通过思考，可以发现：</p>
+<ol>
+<li>这套combo其实只要对手墓地有兽族或者地属性，就可以任意两卡叠放打完</li>
+<li>回合开始就天声的服从宣言增殖的G，对手不会轻易的将增殖的G加入你的手牌，因为对手不知道己方手牌状况，如果手牌的补点足够则对手白送了一张增殖的G给你，所以一般是直接特招到场上（旅鸟玩家请走开）</li>
+<li>天声的服从相当于一个2星补点，因此这套小轴没有任何废件</li>
+<li>通过以上理论我们可以将救援猫（3-&gt;1），天声的服从（0-&gt;2），变相提高了卡组2星浓度  </li>
+</ol>
+<p>这套combo很早就在童话动物群提出过，但是当初仅限于杂技水平，如今有了雷精的加持大可将其加入实战以取代救援猫的地位</p>
+<p><img src="/splight-melffy/青眼白龙.jpg" alt="青眼白龙">  </p>
+<h3 id="河狸初动（本质上任意2星-雷精或克拉斯也可打完）"><a href="#河狸初动（本质上任意2星-雷精或克拉斯也可打完）" class="headerlink" title="河狸初动（本质上任意2星+雷精或克拉斯也可打完）"></a>河狸初动（本质上任意2星+雷精或克拉斯也可打完）</h3><p>河狸一卡R2巨大雷精，巨大雷精发效果拉蓝雷精，蓝雷精拿喷气白跳下来，喷气白拿雷精到来，蓝雷精和喷气白叠放森之，森之效果拿袋鼠，雷精到来拉一个红色雷精和雷精R2变成link2雷精，苏生红色雷精，ep跳袋鼠</p>
+<p><img src="/splight-melffy/河狸终场.png" alt="河狸终场">  </p>
+<p>在对面回合有：  </p>
+<ol>
+<li>红色雷精解放袋鼠一康-&gt;link2把袋鼠拉回来</li>
+<li>袋鼠拉猫猫狗狗，森之给一遮</li>
+<li>狗拉月耳兔一炸</li>
+<li>猫找垂耳兔或海豹出加速（激动一弹，虹光一康，蝗虫两削）</li>
+<li>如果④出激动，激动出兴奋，兴奋点森之拉月耳兔一炸</li>
+</ol>
+<p>combo中在河狸和雷精R2处容易吃坑，吃坑后的补点方法：</p>
+<ol>
+<li>蓝雷精/喷气白补点-&gt;继续打完</li>
+<li>雷精到来-&gt;到来找蓝雷精找喷气白拿到来，叠森之拿袋鼠，森之和巨大变雷精link2，苏生森之盖到来，ep跳袋鼠</li>
+<li>克拉斯-&gt;变雷精link2苏克拉斯，克拉斯除外2拉块击，克拉斯和块击link徒花拿抗战</li>
+<li>克拉斯+姬特-&gt;克拉斯丢姬特跳，姬特拿克拉斯，link2雷精，苏姬特除外2拉徒花，徒花拉克拉斯除外2拉块击，转为最大场</li>
+<li>克拉斯+纳贝尔-&gt;克拉斯丢鸟跳，鸟拿姬特，link2雷精，苏克拉斯除外2拉徒花，徒花拉姬特，叠森之拿袋鼠，ep跳袋鼠</li>
+<li>普通补点-&gt;视情况变雷精link2</li>
+</ol>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>雷精一变三的操作让整套系统有了很强的灵活性，读者可以不必拘泥于上述combo的细节，可以自行琢磨尝试打出相同的终场。<br>展开过程中可以考虑拉出红色雷精进行护航，重点提防雷精R2吃到手坑（重点提防幽鬼兔）<br><img src="/splight-melffy/月下三动物.jpg" alt="月下三动物">  </p>
+<h2 id="为什么加入铁兽小轴？"><a href="#为什么加入铁兽小轴？" class="headerlink" title="为什么加入铁兽小轴？"></a>为什么加入铁兽小轴？</h2><ol>
+<li>铁兽大部分均为2星怪兽，补充2星均浓度</li>
+<li>铁兽可以让终场做到更大</li>
+<li>后场铁兽抗战，ip挂的蜂鸟炸药包，终场很立体</li>
+<li>雷精是姬特带来的陀螺，怎么能不带主角呢，是吧是吧（滑稽）</li>
+</ol>
+<p>如果去掉铁兽也可以携带更多手坑，只考虑河狸初动的combo或加入死链小轴，即为雷童构筑，也值得考虑<br>值得注意的是，任何雷精构筑都可以做出死链终场（水机，我的超量超人），可以参考往期代行者雷精观点。正因为选择了共通性的终场，也因此更容易受到针对制裁。</p>
+<h2 id="为什么选择童话动物？"><a href="#为什么选择童话动物？" class="headerlink" title="为什么选择童话动物？"></a>为什么选择童话动物？</h2><ol>
+<li>童话动物如今是一套非常优秀的小轴，袋鼠一卡可以做出很大的阻抗</li>
+<li>大幅度强化雷精吃到增殖的G的妥协场（三步做出3+阻抗）</li>
+<li>卡组续航点，残局时对手吃不消每回合稳定一炸一弹</li>
+<li>小动物这么可爱，你舍得不带它们出门玩耍吗（滑稽）</li>
+</ol>
+<p>如果去掉童话动物，那为什么不玩雷精青蛙呢？<br><img src="/splight-melffy/兔女郎.jpg" alt="兔女郎">  </p>
+<h2 id="构筑分析"><a href="#构筑分析" class="headerlink" title="构筑分析"></a>构筑分析</h2><p><img src="/splight-melffy/河狸初动.jpg" alt="河狸初动"><br>3河狸+1小鹿是必须的<br>垂耳兔在携带了海豹的情况下可以考虑去掉  </p>
+<p><img src="/splight-melffy/童话动物轴.jpg" alt="童话动物轴"><br>几乎完美的小动物轴<br>小动物复数上手时可能会让袋鼠失效，可以考虑携带2小狗</p>
+<p><img src="/splight-melffy/雷精轴.jpg" alt="雷精轴"><br>一份雷精大轴，喷气白可以考虑2~3<br>不携带复数R2和link2，卡组续航通过小动物来实现</p>
+<p><img src="/splight-melffy/雷精重击.jpg" alt="雷精重击"><br>这个卡位留给环境中不稳定因素，如一些贴纸、虚无空间、小米等，这些卡对于雷精杀伤性很大，因此携带魔法去除来过场<br>也可以考虑携带伽马来解高抗怪、清场或者提供斩杀，可以根据环境而定</p>
+<p><img src="/splight-melffy/铁兽轴.jpg" alt="铁兽轴"><br>2牛1姬特1鸟1凶鸟<br>不下2凶鸟是因为卡位紧张，且第二张凶鸟大部分时候用不到，可自行调整</p>
+<p><img src="/splight-melffy/加速link所需.jpg" alt="加速link所需"><br>ip狮鹫同盟车蜂鸟<br>如果不携带蜂鸟可以替换同盟车</p>
+<p><img src="/splight-melffy/加速同调所需.jpg" alt="加速同调所需"><br>虹光飞蝗psy<br>psy可以换为白枪管等泛用八星白<br>飞蝗可以提供加速同调，让场面更为灵活  </p>
+<p><img src="/splight-melffy/手坑.png" alt="手坑"><br>3灰3G1DD乌鸦1幽鬼兔1效遮1泡影<br>幽鬼兔是对于环境很厉害的单卡，也是必须要投入喂给指头的卡<br>更多的手坑可以在side中换入  </p>
+<p><img src="/splight-melffy/服从小轴与指头.png" alt="服从小轴与指头"><br>3指拉满，2服从1救援猫</p>
+<h2 id="side选择"><a href="#side选择" class="headerlink" title="side选择"></a>side选择</h2><p><img src="/splight-melffy/side.png" alt="side"><br>根据环境选择，下面解释一些卡携带原因</p>
+<ol>
+<li>次元吸引者：河狸与雷精combo近乎不涉及墓地，且大宇宙人对于环境杀伤性很大，次元吸引者+袋鼠+森之通过是一个合格的配赢终场，先后攻均可以考虑换入</li>
+<li>舔舔&amp;自然兽：魔法相关卡组杀手，通过救援猫一卡做出，舔舔单卡也可以作为墓坑解场</li>
+<li>手坑：由于主卡位只有10张手坑，后攻可以考虑剔除一部分主卡废件换入side的手坑</li>
+</ol>
+<p><img src="/splight-melffy/打牌.jpg" alt="打牌">  </p>
+<h2 id="卡组优缺点与总结"><a href="#卡组优缺点与总结" class="headerlink" title="卡组优缺点与总结"></a>卡组优缺点与总结</h2><p>雷童（铁）的二星均构筑合理性在于，它的任何一个终场即使是妥协场都有能赢的场面。<br>加入铁兽后可以获取更立体的终场，整套卡组相较于其他雷精构筑而言，很难通过简单的单卡进行针对。这套卡组的定位为展暴卡组（雷精青蛙更倾向于资源型卡组），但仍然通过小动物获取了资源循环的能力。<br>笔者在实战中体验很舒服，构筑能够弥补其他雷精构筑吃到增殖的G和终场不够立体的缺陷。面对一滴结界波，终场任有一个抗战和一个炸药包让对手头疼，甚至手上可能仍有手坑联防。<br>卡组的缺陷在于：</p>
+<ol>
+<li>这套卡组的废件量是4（2月耳兔1抗战1蜂鸟），废件量较大，不过月耳兔可以协助展开</li>
+<li>卡位紧张导致缺少手坑，读者可以自行调整以削减这项缺陷的影响</li>
+<li>缺乏斩杀能力，可以通过加大童话动物投入量拖回合数，或携带伽马尝试斩杀</li>
+</ol>
+<p><img src="/splight-melffy/厌月丁真.jpg" alt="厌月丁真">  </p>
+<p>笔者认为雷童铁二星均有近一流强度，可以和双子雷精扳扳手腕，能否达到雷精青蛙的强度还有待观察。<br>最后再次感谢童话动物群群友对我的帮助，感谢同校校友陪伴我测试并调试构筑。<br>笔者第一次发文定有考虑不周，在此抛砖引玉，先给各位大佬磕个头了！<br>感谢阅读到这里的你，望大家梦里都有童话动物。</p>
+
+    </div>
+
+    
+    
+    
+      
+
+        <div class="reward-container">
+  <div>姥爷们赏瓶冰阔落吧~</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="Bill Yang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="Bill Yang 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Bill Yang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.bill.moe/splight-melffy/" title="浅谈被低估的雷精铁兽童话动物二星均卡组">https://blog.bill.moe/splight-melffy/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/游戏王/" rel="tag"><i class="fa fa-tag"></i> 游戏王</a>
+          </div>
+
+        
+  <div class="post-widgets">
+    <div class="wp_rating">
+      <div id="wpac-rating"></div>
+    </div>
+  </div>
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/entrylib/" rel="prev" title="「Mirai 插件开发」EntryLib 词条库 开发心得">
+      <i class="fa fa-chevron-left"></i> 「Mirai 插件开发」EntryLib 词条库 开发心得
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#简称"><span class="nav-number">2.</span> <span class="nav-text">简称</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#童话动物强化"><span class="nav-number">3.</span> <span class="nav-text">童话动物强化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#童话动物·小袋鼠"><span class="nav-number">3.1.</span> <span class="nav-text">童话动物·小袋鼠</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#童话动物·小海豹"><span class="nav-number">3.2.</span> <span class="nav-text">童话动物·小海豹</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#激动童话动物"><span class="nav-number">3.3.</span> <span class="nav-text">激动童话动物</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#童话动物对视游戏"><span class="nav-number">3.4.</span> <span class="nav-text">童话动物对视游戏</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#抛弃救援猫和怀柔主动展开方式"><span class="nav-number">4.</span> <span class="nav-text">抛弃救援猫和怀柔主动展开方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#卡组构筑"><span class="nav-number">5.</span> <span class="nav-text">卡组构筑</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#主要combo"><span class="nav-number">6.</span> <span class="nav-text">主要combo</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#救援猫初动（最大场，不推荐）"><span class="nav-number">6.1.</span> <span class="nav-text">救援猫初动（最大场，不推荐）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#补充救援猫吃无效系"><span class="nav-number">6.1.1.</span> <span class="nav-text">补充救援猫吃无效系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#服从小轴特招救援猫"><span class="nav-number">6.1.2.</span> <span class="nav-text">服从小轴特招救援猫</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#河狸初动（本质上任意2星-雷精或克拉斯也可打完）"><span class="nav-number">6.2.</span> <span class="nav-text">河狸初动（本质上任意2星+雷精或克拉斯也可打完）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小结"><span class="nav-number">6.3.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么加入铁兽小轴？"><span class="nav-number">7.</span> <span class="nav-text">为什么加入铁兽小轴？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么选择童话动物？"><span class="nav-number">8.</span> <span class="nav-text">为什么选择童话动物？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构筑分析"><span class="nav-number">9.</span> <span class="nav-text">构筑分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#side选择"><span class="nav-number">10.</span> <span class="nav-text">side选择</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#卡组优缺点与总结"><span class="nav-number">11.</span> <span class="nav-text">卡组优缺点与总结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Bill Yang"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Bill Yang</p>
+  <div class="site-description" itemprop="description">这辈子都不可能更新的</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">678</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">236</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=935683004" title="QQ → tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=935683004" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i>QQ</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ym13883407586@outlook.com" title="E-Mail → mailto:ym13883407586@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/BillYang2016" title="GitHub → https://github.com/BillYang2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://coding.net/u/Bill_Yang_2016" title="Coding → https://coding.net/u/Bill_Yang_2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-git-square"></i>Coding</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://music.163.com/#/user/home?nickname=Bill_Yang2016" title="网易云音乐 → http://music.163.com/#/user/home?nickname=Bill_Yang2016" rel="noopener" target="_blank"><i class="fa fa-fw fa-music"></i>网易云音乐</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://space.bilibili.com/233682260/#/" title="bilibili → https://space.bilibili.com/233682260/#/" rel="noopener" target="_blank"><i class="fa fa-fw fa-youtube-play"></i>bilibili</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → /atom.xml"><i class="fa fa-fw fa-rss"></i>RSS</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      我的朋友们
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://pointedpoints.github.io/" title="http://pointedpoints.github.io/" rel="noopener" target="_blank">pointedpoints</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://keke046.coding.me/" title="https://keke046.coding.me/" rel="noopener" target="_blank">KEKE046</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://imperfect_zx.coding.me/" title="https://imperfect_zx.coding.me/" rel="noopener" target="_blank">Imperfect</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://achen.world/" title="https://achen.world/" rel="noopener" target="_blank">Achen</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://metakari.one/" title="https://metakari.one/" rel="noopener" target="_blank">Metakar1</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://39.106.98.75/" title="http://39.106.98.75/" rel="noopener" target="_blank">魏启大陆</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="/friends/" title="/friends/">更多朋友们</a>
+        </li>
+    </ul>
+  </div>
+<!-- none-select-br -->
+
+<p></p>
+
+<!-- hitokoto -->
+
+<div class="hitokoto-title">
+	<i class="fa fa-paragraph"></i>
+	<b>一言</b>
+</div>
+
+<div id="hitokoto">:D 获取中...</div>
+<i id="hitofrom">:D 获取中...</i>
+
+<script src="https://cdn.jsdelivr.net/npm/bluebird@3/js/browser/bluebird.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/whatwg-fetch@2.0.3/fetch.min.js"></script>
+<script>
+  fetch('https://v1.hitokoto.cn')
+    .then(function (res){
+      return res.json();
+    })
+    .then(function (data) {
+      var hitokoto = document.getElementById('hitokoto');
+      hitokoto.innerText = '\xa0\xa0\xa0\xa0\xa0\xa0\xa0' + data.hitokoto;
+      var hitofrom = document.getElementById('hitofrom');
+      hitofrom.innerText = "——" + data.from + '\xa0'; 
+    })
+    .catch(function (err) {
+      console.error(err);
+    })
+</script>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Bill Yang 以 <a class="theme-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a> 协议发布</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+  <script>
+  if (CONFIG.page.isPost) {
+    wpac_init = window.wpac_init || [];
+    wpac_init.push({
+      widget: 'Rating',
+      id: 10154,
+      el: 'wpac-rating',
+      color: 'fc6423'
+    });
+    (function() {
+      if ('WIDGETPACK_LOADED' in window) return;
+      WIDGETPACK_LOADED = true;
+      var mc = document.createElement('script');
+      mc.type = 'text/javascript';
+      mc.async = true;
+      mc.src = '//embed.widgetpack.com/widget.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+    })();
+  }
+  </script>
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout: 3000,
+        priority: true,
+        ignores: [uri => uri.includes('#'),uri => uri == 'https://blog.bill.moe/splight-melffy/',]
+      });
+      });
+  </script>
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: true,
+      notify: false,
+      appId: 'JYwxXHHRe8RNGu498SnK9B3N-gzGzoHsz',
+      appKey: 'JBz9GW9kidjPp7gW5Y6VIgfe',
+      placeholder: "吹雪は猫~",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: 'zh-cn' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

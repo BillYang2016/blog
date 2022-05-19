@@ -215,7 +215,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">678</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">679</span></a>
 
   </li>
         <li class="menu-item menu-item-tags">
@@ -271,6 +271,111 @@
             
 
   <div class="posts-expand">
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.bill.moe/encrypt/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Bill Yang">
+      <meta itemprop="description" content="这辈子都不可能更新的">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bill Yang's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/encrypt/" class="post-title-link" itemprop="url">「Hexo插件应用」encrypt插件加密文章</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-10-23 00:15:43" itemprop="dateCreated datePublished" datetime="2017-10-23T00:15:43+08:00">2017-10-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-06-10 09:10:56" itemprop="dateModified" datetime="2019-06-10T09:10:56+08:00">2019-06-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Hexo/" itemprop="url" rel="index">
+                    <span itemprop="name">Hexo</span>
+                  </a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/encrypt/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/encrypt/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><strong>注意：本人已弃用本插件，改用hexo-blog-encrypt</strong>  </p>
+<h2 id="提出问题"><a href="#提出问题" class="headerlink" title="提出问题"></a>提出问题</h2><p>使用过$Hexo$搭建博客的应该都有为加密文章头疼过。<br>百度里面大多数人都是使用的$js$语句实现的加密功能。<br>然而那个加密功能有很多$bug$，包括：  </p>
+<ul>
+<li><code>search.xml</code>依然保留文章内容，可以使用搜索直接获取文章内容</li>
+<li>密码明文传输，直接查看网页源代码即可获取密码（本问题可以采用$md5$加密解决）  </li>
+<li>新标签页打开页面不用输入密码即可进入页面（本问题可以使用$location$定位解决）  </li>
+<li>源代码未加密，直接下载源代码去掉加密部分即可看到文章内容</li>
+</ul>
+<p>有这么多的问题，特别是$1,4$条非常棘手，似乎就没有将网页源码加密以外的方法了。  </p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/encrypt/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
         
   
   
@@ -1160,105 +1265,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blog.bill.moe/bsoj5088-party/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Bill Yang">
-      <meta itemprop="description" content="这辈子都不可能更新的">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Bill Yang's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/bsoj5088-party/" class="post-title-link" itemprop="url">「bsoj5088」花花的聚会 - 树形动规+树链剖分/倍增</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2017-10-21 20:48:09" itemprop="dateCreated datePublished" datetime="2017-10-21T20:48:09+08:00">2017-10-21</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-06-10 09:10:56" itemprop="dateModified" datetime="2019-06-10T09:10:56+08:00">2019-06-10</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/OI/" itemprop="url" rel="index">
-                    <span itemprop="name">OI</span>
-                  </a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/bsoj5088-party/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/bsoj5088-party/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="题目大意"><a href="#题目大意" class="headerlink" title="题目大意"></a>题目大意</h2><blockquote>
-<p>花花住在H国。H国有$n$个城市，其中$1$号城市为其首都。城市间有$n-1$条单向道路。从任意一个城市出发，都可以沿着这些单向道路一路走到首都。事实上，从任何一个城市走到首都的路径是唯一的。<br>过路并不是免费的。想要通过某一条道路，你必须使用一次过路券。$H$国一共有$m$种过路券，每张过路券以三个整数表示：$v\,k\,w$：你可以在城市$v$以价格$w$买到一张过路券。这张券可以使用$k$次。这意味着，拿着这张券通过了$k$条道路之后，这张券就不能再使用了。<br>请注意你同一时间最多只能拥有最多一张过路券。但你可以随时撕掉手中已有的过路券，并且在所在的城市再买一张。<br>花花家在首都。他有$q$位朋友，他希望把这些朋友们都邀请到他家做客。所以他想要知道每位朋友要花多少路费。他的朋友们都很聪明，永远都会选择一条花费最少的方式到达首都。<br>花花需要准备晚餐去了，所以他没有时间亲自计算出朋友们将要花费的路费。你可以帮帮他么？</p>
-</blockquote>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/bsoj5088-party/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1331,7 +1337,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">678</span>
+          <span class="site-state-item-count">679</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
